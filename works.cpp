@@ -1,9 +1,19 @@
+//Texture Maze Test Code
+
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>
 #include <string>
+//MAC INCLUDES
+#ifdef __APPLE__
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
+#endif
+//WINDOWS INCLUDES
+#ifdef _WIN32
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_opengl.h>
+#endif
 using namespace std;
 
 #define SCREEN_WIDTH  640
