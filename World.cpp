@@ -1,60 +1,15 @@
 //Texture Maze Test Code
+#include "World.h"
 
-#include <cstdio>
-#include <cstdlib>
-#include <cmath>
-#include <string>
-//MAC INCLUDES
-#ifdef __APPLE__
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_opengl.h>
-#endif
-//WINDOWS INCLUDES
-#ifdef _WIN32
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_opengl.h>
-#endif
-using namespace std;
-
-#define SCREEN_WIDTH  640
-#define SCREEN_HEIGHT 400
-#define PI 3.1415926535897932384626433832795
-
-SDL_Window *mw;
-
-//Build Vertex Structure
-typedef struct{
-    float x, y, z; //3D Coordinates
-    float u, v; //Texture Coordinates
-} vertex;
-
-//Build Triangle Structure
-typedef struct{
-    vertex vertex[3]; //Array Of Three Vertices
-} triangle;
-
-//Build Sector Structure
-typedef struct{
-    int numTriangles; //Number Of Triangles In Sector
-    triangle *triangle; //Pointer To Array Of Triangles
-} sector;
+GLuint texture[3]; //Storage for 3 textures
+GLuint filter; //Which Filter To Use
 
 sector sector1; //Our sector
 
 GLfloat yrot; //Camera rotation variable
 GLfloat xpos, zpos; //Camera pos variable
-
 GLfloat walkbias, walkbiasangle; //Head-bobbing variables
 GLfloat lookupdown;
-
-GLfloat LightAmbient[]  = { 1.0f, 0.0f, 0.0f, 1.0f }; //Ambient Light Values
-GLfloat LightDiffuse[]  = { 1.0f, 1.0f, 1.0f, 1.0f }; //Diffuse Light Values
-GLfloat LightPosition[] = { 0.0f, 0.0f, 2.0f, 1.0f }; //Light Position, positive z is between the screen and me
-
-const float piover180 = 0.0174532925f; //Constant used for converting to radians
-
-GLuint filter; //Which Filter To Use
-GLuint texture[3]; //Storage for 3 textures
 
 //Function to release/destroy our resources and restoring the old desktop
 void Quit(int returnCode){
@@ -146,60 +101,12 @@ void SetupWorld(string worldFile){
     return;
 }
 
-//Function to reset our viewport after a window resize
-int resizeWindow(int width, int height){
-    GLfloat ratio; //Height / width ration
-    if(height == 0) height = 1; //Protect against a divide by zero
-    ratio = (GLfloat)width/(GLfloat)height;
-
-    glViewport(0, 0, (GLint)width, (GLint)height); //Setup viewport
-    glMatrixMode(GL_PROJECTION); //Change to the projection matrix and set our viewing volume.
-    glLoadIdentity();
-  	glFrustum(-tan(45.0/360*PI)*0.1*ratio, tan(45.0/360*PI)*0.1*ratio, -tan(45.0/360*PI)*0.1, tan(45.0/360*PI)*0.1, 0.1, 100); //Set perspective
-    glMatrixMode(GL_MODELVIEW); //Make sure we're chaning the model view and not the projection
-    glLoadIdentity(); //Reset The View
-
-    return true;
-}
-
-//Function to handle key press events
-void handleKeyPress(SDL_Keysym *keysym){
-    switch(keysym->sym){
-        case SDLK_ESCAPE: //ESC key closes program
-            Quit(0);
-            break;
-        case SDLK_F1: //F1 key toggles fullscreen mode
-    	    //SDL_WM_ToggleFullScreen( surface );
-            break;
-        case SDLK_RIGHT: //Right arrow key effectively turns the camera right by rotating the scene left
-            yrot -= 1.5f;
-            break;
-        case SDLK_LEFT: //Left arrow key effectively turns the camera left by rotating the scene right
-            yrot += 1.5f;
-            break;
-        case SDLK_UP: //Up arrow moves the player forward
-            xpos -= (float)sin(yrot*piover180)*0.05f; //on the x-plane based on Player Direction
-            zpos -= (float)cos(yrot*piover180)*0.05f; //on the z-plane based on Player Direction
-            if (walkbiasangle >= 359.0f) walkbiasangle = 0.0f;
-            else walkbiasangle += 10;
-            
-            walkbias = (float)sin(walkbiasangle*piover180)/20.0f; //Causes the player to bounce
-            break;
-        case SDLK_DOWN: //Down arrow key moves the player backwards
-            xpos += (float)sin(yrot*piover180)*0.05f;
-            zpos += (float)cos(yrot*piover180)*0.05f;
-            if(walkbiasangle <= 1.0f) walkbiasangle = 359.0f;
-            else walkbiasangle -= 10;
-            walkbias = (float)sin(walkbiasangle*piover180)/20.0f;
-            break;
-        default:
-            break;
-	}
-    return;
-}
-
 //General OpenGL Initialization Function
 int initGL(){
+    GLfloat LightAmbient[]  = { 1.0f, 0.0f, 0.0f, 1.0f }; //Ambient Light Values
+    GLfloat LightDiffuse[]  = { 1.0f, 1.0f, 1.0f, 1.0f }; //Diffuse Light Values
+    GLfloat LightPosition[] = { 0.0f, 0.0f, 2.0f, 1.0f }; //Light Position, positive z is between the screen and me
+    
     //Load in the texture
     if(!LoadGLTextures()) return false;
     glEnable(GL_TEXTURE_2D); //Enable Texture Mapping
@@ -226,7 +133,7 @@ int initGL(){
     return true;
 }
 
-int drawGLScene(GLvoid){
+void draw(SDL_Window *window){
     //These alculate fps
     static GLint T0 = 0;
     static GLint Frames = 0;
@@ -282,7 +189,7 @@ int drawGLScene(GLvoid){
 	      glVertex3f(x_m, y_m, z_m);
 	    glEnd();
 	}
-    SDL_GL_SwapWindow (mw); //Draw it to the screen
+    SDL_GL_SwapWindow (window); //Draw it to the screen
 
     //Gather our frames per second
     Frames++;{
@@ -297,32 +204,37 @@ int drawGLScene(GLvoid){
             Frames = 0;
         }
     }
+    return;
+}
+
+//Function to reset our viewport after a window resize
+int resizeWindow(int width, int height){
+    GLfloat ratio; //Height / width ration
+    if(height == 0) height = 1; //Protect against a divide by zero
+    ratio = (GLfloat)width/(GLfloat)height;
+    
+    glViewport(0, 0, (GLint)width, (GLint)height); //Setup viewport
+    glMatrixMode(GL_PROJECTION); //Change to the projection matrix and set our viewing volume.
+    glLoadIdentity();
+    glFrustum(-tan(45.0/360*PI)*0.1*ratio, tan(45.0/360*PI)*0.1*ratio, -tan(45.0/360*PI)*0.1, tan(45.0/360*PI)*0.1, 0.1, 100); //Set perspective
+    glMatrixMode(GL_MODELVIEW); //Make sure we're chaning the model view and not the projection
+    glLoadIdentity(); //Reset The View
+    
     return true;
 }
 
-int main(int argc, char **argv){
-    bool done = false;
+void genWorld(SDL_Window *window){
     SDL_Event event;
+    bool done = false;
     bool isActive = true;
-    SDL_Init(SDL_INIT_VIDEO);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-	mw = SDL_CreateWindow ("Maze", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN);
-	SDL_GL_CreateContext(mw); //Associates the OpenGL commands to window w.
-	SDL_GL_SetSwapInterval(1);
 
     initGL();
-
     SetupWorld( "data/world.txt" );
-
-    resizeWindow( SCREEN_WIDTH, SCREEN_HEIGHT );
+    resizeWindow(SCREEN_WIDTH, SCREEN_HEIGHT);
 
     while(!done){
 	    while(SDL_PollEvent(&event)){
 		    switch(event.type){
-                case SDL_KEYDOWN:
-                    handleKeyPress(&event.key.keysym);
-                    break;
                 case SDL_QUIT: //handle quit requests
                     done = true;
                     break;
@@ -330,8 +242,8 @@ int main(int argc, char **argv){
                     break;
 			}
 		}
-	    if(isActive) drawGLScene();
+	    if(isActive) draw(window);
 	}
     Quit(0);
-    return 0;
+    return;
 }
