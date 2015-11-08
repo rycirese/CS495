@@ -1,5 +1,6 @@
 #ifndef _Manager_
 #define _Manager_
+#include "Player.h"
 #include "World.h"
 
 #include <cstdio>

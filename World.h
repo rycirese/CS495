@@ -44,12 +44,11 @@ typedef struct{
 
 void genWorld();
 
-void initGL();
+void initWorld();
 void LoadGLTextures();
 void readstr(FILE *f, char *string);
-void SetupWorld(string worldFile);
+void setupWorld(string worldFile);
 void drawWorld(SDL_Window *window);
 void quitWorld();
-int resizeWindow(int width, int height);
 
 #endif

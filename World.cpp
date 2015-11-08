@@ -1,4 +1,4 @@
-//Texture Maze Test Code
+//Create World
 #include "World.h"
 
 
@@ -9,22 +9,16 @@ GLuint texture[3]; //Storage for 3 Textures              //
 GLuint filter; //Which Filter To Use                     //
                                                          //
 sector sector1; //Our Sector                             //
-                                                         //
-GLfloat yrot; //Camera rotation variable                 //
-GLfloat xpos, zpos; //Camera pos variable                //
-GLfloat walkbias, walkbiasangle; //Head-bobbing variables//
-GLfloat lookupdown;                                      //
 ///////////////////////////////////////////////////////////
 
 
 //Main Function, Creates World
 void genWorld(){
-    initGL(); //General OpenGL Initialization Function
-    SetupWorld("data/world.txt"); //Text File Holding World Layout
-    resizeWindow(SCREEN_WIDTH, SCREEN_HEIGHT); //Reset Viewport After a Window Resize
+    initWorld(); //General OpenGL Initialization Function
+    setupWorld("data/world.txt"); //Text File Holding World Layout
 }
 
-void initGL(){
+void initWorld(){
     GLfloat LightAmbient[]  = { 1.0f, 0.0f, 0.0f, 1.0f }; //Ambient Light Values
     GLfloat LightDiffuse[]  = { 1.0f, 1.0f, 1.0f, 1.0f }; //Diffuse Light Values
     GLfloat LightPosition[] = { 0.0f, 0.0f, 2.0f, 1.0f }; //Light Position, positive z is between the screen and me
@@ -44,10 +38,6 @@ void initGL(){
     glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse); //Setup The Diffuse Light
     glLightfv(GL_LIGHT1, GL_POSITION, LightPosition); //Position The Light
     glEnable(GL_LIGHT1); //Enable Light One
-    
-    lookupdown    = 0.0f;
-    walkbias      = 0.0f;
-    walkbiasangle = 0.0f;
     
     glColor4f( 1.0f, 1.0f, 1.0f, 0.5f); //Full Brightness, 50% Alpha
     glBlendFunc(GL_SRC_ALPHA, GL_ONE); //Blending Function For Translucency Based On Source Alpha Value
@@ -69,7 +59,7 @@ void LoadGLTextures(){
 }
 
 //Setup World
-void SetupWorld(string worldFile){
+void setupWorld(string worldFile){
     FILE *filein = fopen(worldFile.c_str(), "rt"); //File To Work With
 
     int numTriangles; //Number of Triangles
@@ -110,38 +100,13 @@ void readstr(FILE *f, char *string){
     return;
 }
 
-int resizeWindow(int width, int height){
-    GLfloat ratio; //Height / width ration
-    if(height == 0) height = 1; //Protect against a divide by zero
-    ratio = (GLfloat)width/(GLfloat)height;
-    
-    glViewport(0, 0, (GLint)width, (GLint)height); //Setup viewport
-    glMatrixMode(GL_PROJECTION); //Change to the projection matrix and set our viewing volume.
-    glLoadIdentity();
-    glFrustum(-tan(45.0/360*PI)*0.1*ratio, tan(45.0/360*PI)*0.1*ratio, -tan(45.0/360*PI)*0.1, tan(45.0/360*PI)*0.1, 0.1, 100); //Set perspective
-    glMatrixMode(GL_MODELVIEW); //Make sure we're chaning the model view and not the projection
-    glLoadIdentity(); //Reset The View
-    
-    return true;
-}
-
 void drawWorld(SDL_Window *window){
     GLfloat x_m, y_m, z_m, u_m, v_m; //Floating Point For Temp X, Y, Z, U And V Vertices
-    GLfloat xtrans = -xpos; //Used For Player Translation On The X Axis
-    GLfloat ztrans = -zpos; //Used For Player Translation On The Z Axis
-    GLfloat ytrans = -walkbias-0.25f; //Used For Bouncing Motion Up And Down
-    GLfloat sceneroty = 360.0f-yrot; //360 Degree Angle For Player Direction
 
     int loop_m; //Loop variable
 
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Clear The Screen And The Depth Buffer
-    glLoadIdentity();
-
-    glRotatef(lookupdown, 1.0f, 0.0f , 0.0f); //Rotate Up And Down To Look Up And Down
-    glRotatef(sceneroty, 0.0f, 1.0f , 0.0f); //Rotate Depending On Direction Player Is Facing
-    glTranslatef(xtrans, ytrans, ztrans); //Translate The Scene Based On Player Position
     glBindTexture(GL_TEXTURE_2D, texture[1]); //Select A Texture Based On filter
-
+    
     //Process Each Triangle
     for(loop_m = 0; loop_m < sector1.numTriangles; loop_m++){
 	    glBegin(GL_TRIANGLES); //Start Drawing Triangles

@@ -25,6 +25,9 @@ int main(int argc, char **argv){
     while(!done){
         while(SDL_PollEvent(&event)){
             switch(event.type){
+                case SDL_KEYDOWN:
+                    controlPlayer( &event.key.keysym );
+                    break;
                 case SDL_QUIT: //Closes Everything Appropriately
                     done = true;
                     quit();
@@ -39,10 +42,15 @@ int main(int argc, char **argv){
 }
 
 void ALLSYSTEMSGO(){
+    genPlayer();
     genWorld();
 }
 
 void draw(){
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Clear The Screen And The Depth Buffer
+    glLoadIdentity();
+    
+    drawPlayer();
     drawWorld(window);
 }
 
