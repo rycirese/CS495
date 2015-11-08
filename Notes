@@ -35,3 +35,24 @@ break;
 }
 return;
 }
+
+
+
+
+FRAMES PER SECOND
+//These calculate fps
+static GLint T0 = 0;
+static GLint Frames = 0;
+
+//Gather our frames per second
+Frames++;
+GLint t = SDL_GetTicks(); //How many times the clock has ticked since the beginning of the program
+
+//We imagine the clock ticks 1000 times per second.
+if (t-T0 >= 1000){
+GLfloat seconds = (t-T0)/1000.0;
+GLfloat fps = Frames/seconds;
+printf("%d frames in %g seconds = %g FPS\n", Frames, seconds, fps);
+T0 = t;
+Frames = 0;
+}

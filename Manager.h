@@ -20,13 +20,16 @@
 
 using namespace std;
 
-#define SCREEN_WIDTH  640
-#define SCREEN_HEIGHT 400
+#define SCREEN_WIDTH  1280
+#define SCREEN_HEIGHT 720
 #define PI 3.1415926535897932384626433832795
 
 SDL_Window *window;
 
 int main (int argc, char **argv);
+
 void ALLSYSTEMSGO();
+void draw();
+void quit();
 
 #endif

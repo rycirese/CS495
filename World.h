@@ -1,8 +1,8 @@
 #ifndef _World_
 #define _World_
 
-#define SCREEN_WIDTH  640
-#define SCREEN_HEIGHT 400
+#define SCREEN_WIDTH  1280
+#define SCREEN_HEIGHT 720
 #define PI 3.1415926535897932384626433832795
 
 #include <cstdio>
@@ -14,11 +14,13 @@
 #ifdef __APPLE__
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
+#include <SDL2_image/SDL_image.h>
 #endif
 //WINDOWS INCLUDES
 #ifdef _WIN32
 #include <SDL.h>
 #include <SDL_opengl.h>
+#include <SDL_image.h>
 #endif
 
 using namespace std;
@@ -40,13 +42,14 @@ typedef struct{
     triangle *triangle; //Pointer To Array Of Triangles
 } sector;
 
-int initGL();
-int LoadGLTextures();
+void genWorld();
+
+void initGL();
+void LoadGLTextures();
 void readstr(FILE *f, char *string);
 void SetupWorld(string worldFile);
-void draw(SDL_Window *window);
-void Quit(int returnCode);
+void drawWorld(SDL_Window *window);
+void quitWorld();
 int resizeWindow(int width, int height);
-void genWorld(SDL_Window *window);
 
 #endif
