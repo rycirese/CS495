@@ -34,7 +34,7 @@
 using namespace std;
 
 void genPlayer();
-void controlPlayer(SDL_Keysym *keysym);
+void controlPlayer(const Uint8* keyState);
 void drawPlayer();
 
 #endif

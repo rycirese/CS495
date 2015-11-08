@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "World.h"
 
+#include <iostream>
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>

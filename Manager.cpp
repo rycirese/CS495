@@ -24,16 +24,12 @@ int main(int argc, char **argv){
 
     while(!done){
         while(SDL_PollEvent(&event)){
-            switch(event.type){
-                case SDL_KEYDOWN:
-                    controlPlayer( &event.key.keysym );
-                    break;
-                case SDL_QUIT: //Closes Everything Appropriately
-                    done = true;
-                    quit();
-                    break;
-                default:
-                    break;
+            const Uint8* keyState = SDL_GetKeyboardState(NULL);
+            controlPlayer(keyState);
+            if(event.type == SDL_QUIT){ //Closes Everything Appropriately
+                done = true;
+                quit();
+                break;
             }
         }
         draw(); //Draws Everything
