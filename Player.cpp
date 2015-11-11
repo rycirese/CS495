@@ -10,7 +10,7 @@ GLuint gunTex[1]; //Storage for Gun Textures             //
 int width = SCREEN_WIDTH;                                //
 int height = SCREEN_HEIGHT;                              //
                                                          //
-const float piover180 = 0.0174532925f;                   //
+const float DEG_TO_RAD = 0.0174532925f;                  //
 GLfloat yrot; //Camera rotation variable                 //
 GLfloat xpos, zpos; //Camera pos variable                //
 GLfloat walkbias, walkbiasangle; //Head-bobbing variables//
@@ -36,24 +36,24 @@ void genPlayer(){
 //Function to handle key press events
 void controlPlayer(const Uint8* keyState){
     if(keyState[SDL_SCANCODE_RIGHT]){ //Right arrow key effectively turns the camera right by rotating the scene left
-        yrot -= 6.0f;
+        yrot -= 3.0f;
     }
     if(keyState[SDL_SCANCODE_LEFT]){ //Left arrow key effectively turns the camera left by rotating the scene right
-        yrot += 6.0f;
+        yrot += 3.0f;
     }
     if(keyState[SDL_SCANCODE_UP]){ //Up arrow moves the player forward
-        xpos -= (float)sin(yrot*piover180)*0.15f; //on the x-plane based on Player Direction
-        zpos -= (float)cos(yrot*piover180)*0.15f; //on the z-plane based on Player Direction
+        xpos -= (float)sin(yrot*DEG_TO_RAD)*0.05f; //on the x-plane based on Player Direction
+        zpos -= (float)cos(yrot*DEG_TO_RAD)*0.05f; //on the z-plane based on Player Direction
         if (walkbiasangle >= 359.0f) walkbiasangle = 0.0f;
-        else walkbiasangle += 45;
-        walkbias = (float)sin(walkbiasangle*piover180)/45.0f; //Causes the player to bounce
+        else walkbiasangle += 10;
+        walkbias = (float)sin(walkbiasangle*DEG_TO_RAD)/20.0f; //Causes the player to bounce
     }
     if(keyState[SDL_SCANCODE_DOWN]){ //Down arrow key moves the player backwards
-        xpos += (float)sin(yrot*piover180)*0.05f;
-        zpos += (float)cos(yrot*piover180)*0.05f;
+        xpos += (float)sin(yrot*DEG_TO_RAD)*0.05f;
+        zpos += (float)cos(yrot*DEG_TO_RAD)*0.05f;
         if(walkbiasangle <= 1.0f) walkbiasangle = 359.0f;
-        else walkbiasangle -= 45;
-        walkbias = (float)sin(walkbiasangle*piover180)/60.0f;
+        else walkbiasangle -= 10;
+        walkbias = (float)sin(walkbiasangle*DEG_TO_RAD)/20.0f;
     }
 }
 

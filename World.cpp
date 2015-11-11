@@ -84,7 +84,7 @@ void setupWorld(string worldFile){
     char oneLine[255]; //One line from conf file
 
     float x, y, z, u, v; //3d and texture coordinates
-    int t = 0.0; //Texture Code
+    int t = 0.0; //Texture Index
 
     int triLoop; //Triangle loop variable
     int verLoop; //Vertex loop variable
@@ -101,9 +101,9 @@ void setupWorld(string worldFile){
 	    for (verLoop = 0; verLoop < 3; verLoop++){
 		    readstr(filein, oneLine);
             
-            if(verLoop == 0){
+            if(verLoop == 0){ //First row of matrix holds an additional int. Handle here
                 sscanf(oneLine, "%f %f %f %f %f %d\n", &x, &y, &z, &u, &v, &t);
-                sector1.triangle[triLoop].vertex[verLoop].t = t;
+                sector1.triangle[triLoop].vertex[verLoop].t = t; //Texture Index
             }
 		    else sscanf(oneLine, "%f %f %f %f %f\n", &x, &y, &z, &u, &v);
 		    sector1.triangle[triLoop].vertex[verLoop].x = x;
