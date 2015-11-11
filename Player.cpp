@@ -5,9 +5,8 @@
 
 ///////////////////////////////////////////////////////////
 //                   GLOBAL VARIABLES                    //
-//SDL_Surface **TI;                                      //
-//GLuint texture[1]; //Storage for 3 Textures            //
-//GLuint filter; //Which Filter To Use                   //
+SDL_Surface **PTI;                                       //
+GLuint gunTex[1]; //Storage for Gun Textures             //
 int width = SCREEN_WIDTH;                                //
 int height = SCREEN_HEIGHT;                              //
                                                          //

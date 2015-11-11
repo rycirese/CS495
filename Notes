@@ -1,3 +1,9 @@
+- Ask about keyboard pauses and stops
+- Ask about Collision detection for walls
+
+
+
+
 FRAMES PER SECOND
 //These calculate fps
 static GLint T0 = 0;

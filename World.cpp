@@ -45,17 +45,35 @@ void initWorld(){
 
 //Function to load in bitmap as a GL texture
 void LoadGLTextures(){
-    TI = new SDL_Surface *[6];
-    TI[0] = IMG_Load("data/iron.jpg");
+    TI = new SDL_Surface *[3];
+    
+    TI[0] = IMG_Load("data/textures/floor/Floor4.jpg"); //Floor Texture
+    TI[1] = IMG_Load("data/textures/roof/Roof6.jpg"); //Roof Texture
+    TI[2] = IMG_Load("data/textures/wall/Wall1.jpg"); //Wall Texture
 
-    //TEXTURE 1
+    //TEXTURE 1 (Floor Texture)
     glGenTextures(3, &texture[0]); //Create The Texture
-    glBindTexture(GL_TEXTURE_2D, texture[1]); //Load in texture 1
-    glTexImage2D(GL_TEXTURE_2D, 0, 3, TI[0]->w, TI[0]->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, TI[0]->pixels); //Generate The Texture
-    //Nearest Filtering
+    glBindTexture(GL_TEXTURE_2D, texture[0]); //Load in texture 1
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, TI[0]->w, TI[0]->h, 0, FORMAT, GL_UNSIGNED_BYTE, TI[0]->pixels); //Generate The Texture
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     SDL_FreeSurface(TI[0]);
+    
+    //TEXTURE 2 (Roof Texture)
+    glGenTextures(3, &texture[1]); //Create The Texture
+    glBindTexture(GL_TEXTURE_2D, texture[1]); //Load in texture 2
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, TI[1]->w, TI[1]->h, 0, FORMAT, GL_UNSIGNED_BYTE, TI[1]->pixels); //Generate The Texture
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    SDL_FreeSurface(TI[1]);
+    
+    //TEXTURE 3 (Wall Texture)
+    glGenTextures(3, &texture[2]); //Create The Texture
+    glBindTexture(GL_TEXTURE_2D, texture[2]); //Load in texture 3
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, TI[2]->w, TI[2]->h, 0, FORMAT, GL_UNSIGNED_BYTE, TI[2]->pixels); //Generate The Texture
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    SDL_FreeSurface(TI[2]);
 }
 
 //Setup World
@@ -66,6 +84,7 @@ void setupWorld(string worldFile){
     char oneLine[255]; //One line from conf file
 
     float x, y, z, u, v; //3d and texture coordinates
+    int t = 0.0; //Texture Code
 
     int triLoop; //Triangle loop variable
     int verLoop; //Vertex loop variable
@@ -81,7 +100,12 @@ void setupWorld(string worldFile){
     for(triLoop = 0; triLoop < numTriangles; triLoop++ ){
 	    for (verLoop = 0; verLoop < 3; verLoop++){
 		    readstr(filein, oneLine);
-		    sscanf(oneLine, "%f %f %f %f %f\n", &x, &y, &z, &u, &v);
+            
+            if(verLoop == 0){
+                sscanf(oneLine, "%f %f %f %f %f %d\n", &x, &y, &z, &u, &v, &t);
+                sector1.triangle[triLoop].vertex[verLoop].t = t;
+            }
+		    else sscanf(oneLine, "%f %f %f %f %f\n", &x, &y, &z, &u, &v);
 		    sector1.triangle[triLoop].vertex[verLoop].x = x;
 		    sector1.triangle[triLoop].vertex[verLoop].y = y;
 		    sector1.triangle[triLoop].vertex[verLoop].z = z;
@@ -102,13 +126,15 @@ void readstr(FILE *f, char *string){
 
 void drawWorld(SDL_Window *window){
     GLfloat x_m, y_m, z_m, u_m, v_m; //Floating Point For Temp X, Y, Z, U And V Vertices
+    int t_m;
 
     int loop_m; //Loop variable
-
-    glBindTexture(GL_TEXTURE_2D, texture[1]); //Select A Texture Based On filter
     
     //Process Each Triangle
     for(loop_m = 0; loop_m < sector1.numTriangles; loop_m++){
+        t_m = sector1.triangle[loop_m].vertex[0].t;
+        glBindTexture(GL_TEXTURE_2D, texture[t_m]); //Select A Texture Based On Texture Code
+        
 	    glBegin(GL_TRIANGLES); //Start Drawing Triangles
 	      glNormal3f( 0.0f, 0.0f, 1.0f); //Normal Pointing Forward
 	      x_m = sector1.triangle[loop_m].vertex[0].x; //X Vertex Of 1st Point
