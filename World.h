@@ -19,7 +19,7 @@
 #endif
 //WINDOWS INCLUDES
 #ifdef _WIN32
-#define FORMAT GL_RGBA
+#define FORMAT GL_RGB
 #include <SDL.h>
 #include <SDL_opengl.h>
 #include <SDL_image.h>

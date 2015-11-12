@@ -6,7 +6,7 @@
 ///////////////////////////////////////////////////////////
 //                   GLOBAL VARIABLES                    //
 SDL_Surface **PTI;                                       //
-GLuint gunTex[2]; //Storage for Gun Textures             //
+GLuint gunTex[2]; //Storage for Gun Textures
 int width = SCREEN_WIDTH;                                //
 int height = SCREEN_HEIGHT;                              //
                                                          //
@@ -48,21 +48,20 @@ void genPlayer(){
 
 //Function to handle key press events
 void controlPlayer(const Uint8* keyState){
-    fired = false;
-    if(keyState[SDL_SCANCODE_RIGHT]){ //Right arrow key effectively turns the camera right by rotating the scene left
+    if(keyState[SDL_SCANCODE_RIGHT]||keyState[SDL_SCANCODE_D]){ //Right arrow key effectively turns the camera right by rotating the scene left
         yrot -= 3.0f;
     }
-    if(keyState[SDL_SCANCODE_LEFT]){ //Left arrow key effectively turns the camera left by rotating the scene right
+    if(keyState[SDL_SCANCODE_LEFT]||keyState[SDL_SCANCODE_A]){ //Left arrow key effectively turns the camera left by rotating the scene right
         yrot += 3.0f;
     }
-    if(keyState[SDL_SCANCODE_UP]){ //Up arrow moves the player forward
+    if(keyState[SDL_SCANCODE_UP]||keyState[SDL_SCANCODE_W]){ //Up arrow moves the player forward
         xpos -= (float)sin(yrot*DEG_TO_RAD)*0.05f; //on the x-plane based on Player Direction
         zpos -= (float)cos(yrot*DEG_TO_RAD)*0.05f; //on the z-plane based on Player Direction
         if (walkbiasangle >= 359.0f) walkbiasangle = 0.0f;
         else walkbiasangle += 10;
         walkbias = (float)sin(walkbiasangle*DEG_TO_RAD)/20.0f; //Causes the player to bounce
     }
-    if(keyState[SDL_SCANCODE_DOWN]){ //Down arrow key moves the player backwards
+    if(keyState[SDL_SCANCODE_DOWN]||keyState[SDL_SCANCODE_S]){ //Down arrow key moves the player backwards
         xpos += (float)sin(yrot*DEG_TO_RAD)*0.05f;
         zpos += (float)cos(yrot*DEG_TO_RAD)*0.05f;
         if(walkbiasangle <= 1.0f) walkbiasangle = 359.0f;
@@ -70,6 +69,12 @@ void controlPlayer(const Uint8* keyState){
         walkbias = (float)sin(walkbiasangle*DEG_TO_RAD)/20.0f;
     }
     if(keyState[SDL_SCANCODE_SPACE]) fired = true;
+	if(keyState[SDL_SCANCODE_Q]){
+		xpos-=.03;
+	}
+	if(keyState[SDL_SCANCODE_E]){
+		xpos+=.03;
+	}
 }
 
 void drawPlayer(){
@@ -78,7 +83,7 @@ void drawPlayer(){
     GLfloat ytrans = -walkbias-0.25f; //Used For Bouncing Motion Up And Down
     GLfloat sceneroty = 360.0f-yrot; //360 Degree Angle For Player Direction
     
-    glRotatef(lookupdown, 1.0f, 0.0f , 0.0f); //Rotate Up And Down To Look Up And Down
+    glRotatef(0.0f, 1.0f, 0.0f , 0.0f); //Rotate Up And Down To Look Up And Down
     glRotatef(sceneroty, 0.0f, 1.0f , 0.0f); //Rotate Depending On Direction Player Is Facing
     glTranslatef(xtrans, ytrans, ztrans); //Translate The Scene Based On Player Position
     
