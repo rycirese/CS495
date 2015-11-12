@@ -13,6 +13,7 @@
 #define SCREEN_HEIGHT 720
 #define PI 3.1415926535897932384626433832795
 
+#include <iostream>
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>
@@ -27,7 +28,7 @@
 #endif
 //WINDOWS INCLUDES
 #ifdef _WIN32
-#define FORMAT GL_RGBA
+#define FORMAT GL_RGB
 #include <SDL.h>
 #include <SDL_opengl.h>
 #include <SDL_image.h>
@@ -38,5 +39,9 @@ using namespace std;
 void genPlayer();
 void controlPlayer(const Uint8* keyState);
 void drawPlayer();
+void drawGun();
+
+void glEnable2D();
+void glDisable2D();
 
 #endif
