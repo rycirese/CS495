@@ -23,9 +23,9 @@ int main(int argc, char **argv){
     ALLSYSTEMSGO(); //Sets Everything Up
 
     while(!done){
+        const Uint8* keyState = SDL_GetKeyboardState(NULL);
+        controlPlayer(keyState);
         while(SDL_PollEvent(&event)){
-            const Uint8* keyState = SDL_GetKeyboardState(NULL);
-            controlPlayer(keyState);
             if(event.type == SDL_QUIT){ //Closes Everything Appropriately
                 done = true;
                 quit();
