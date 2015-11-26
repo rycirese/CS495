@@ -19,12 +19,12 @@ int main(int argc, char **argv){
     window = SDL_CreateWindow ("GAME", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN);
     SDL_GL_CreateContext(window); //Associates the OpenGL commands to window 'window'.
     SDL_GL_SetSwapInterval(1);
-
+    
     ALLSYSTEMSGO(); //Sets Everything Up
 
     while(!done){
         const Uint8* keyState = SDL_GetKeyboardState(NULL);
-        controlPlayer(keyState);
+        player->control(keyState);
         while(SDL_PollEvent(&event)){
             if(event.type == SDL_QUIT){ //Closes Everything Appropriately
                 done = true;
@@ -38,15 +38,15 @@ int main(int argc, char **argv){
 }
 
 void ALLSYSTEMSGO(){
-    genPlayer();
     genWorld();
+    player = new Player();
 }
 
 void draw(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Clear The Screen And The Depth Buffer
     glLoadIdentity();
     
-    drawPlayer();
+    player->draw();
     drawWorld(window);
 }
 

@@ -47,9 +47,9 @@ void initWorld(){
 void LoadGLTextures(){
     TI = new SDL_Surface *[3];
     
-    TI[0] = IMG_Load("data/textures/floor/Floor4.jpg"); //Floor Texture
-    TI[1] = IMG_Load("data/textures/roof/Roof6.jpg"); //Roof Texture
-    TI[2] = IMG_Load("data/textures/wall/Wall1.jpg"); //Wall Texture
+    TI[0] = IMG_Load("data/textures/Floor2.jpg"); //Floor Texture
+    TI[1] = IMG_Load("data/textures/Roof1.jpg"); //Roof Texture
+    TI[2] = IMG_Load("data/textures/Wall1.jpg"); //Wall Texture
 
     //TEXTURE 1 (Floor Texture)
     glGenTextures(3, &texture[0]); //Create The Texture
