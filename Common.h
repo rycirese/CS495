@@ -9,6 +9,7 @@
 //MAC INCLUDES
 #ifdef __APPLE__
 #define FORMAT GL_BGRA
+#define FORMAT_GUN GL_BGRA
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 #include <SDL2_image/SDL_image.h>

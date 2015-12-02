@@ -3,7 +3,6 @@
 #include "Common.h"
 #include "Player.h"
 #include "World.h"
-#include "HUD.h"
 
 SDL_Window *window;
 Player *player;

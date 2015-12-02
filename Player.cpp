@@ -10,6 +10,8 @@ Player::Player(){
 
 	xpos = zpos = yrot = 0;
     
+    xpos = zpos = yrot = 0;
+    
     glViewport(0, 0, (GLint)1280, (GLint)720); //Setup viewport
     glMatrixMode(GL_PROJECTION); //Change to the projection matrix and set our viewing volume.
     glLoadIdentity();
@@ -77,10 +79,10 @@ void Player::draw(){
     glTranslatef(xtrans, ytrans, ztrans); //Translate The Scene Based On Player Position
     
     check();
-    drawGun();
+    drawHUD();
 }
 
-void Player::drawGun(){
+void Player::drawHUD(){
     glEnable2D();
     
     glBindTexture(GL_TEXTURE_2D, gunTex[0]);
