@@ -16,6 +16,7 @@
 //WINDOWS INCLUDES
 #ifdef _WIN32
 #define FORMAT GL_RGB
+#define FORMAT_GUN GL_RGBA
 #include <SDL.h>
 #include <SDL_opengl.h>
 #include <SDL_image.h>
