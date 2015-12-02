@@ -17,7 +17,7 @@ public:
     
     void control(const Uint8* keyState);
     void draw();
-    void drawGun();
+    void drawHUD();
     void check();
 private:
 };

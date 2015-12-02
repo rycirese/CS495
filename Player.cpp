@@ -8,6 +8,8 @@ Player::Player(){
     GLfloat ratio = (GLfloat)1280/(GLfloat)720;
     GLfloat PI = 3.1415926535897932384626433832795;
     
+    xpos = zpos = yrot = 0;
+    
     glViewport(0, 0, (GLint)1280, (GLint)720); //Setup viewport
     glMatrixMode(GL_PROJECTION); //Change to the projection matrix and set our viewing volume.
     glLoadIdentity();
@@ -23,7 +25,7 @@ Player::Player(){
     //TEXTURE 1 (Gun Idle)
     glGenTextures(3, &gunTex[0]); //Create The Texture
     glBindTexture(GL_TEXTURE_2D, gunTex[0]); //Load in texture 1
-    glTexImage2D(GL_TEXTURE_2D, 0, 3, TI[0]->w, TI[0]->h, 0, FORMAT, GL_UNSIGNED_BYTE, TI[0]->pixels); //Generate The Texture
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, TI[0]->w, TI[0]->h, 0, FORMAT_GUN, GL_UNSIGNED_BYTE, TI[0]->pixels); //Generate The Texture
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     SDL_FreeSurface(TI[0]);
@@ -75,10 +77,10 @@ void Player::draw(){
     glTranslatef(xtrans, ytrans, ztrans); //Translate The Scene Based On Player Position
     
     check();
-    drawGun();
+    drawHUD();
 }
 
-void Player::drawGun(){
+void Player::drawHUD(){
     glEnable2D();
     
     glBindTexture(GL_TEXTURE_2D, gunTex[0]);
