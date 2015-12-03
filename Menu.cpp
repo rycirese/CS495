@@ -18,7 +18,7 @@ void genMenu(){
     
     glGenTextures(0, &mTexture[0]); //Create The Texture
     glBindTexture(GL_TEXTURE_2D, mTexture[0]); //Load in texture 1
-    glTexImage2D(GL_TEXTURE_2D, 0, 3, TI[0]->w, TI[0]->h, 0, FORMAT_GUN, GL_UNSIGNED_BYTE, TI[0]->pixels); //Generate The Texture
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, TI[0]->w, TI[0]->h, 0, FORMAT, GL_UNSIGNED_BYTE, TI[0]->pixels); //Generate The Texture
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     SDL_FreeSurface(TI[0]);

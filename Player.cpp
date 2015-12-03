@@ -114,4 +114,4 @@ void Player::check(){
 
 int Player::getX(){return xpos;}
 int Player::getZ(){return zpos;}
-int Player::getY(){return zpos;}
+int Player::getY(){return yrot;}

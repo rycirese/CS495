@@ -3,6 +3,7 @@
 //accessing
 #include "Common.h"
 
+
 void glRenderText(TTF_Font *font, int r, int g, int b, int x, int y, string text){    
     SDL_Color color = {static_cast<Uint8>(r), static_cast<Uint8>(g), static_cast<Uint8>(b)};
     SDL_Surface *tmp = TTF_RenderUTF8_Blended(font, text.c_str(), color);
@@ -30,6 +31,7 @@ void glRenderText(TTF_Font *font, int r, int g, int b, int x, int y, string text
         glTexCoord2d(1, 1); glVertex2d(x+msg->w, y);
         glTexCoord2d(1, 0); glVertex2d(x+msg->w, y+msg->h);
     glEnd();
+	glDeleteTextures(1,&texture[0]);
 }
 
 void glEnable2D(){
