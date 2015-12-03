@@ -168,7 +168,7 @@ void drawWorld(SDL_Window *window){
 	      glVertex3f(x_m, y_m, z_m);
 	    glEnd();
 	}
-    SDL_GL_SwapWindow (window); //Draw it to the screen
+    //SDL_GL_SwapWindow (window); //Draw it to the screen
 }
 
 //Function to release/destroy our resources and restoring the old desktop

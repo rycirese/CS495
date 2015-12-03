@@ -24,12 +24,14 @@ int main(int argc, char **argv){
     glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_ALPHA);
     TTF_Init();
     
-    //menu();
     ALLSYSTEMSGO(); //Sets Everything Up
 
+    m = true; //Menu Mode is on (Loads Menu Not Game
     while(!done){
-        const Uint8* keyState = SDL_GetKeyboardState(NULL);
-        player->control(keyState);
+        const Uint8* keyState = SDL_GetKeyboardState(NULL); //Record Keystate
+        if(!m) player->control(keyState); //Manage Player Controls
+        if(keyState[SDL_SCANCODE_S]) m = false; //Turn Menu Mode Off (Start Game)
+        if(keyState[SDL_SCANCODE_Q]){ done = true; quit(); break; }
         while(SDL_PollEvent(&event)){
             if(event.type == SDL_QUIT){ //Closes Everything Appropriately
                 done = true;
@@ -37,22 +39,28 @@ int main(int argc, char **argv){
                 break;
             }
         }
-        draw(); //Draws Everything
+        draw(keyState); //Draws Everything
     }
     return 0;
 }
 
 void ALLSYSTEMSGO(){
     genWorld();
+    genMenu();
     player = new Player();
 }
 
-void draw(){
+void draw(const Uint8* keyState){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Clear The Screen And The Depth Buffer
+    glColor4f( 1.0f, 1.0f, 1.0f, 0.0f);
     glLoadIdentity();
     
-    player->draw();
-    drawWorld(window);
+    if(m) drawMenu(keyState);
+    if(!m){
+        player->draw();
+        drawWorld(window);
+    }
+    SDL_GL_SwapWindow(window); //Draw it to the screen
 }
 
 void quit(){

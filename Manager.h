@@ -7,11 +7,12 @@
 
 SDL_Window *window;
 Player *player;
+bool m;
 
 int main (int argc, char **argv);
 
 void ALLSYSTEMSGO();
-void draw();
+void draw(const Uint8* keyState);
 void quit();
 
 #endif
