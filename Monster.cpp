@@ -3,16 +3,12 @@
 Monster::Monster(){
 	TI = new SDL_Surface*[2];
     monsterTex = new GLuint[2];
-	
-	
 }
 
 void Monster::draw(){
-    
 	//movement
 	glPushMatrix();
-    glRotatef(yrot,0,1,0);
-	glTranslatef(xpos,(height/2)-.1,zpos);
+	glTranslatef(0,(height/2)-.1,0);
 	glBindTexture (GL_TEXTURE_2D,monsterTex[0]);
 	glBegin (GL_QUADS);
 		glTexCoord2f(0,0);glVertex3f (xpos-0.25,-.1,zpos);
@@ -26,7 +22,7 @@ void Monster::draw(){
 Monster * Monster::getLightMonster(){
 	//set class variables
 	name="light";
-	speed=.005;
+	speed=0.01;
 	health=1;
 	damage=10;
 	height=0.5;

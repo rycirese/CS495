@@ -49,7 +49,7 @@ void ALLSYSTEMSGO(){
     genMenu();
     player = new Player();
 	createMonster(0,-5,1);
-	createMonster(0,5,1);
+	//createMonster(0,5,1);
 }
 
 void createMonster(GLfloat x, GLfloat z, int type){
@@ -79,7 +79,6 @@ void monsterDeath(Monster*m){
 	}
 }
 
-
 void monsterAI(){
 	for(int i=0;i<10;i++){
 		if(monsters[i]!=NULL){
@@ -93,13 +92,13 @@ void monsterAI(){
 			GLfloat Pz=player->getZ();
 
 			if(Mx<Px)		monsters[i]->setX(Mx+Ms);
-			else if(Mx>Px)	monsters[i]->setX(Mx-Ms); 
+			else if(Mx>Px)	monsters[i]->setX(Mx-Ms);
 			//else monsters[i]->setX(Px);
 	
 			if(Mz<Pz)		monsters[i]->setZ(Mz+Ms);
 			else if(Mz>Pz)	monsters[i]->setZ(Mz-Ms);
 			//else monsters[i]->setX(Pz);
-			monsters[i]->setY(player->getY());
+			//monsters[i]->setY(player->getY());
 			monsters[i]->draw();
 		}
 	}
