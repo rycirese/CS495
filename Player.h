@@ -7,6 +7,8 @@ public:
     SDL_Surface **TI;
     GLuint *gunTex;
     
+    TTF_Font* font;
+    
     GLfloat yrot; //Camera rotation variable
     GLfloat xpos, zpos; //Camera pos variable
     GLfloat walkbias, walkbiasangle; //Head-bobbing variables

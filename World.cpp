@@ -27,7 +27,7 @@ void initWorld(){
     LoadGLTextures();
     glEnable(GL_TEXTURE_2D); //Enable Texture Mapping
     glShadeModel(GL_SMOOTH); //Enable smooth shading
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f); //Set the background black
+    //glClearColor(0.0f, 0.0f, 0.0f, 1.0f); //Set the background black
     glClearDepth(1.0f); //Depth buffer setup
     glEnable(GL_DEPTH_TEST); //Enables Depth Testing
     glDepthFunc(GL_LEQUAL); //The Type Of Depth Test To Do
@@ -39,7 +39,7 @@ void initWorld(){
     glLightfv(GL_LIGHT1, GL_POSITION, LightPosition); //Position The Light
     glEnable(GL_LIGHT1); //Enable Light One
     
-    glColor4f( 1.0f, 1.0f, 1.0f, 0.5f); //Full Brightness, 50% Alpha
+    //glColor4f( 1.0f, 1.0f, 1.0f, 0.5f); //Full Brightness, 50% Alpha
     //glBlendFunc(GL_SRC_ALPHA, GL_ONE); //Blending Function For Translucency Based On Source Alpha Value
 }
 

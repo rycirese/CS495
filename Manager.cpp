@@ -88,9 +88,8 @@ void draw(const Uint8* keyState){
     if(!m){
 		player->draw();
 		//draw monster
-		for(int i=0;i<10;i++)
+        for(int i=0;i<10;i++){
 			if(monsters[i]!=NULL){
-
 				//all this gibberish just says moves monster towards player and draws
 				// if ( MONSTERS_X < PLAYERS_X ) MONSTERS_X += MONSTERS_SPEED
 				// else MONSTERS_X -= MONSTERS_SPEED
@@ -109,6 +108,7 @@ void draw(const Uint8* keyState){
 				monsters[i]->draw();
 
 			}
+        }
 		drawWorld(window);
 	}
 	SDL_GL_SwapWindow(window);
