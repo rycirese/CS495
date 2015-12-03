@@ -79,30 +79,30 @@ void monsterDeath(Monster*m){
 	}
 }
 
+
 void monsterAI(){
-	for(int i=0;i<10;i++)
-			if(monsters[i]!=NULL){
-				//all this gibberish just says moves monster towards player and draws
-				// if ( MONSTERS_X < PLAYERS_X ) MONSTERS_X += MONSTERS_SPEED
-				// else MONSTERS_X -= MONSTERS_SPEED
-				GLfloat Mx=monsters[i]->getX();
-				GLfloat Mz=monsters[i]->getZ();
-				GLfloat Ms=monsters[i]->getSpeed(); 
+	for(int i=0;i<10;i++){
+		if(monsters[i]!=NULL){
+			//all this gibberish just says moves monster towards player and draws
+			// if ( MONSTERS_X < PLAYERS_X ) MONSTERS_X += MONSTERS_SPEED
+			// else MONSTERS_X -= MONSTERS_SPEED
+			GLfloat Mx=monsters[i]->getX();
+			GLfloat Mz=monsters[i]->getZ();
+			GLfloat Ms=monsters[i]->getSpeed(); 
+			GLfloat Px=player->getX();
+			GLfloat Pz=player->getZ();
 
-				GLfloat Px=player->getX();
-				GLfloat Pz=player->getZ();
-
-				if(Mx<Px)		monsters[i]->setX(Mx+Ms);
-				else if(Mx>Px)	monsters[i]->setX(Mx-Ms); 
-				//else monsters[i]->setX(Px);
-					
-
-				if(Mz<Pz)		monsters[i]->setZ(Mz+Ms);
-				else if(Mz>Pz)	monsters[i]->setZ(Mz-Ms);
-				//else monsters[i]->setX(Pz);
-				monsters[i]->setY(player->getY());
-				monsters[i]->draw();
-			}
+			if(Mx<Px)		monsters[i]->setX(Mx+Ms);
+			else if(Mx>Px)	monsters[i]->setX(Mx-Ms); 
+			//else monsters[i]->setX(Px);
+	
+			if(Mz<Pz)		monsters[i]->setZ(Mz+Ms);
+			else if(Mz>Pz)	monsters[i]->setZ(Mz-Ms);
+			//else monsters[i]->setX(Pz);
+			monsters[i]->setY(player->getY());
+			monsters[i]->draw();
+		}
+	}
 }
 
 void draw(const Uint8* keyState){

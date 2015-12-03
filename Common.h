@@ -14,7 +14,7 @@
 #include <SDL2/SDL_opengl.h>
 #include <SDL2_image/SDL_image.h>
 #include <SDL2_ttf/SDL_ttf.h>
-#include <SDL_mixer.h>
+#include <SDL2_mixer/SDL_mixer.h>
 #endif
 //WINDOWS INCLUDES
 #ifdef _WIN32

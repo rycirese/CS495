@@ -8,6 +8,7 @@ Player::Player(){
     GLfloat ratio = (GLfloat)1280/(GLfloat)720;
     GLfloat PI = 3.1415926535897932384626433832795;
     
+    font = TTF_OpenFont("data/fonts/Arial.ttf", 50);
     score = 0;
     health = 100;
 
@@ -26,7 +27,7 @@ Player::Player(){
     TI[0] = IMG_Load("data/textures/guns/pistol.png"); //Gun Texture
     
     //TEXTURE 1 (Gun Idle)
-    glGenTextures(3, &gunTex[0]); //Create The Texture
+    glGenTextures(1, &gunTex[0]); //Create The Texture
     glBindTexture(GL_TEXTURE_2D, gunTex[0]); //Load in texture 1
     glTexImage2D(GL_TEXTURE_2D, 0, 3, TI[0]->w, TI[0]->h, 0, FORMAT_GUN, GL_UNSIGNED_BYTE, TI[0]->pixels); //Generate The Texture
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -84,7 +85,6 @@ void Player::draw(){
 }
 
 void Player::drawHUD(){
-    TTF_Font* font = TTF_OpenFont("data/fonts/Arial.ttf", 50);
     string s = "SCORE: " + to_string(score);
     string h = "HEALTH: " + to_string(health);
     

@@ -1,7 +1,5 @@
 #include "Monster.h"
 
-
-
 Monster::Monster(){
 	TI = new SDL_Surface*[2];
     monsterTex = new GLuint[2];
@@ -10,11 +8,11 @@ Monster::Monster(){
 }
 
 void Monster::draw(){
-
+    
 	//movement
 	glPushMatrix();
-	glTranslatef(xpos,(height/2)-0.1,zpos);
-	//glRotatef(180,0,0,1);
+    glRotatef(yrot,0,1,0);
+	glTranslatef(xpos,(height/2)-.1,zpos);
 	glBindTexture (GL_TEXTURE_2D,monsterTex[0]);
 	glBegin (GL_QUADS);
 		glTexCoord2f(0,0);glVertex3f (xpos-0.25,-.1,zpos);
