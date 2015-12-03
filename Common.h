@@ -13,6 +13,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 #include <SDL2_image/SDL_image.h>
+#include <SDL2_ttf/SDL_ttf.h>
 #endif
 //WINDOWS INCLUDES
 #ifdef _WIN32
@@ -21,6 +22,7 @@
 #include <SDL.h>
 #include <SDL_opengl.h>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 #endif
 
 #define SCREEN_WIDTH  1280
@@ -28,6 +30,7 @@
 
 using namespace std;
 
+void glRenderText(TTF_Font *font, int r, int g, int b, int x, int y, string text);
 void glEnable2D();
 void glDisable2D();
 

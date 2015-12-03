@@ -19,7 +19,12 @@ int main(int argc, char **argv){
     window = SDL_CreateWindow ("GAME", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN);
     SDL_GL_CreateContext(window); //Associates the OpenGL commands to window 'window'.
     SDL_GL_SetSwapInterval(1);
+    glEnable(GL_TEXTURE_2D);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_ALPHA);
+    TTF_Init();
     
+    //menu();
     ALLSYSTEMSGO(); //Sets Everything Up
 
     while(!done){

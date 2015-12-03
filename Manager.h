@@ -3,6 +3,7 @@
 #include "Common.h"
 #include "Player.h"
 #include "World.h"
+#include "Menu.h"
 
 SDL_Window *window;
 Player *player;

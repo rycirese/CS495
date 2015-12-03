@@ -7,10 +7,10 @@ Player::Player(){
     lookupdown = walkbias = walkbiasangle = 0.0f;
     GLfloat ratio = (GLfloat)1280/(GLfloat)720;
     GLfloat PI = 3.1415926535897932384626433832795;
+    
+    health = 100;
 
 	xpos = zpos = yrot = 0;
-    
-    xpos = zpos = yrot = 0;
     
     glViewport(0, 0, (GLint)1280, (GLint)720); //Setup viewport
     glMatrixMode(GL_PROJECTION); //Change to the projection matrix and set our viewing volume.
@@ -83,6 +83,10 @@ void Player::draw(){
 }
 
 void Player::drawHUD(){
+    TTF_Font* font = TTF_OpenFont("data/Arial.ttf", 50);
+    string msg = "HEALTH: ";
+    msg += to_string(health);
+    
     glEnable2D();
     
     glBindTexture(GL_TEXTURE_2D, gunTex[0]);
@@ -95,6 +99,8 @@ void Player::drawHUD(){
         glTexCoord2d(0, 0); glVertex3d(515, 250, 0);
     glEnd();
     glDisable(GL_BLEND);
+    
+    glRenderText(font, 255, 0, 0, 0, 0, msg);
     
     glDisable2D();
 }
