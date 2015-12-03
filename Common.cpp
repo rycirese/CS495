@@ -3,13 +3,12 @@
 //accessing
 #include "Common.h"
 
-SDL_Color color;
 SDL_Surface *tmp;
 SDL_Surface *msg;
 SDL_Rect area;
 
 void glRenderText(TTF_Font *font, int r, int g, int b, int x, int y, string text){    
-    color = {static_cast<Uint8>(r), static_cast<Uint8>(g), static_cast<Uint8>(b)};
+    SDL_Color color = {static_cast<Uint8>(r), static_cast<Uint8>(g), static_cast<Uint8>(b)};
     tmp = TTF_RenderUTF8_Blended(font, text.c_str(), color);
     msg = SDL_CreateRGBSurface(SDL_SWSURFACE, tmp->w, tmp->h, 32,	0x000000FF,	0x0000FF00, 0x00FF0000, 0xFF000000);
     

@@ -50,6 +50,7 @@ void ALLSYSTEMSGO(){
     player = new Player();
 	//for(int i=0;i<10;i++){ monsters[i]=new Monster();monsters[i]=NULL;} //monsters dont exist, only allocated
 	createMonster(1,1,1);
+    
 
 }
 
@@ -68,6 +69,7 @@ void createMonster(GLfloat x, GLfloat z, int type){
 				monsters[i]->setX(x);
 				monsters[i]->setZ(z);
 				monsters[i]->setIndex(i);		//have monster keep track of his own index in monsters array
+                break;
 			}
 	}
 }
