@@ -1,7 +1,5 @@
 #include "Monster.h"
 
-
-
 Monster::Monster(){
 	TI = new SDL_Surface*[2];
     monsterTex = new GLuint[2];

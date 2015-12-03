@@ -48,10 +48,8 @@ void ALLSYSTEMSGO(){
     genWorld();
     genMenu();
     player = new Player();
-	//for(int i=0;i<10;i++){ monsters[i]=new Monster();monsters[i]=NULL;} //monsters dont exist, only allocated
-	createMonster(1,1,1);
-    
-
+	createMonster(0,-5,1);
+	createMonster(0,5,1);
 }
 
 void createMonster(GLfloat x, GLfloat z, int type){
@@ -69,7 +67,7 @@ void createMonster(GLfloat x, GLfloat z, int type){
 				monsters[i]->setX(x);
 				monsters[i]->setZ(z);
 				monsters[i]->setIndex(i);		//have monster keep track of his own index in monsters array
-                break;
+				break;
 			}
 	}
 }
@@ -81,6 +79,32 @@ void monsterDeath(Monster*m){
 	}
 }
 
+
+void monsterAI(){
+	for(int i=0;i<10;i++){
+		if(monsters[i]!=NULL){
+			//all this gibberish just says moves monster towards player and draws
+			// if ( MONSTERS_X < PLAYERS_X ) MONSTERS_X += MONSTERS_SPEED
+			// else MONSTERS_X -= MONSTERS_SPEED
+			GLfloat Mx=monsters[i]->getX();
+			GLfloat Mz=monsters[i]->getZ();
+			GLfloat Ms=monsters[i]->getSpeed(); 
+			GLfloat Px=player->getX();
+			GLfloat Pz=player->getZ();
+
+			if(Mx<Px)		monsters[i]->setX(Mx+Ms);
+			else if(Mx>Px)	monsters[i]->setX(Mx-Ms); 
+			//else monsters[i]->setX(Px);
+	
+			if(Mz<Pz)		monsters[i]->setZ(Mz+Ms);
+			else if(Mz>Pz)	monsters[i]->setZ(Mz-Ms);
+			//else monsters[i]->setX(Pz);
+			monsters[i]->setY(player->getY());
+			monsters[i]->draw();
+		}
+	}
+}
+
 void draw(const Uint8* keyState){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Clear The Screen And The Depth Buffer
     glColor4f( 1.0f, 1.0f, 1.0f, 0.0f);
@@ -89,28 +113,7 @@ void draw(const Uint8* keyState){
 	if(m) drawMenu(keyState);
     if(!m){
 		player->draw();
-		//draw monster
-        for(int i=0;i<10;i++){
-			if(monsters[i]!=NULL){
-				//all this gibberish just says moves monster towards player and draws
-				// if ( MONSTERS_X < PLAYERS_X ) MONSTERS_X += MONSTERS_SPEED
-				// else MONSTERS_X -= MONSTERS_SPEED
-				GLfloat Mx=monsters[i]->getX();
-				GLfloat Mz=monsters[i]->getZ();
-				GLfloat Ms=monsters[i]->getSpeed(); 
-
-				GLfloat Px=player->getX();
-				GLfloat Pz=player->getZ();
-
-				if(Mx<Px) monsters[i]->setX(Mx+Ms);
-				else monsters[i]->setX(Mx-Ms); 
-				if(Mz<Pz) monsters[i]->setZ(Mz+Ms);
-				else monsters[i]->setZ(Mz-Ms);
-				monsters[i]->setY(player->getY());
-				monsters[i]->draw();
-
-			}
-        }
+		monsterAI();
 		drawWorld(window);
 	}
 	SDL_GL_SwapWindow(window);

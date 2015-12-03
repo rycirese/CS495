@@ -7,8 +7,8 @@ SDL_Surface *tmp;
 SDL_Surface *msg;
 SDL_Rect area;
 
-void glRenderText(TTF_Font *font, int r, int g, int b, int x, int y, string text){    
-    SDL_Color color = {static_cast<Uint8>(r), static_cast<Uint8>(g), static_cast<Uint8>(b)};
+void glRenderText(TTF_Font *font, int r, int g, int b, int x, int y, string text){
+	SDL_Color color = {static_cast<Uint8>(r), static_cast<Uint8>(g), static_cast<Uint8>(b)};
     tmp = TTF_RenderUTF8_Blended(font, text.c_str(), color);
     msg = SDL_CreateRGBSurface(SDL_SWSURFACE, tmp->w, tmp->h, 32,	0x000000FF,	0x0000FF00, 0x00FF0000, 0xFF000000);
     
@@ -34,9 +34,9 @@ void glRenderText(TTF_Font *font, int r, int g, int b, int x, int y, string text
         glTexCoord2d(0, 1); glVertex2d(x, y);
         glTexCoord2d(1, 1); glVertex2d(x+msg->w, y);
         glTexCoord2d(1, 0); glVertex2d(x+msg->w, y+msg->h);
-    glEnd();
-    
+    glEnd();    
     glDeleteTextures(1, &texture[0]);
+
 }
 
 void glEnable2D(){
