@@ -12,6 +12,8 @@ public:
     GLfloat walkbias, walkbiasangle; //Head-bobbing variables
     GLfloat lookupdown;
     bool fired;
+    
+    int score;
     int health;
     
     Player();

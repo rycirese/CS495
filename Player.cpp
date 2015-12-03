@@ -8,6 +8,7 @@ Player::Player(){
     GLfloat ratio = (GLfloat)1280/(GLfloat)720;
     GLfloat PI = 3.1415926535897932384626433832795;
     
+    score = 0;
     health = 100;
 
 	xpos = zpos = yrot = 0;
@@ -84,8 +85,8 @@ void Player::draw(){
 
 void Player::drawHUD(){
     TTF_Font* font = TTF_OpenFont("data/Arial.ttf", 50);
-    string msg = "HEALTH: ";
-    msg += to_string(health);
+    string s = "SCORE: " + to_string(score);
+    string h = "HEALTH: " + to_string(health);
     
     glEnable2D();
     
@@ -100,7 +101,9 @@ void Player::drawHUD(){
     glEnd();
     glDisable(GL_BLEND);
     
-    glRenderText(font, 255, 0, 0, 0, 0, msg);
+    //glRenderText(font, r, g, b, x, y, text)
+    glRenderText(font, 255, 0, 0, 0, 665, s);
+    glRenderText(font, 255, 0, 0, 0, 0, h);
     
     glDisable2D();
 }
