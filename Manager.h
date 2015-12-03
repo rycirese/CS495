@@ -9,6 +9,7 @@
 
 SDL_Window *window;
 Player *player;
+bool m;
 
 //monster stuff
 Monster *monsters[10];
@@ -21,7 +22,7 @@ void createMonster(GLfloat x, GLfloat z, int type);
 void monsterDeath(Monster*m);
 
 void ALLSYSTEMSGO();
-void draw();
+void draw(const Uint8* keyState);
 void quit();
 
 

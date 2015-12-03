@@ -38,35 +38,35 @@ Player::Player(){
 void Player::control(const Uint8* keyState){
     const float DEG_TO_RAD = 0.0174532925f;
     
-    if(keyState[SDL_SCANCODE_RIGHT] || keyState[SDL_SCANCODE_D]){ //Right arrow key effectively turns the camera right by rotating the scene left
-        yrot -= 3.0f;
-    }
-    if(keyState[SDL_SCANCODE_LEFT] || keyState[SDL_SCANCODE_A]){ //Left arrow key effectively turns the camera left by rotating the scene right
-        yrot += 3.0f;
-    }
-    if(keyState[SDL_SCANCODE_UP] || keyState[SDL_SCANCODE_W]){ //Up arrow moves the player forward
+    if(keyState[SDL_SCANCODE_UP]){ //Up arrow moves the player forward
         xpos -= (float)sin(yrot*DEG_TO_RAD)*0.05f; //on the x-plane based on Player Direction
         zpos -= (float)cos(yrot*DEG_TO_RAD)*0.05f; //on the z-plane based on Player Direction
         if (walkbiasangle >= 359.0f) walkbiasangle = 0.0f;
         else walkbiasangle += 10;
         walkbias = (float)sin(walkbiasangle*DEG_TO_RAD)/20.0f; //Causes the player to bounce
     }
-    if(keyState[SDL_SCANCODE_DOWN] || keyState[SDL_SCANCODE_S]){ //Down arrow key moves the player backwards
+    if(keyState[SDL_SCANCODE_DOWN]){ //Down arrow key moves the player backwards
         xpos += (float)sin(yrot*DEG_TO_RAD)*0.05f;
         zpos += (float)cos(yrot*DEG_TO_RAD)*0.05f;
         if(walkbiasangle <= 1.0f) walkbiasangle = 359.0f;
         else walkbiasangle -= 10;
         walkbias = (float)sin(walkbiasangle*DEG_TO_RAD)/20.0f;
     }
-    if(keyState[SDL_SCANCODE_SPACE]) fired = true;
-	if(keyState[SDL_SCANCODE_Q]){ //Q key makes the player strafe left
+    if(keyState[SDL_SCANCODE_RIGHT]){ //Right arrow key effectively turns the camera right by rotating the scene left
+        yrot -= 3.0f;
+    }
+    if(keyState[SDL_SCANCODE_LEFT]){ //Left arrow key effectively turns the camera left by rotating the scene right
+        yrot += 3.0f;
+    }
+	if(keyState[SDL_SCANCODE_A]){ //Q key makes the player strafe left
         xpos += (float)sin((yrot-90)*DEG_TO_RAD)*0.05f;
         zpos += (float)cos((yrot-90)*DEG_TO_RAD)*0.05f;
 	}
-	if(keyState[SDL_SCANCODE_E]){ //E key makes the player strafe right
+	if(keyState[SDL_SCANCODE_D]){ //E key makes the player strafe right
         xpos += (float)sin((yrot+90)*DEG_TO_RAD)*0.05f;
         zpos += (float)cos((yrot+90)*DEG_TO_RAD)*0.05f;
 	}
+    if(keyState[SDL_SCANCODE_SPACE]) fired = true;
 }
 
 void Player::draw(){
@@ -84,15 +84,12 @@ void Player::draw(){
 }
 
 void Player::drawHUD(){
-    TTF_Font* font = TTF_OpenFont("data/Arial.ttf", 50);
+    TTF_Font* font = TTF_OpenFont("data/fonts/Arial.ttf", 50);
     string s = "SCORE: " + to_string(score);
     string h = "HEALTH: " + to_string(health);
     
     glEnable2D();
-    
     glBindTexture(GL_TEXTURE_2D, gunTex[0]);
-    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_BLEND);
     glBegin(GL_QUADS);
         glTexCoord2d(0, 1); glVertex3d(515, 0, 0);
         glTexCoord2d(1, 1); glVertex3d(765, 0, 0);

@@ -21,6 +21,7 @@ void Monster::draw(){
 		glTexCoord2f(1,1);glVertex3f (xpos+0.25,height,zpos);
 		glTexCoord2f(1,0);glVertex3f (xpos+0.25,-.1,zpos);
 	glEnd ();
+	glRotatef(yrot,0,1,0);
 	glPopMatrix();
 }
 

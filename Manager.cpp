@@ -24,12 +24,14 @@ int main(int argc, char **argv){
     glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_ALPHA);
     TTF_Init();
     
-    //menu();
     ALLSYSTEMSGO(); //Sets Everything Up
 
+    m = true; //Menu Mode is on (Loads Menu Not Game
     while(!done){
-        const Uint8* keyState = SDL_GetKeyboardState(NULL);
-        player->control(keyState);
+        const Uint8* keyState = SDL_GetKeyboardState(NULL); //Record Keystate
+        if(!m) player->control(keyState); //Manage Player Controls
+        if(keyState[SDL_SCANCODE_S]) m = false; //Turn Menu Mode Off (Start Game)
+        if(keyState[SDL_SCANCODE_Q]){ done = true; quit(); break; }
         while(SDL_PollEvent(&event)){
             if(event.type == SDL_QUIT){ //Closes Everything Appropriately
                 done = true;
@@ -37,13 +39,14 @@ int main(int argc, char **argv){
                 break;
             }
         }
-        draw(); //Draws Everything
+        draw(keyState); //Draws Everything
     }
     return 0;
 }
 
 void ALLSYSTEMSGO(){
     genWorld();
+    genMenu();
     player = new Player();
 	//for(int i=0;i<10;i++){ monsters[i]=new Monster();monsters[i]=NULL;} //monsters dont exist, only allocated
 	createMonster(1,1,1);
@@ -76,33 +79,39 @@ void monsterDeath(Monster*m){
 	}
 }
 
-void draw(){
+void draw(const Uint8* keyState){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Clear The Screen And The Depth Buffer
+    glColor4f( 1.0f, 1.0f, 1.0f, 0.0f);
     glLoadIdentity();
     
-    player->draw();
-	for(int i=0;i<10;i++)
-		if(monsters[i]!=NULL){
+	if(m) drawMenu(keyState);
+    if(!m){
+		player->draw();
+		//draw monster
+		for(int i=0;i<10;i++)
+			if(monsters[i]!=NULL){
 
-			//all this gibberish just says moves monster towards player and draws
-			// if ( MONSTERS_X < PLAYERS_X ) MONSTERS_X += MONSTERS_SPEED
-			// else MONSTERS_X -= MONSTERS_SPEED
-			GLfloat Mx=monsters[i]->getX();
-			GLfloat Mz=monsters[i]->getZ();
-			GLfloat Ms=monsters[i]->getSpeed(); 
+				//all this gibberish just says moves monster towards player and draws
+				// if ( MONSTERS_X < PLAYERS_X ) MONSTERS_X += MONSTERS_SPEED
+				// else MONSTERS_X -= MONSTERS_SPEED
+				GLfloat Mx=monsters[i]->getX();
+				GLfloat Mz=monsters[i]->getZ();
+				GLfloat Ms=monsters[i]->getSpeed(); 
 
-			GLfloat Px=player->getX();
-			GLfloat Pz=player->getZ();
+				GLfloat Px=player->getX();
+				GLfloat Pz=player->getZ();
 
-			if(Mx<Px) monsters[i]->setX(Mx+Ms);
-			else monsters[i]->setX(Mx-Ms); 
-			if(Mz<Pz) monsters[i]->setZ(Mz+Ms);
-			else monsters[i]->setZ(Mz-Ms);
-			monsters[i]->setY(player->getY());
-			monsters[i]->draw();
+				if(Mx<Px) monsters[i]->setX(Mx+Ms);
+				else monsters[i]->setX(Mx-Ms); 
+				if(Mz<Pz) monsters[i]->setZ(Mz+Ms);
+				else monsters[i]->setZ(Mz-Ms);
+				monsters[i]->setY(player->getY());
+				monsters[i]->draw();
 
-		}
-    drawWorld(window);
+			}
+		drawWorld(window);
+	}
+	SDL_GL_SwapWindow(window);
 }
 
 void quit(){
