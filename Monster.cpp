@@ -10,7 +10,7 @@ Monster::Monster(){
 }
 
 void Monster::draw(){
-
+    
 	//movement
 	glPushMatrix();
 	glTranslatef(xpos,(height/2)-.1,zpos);
