@@ -1,18 +1,26 @@
 #ifndef _MONSTER_
 #define _MONSTER_
-
-#include <string>
-using namespace std;
+#include "Common.h"
 
 class Monster{
 private:
 	string name;
-	double speed;
+	GLfloat speed;
 	int health;
 	int damage;
+
+	int index;
+
+	GLfloat xpos, zpos, yrot;
+	GLfloat height;
+
+	SDL_Surface**TI;
+	GLuint * monsterTex;
 public:
 	Monster();
 	~Monster();
+
+	void draw();
 
 	Monster *getLightMonster();
 	Monster *getMediumMonster();
@@ -20,9 +28,19 @@ public:
 	Monster *getPatriarchMonster();
 
 	string getName();
-	double getSpeed();
+	GLfloat getSpeed();
 	int getHealth();
 	int getDamage();
+	int getIndex();
+	GLfloat getX();
+	GLfloat getY();
+	GLfloat getZ();
+
+	
+	void setY(GLfloat y);
+	void setIndex(int i);
+	void setX(GLfloat x);
+	void setZ(GLfloat z);
 };
 
 #endif

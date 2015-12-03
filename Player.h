@@ -22,6 +22,9 @@ public:
     void draw();
     void drawHUD();
     void check();
+	int getX();
+	int getZ();
+	int getY();
 private:
 };
 

@@ -114,3 +114,7 @@ void Player::check(){
     if(zpos >  9.74) zpos =  9.74;
     if(zpos < -9.74) zpos = -9.74;
 }
+
+int Player::getX(){return xpos;}
+int Player::getZ(){return zpos;}
+int Player::getY(){return zpos;}

@@ -45,6 +45,35 @@ int main(int argc, char **argv){
 void ALLSYSTEMSGO(){
     genWorld();
     player = new Player();
+	//for(int i=0;i<10;i++){ monsters[i]=new Monster();monsters[i]=NULL;} //monsters dont exist, only allocated
+	createMonster(1,1,1);
+
+}
+
+void createMonster(GLfloat x, GLfloat z, int type){
+	//only allow 10 monsters
+	if(totalMonsters<10){
+		//find next NULL spot in monster array and create monster
+		for(int i=0;i<10;i++)
+			if(monsters[i]==NULL){
+				monsters[i]=new Monster();
+				if(type==1) monsters[i]=monsters[i]->getLightMonster();
+				if(type==2) monsters[i]=monsters[i]->getMediumMonster();
+				if(type==3) monsters[i]=monsters[i]->getHeavyMonster();
+				if(type==4) monsters[i]=monsters[i]->getPatriarchMonster();
+
+				monsters[i]->setX(x);
+				monsters[i]->setZ(z);
+				monsters[i]->setIndex(i);		//have monster keep track of his own index in monsters array
+			}
+	}
+}
+
+void monsterDeath(Monster*m){
+	if(m!=NULL){
+		monsters[m->getIndex()]=NULL;
+		//Mix_PlayChannel (-1,mDeath,0);
+	}
 }
 
 void draw(){
@@ -52,6 +81,27 @@ void draw(){
     glLoadIdentity();
     
     player->draw();
+	for(int i=0;i<10;i++)
+		if(monsters[i]!=NULL){
+
+			//all this gibberish just says moves monster towards player and draws
+			// if ( MONSTERS_X < PLAYERS_X ) MONSTERS_X += MONSTERS_SPEED
+			// else MONSTERS_X -= MONSTERS_SPEED
+			GLfloat Mx=monsters[i]->getX();
+			GLfloat Mz=monsters[i]->getZ();
+			GLfloat Ms=monsters[i]->getSpeed(); 
+
+			GLfloat Px=player->getX();
+			GLfloat Pz=player->getZ();
+
+			if(Mx<Px) monsters[i]->setX(Mx+Ms);
+			else monsters[i]->setX(Mx-Ms); 
+			if(Mz<Pz) monsters[i]->setZ(Mz+Ms);
+			else monsters[i]->setZ(Mz-Ms);
+			monsters[i]->setY(player->getY());
+			monsters[i]->draw();
+
+		}
     drawWorld(window);
 }
 
