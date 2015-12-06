@@ -24,9 +24,9 @@ public:
     void draw();
     void drawHUD();
     void check();
-	int getX();
-	int getZ();
-	int getY();
+	GLfloat getX();
+	GLfloat getZ();
+	GLfloat getY();
 private:
 };
 

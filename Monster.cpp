@@ -3,16 +3,17 @@
 Monster::Monster(){
 	TI = new SDL_Surface*[2];
     monsterTex = new GLuint[2];
-	
-	
 }
 
-void Monster::draw(){
+void Monster::draw(GLfloat playerX, GLfloat playerZ, GLfloat playerY){
+    if(playerX > xpos) xpos += speed;
+    if(playerX < xpos) xpos -= speed;
+    if(playerZ > zpos) zpos += speed;
+    if(playerZ < zpos) zpos -= speed;
     
 	//movement
 	glPushMatrix();
-    glRotatef(yrot,0,1,0);
-	glTranslatef(xpos,(height/2)-.1,zpos);
+	glTranslatef(0,(height/2)-.1,0);
 	glBindTexture (GL_TEXTURE_2D,monsterTex[0]);
 	glBegin (GL_QUADS);
 		glTexCoord2f(0,0);glVertex3f (xpos-0.25,-.1,zpos);

@@ -49,7 +49,7 @@ void ALLSYSTEMSGO(){
     genMenu();
     player = new Player();
 	createMonster(0,-5,1);
-	createMonster(0,5,1);
+	//createMonster(0,5,1);
 }
 
 void createMonster(GLfloat x, GLfloat z, int type){
@@ -86,21 +86,24 @@ void monsterAI(){
 			//all this gibberish just says moves monster towards player and draws
 			// if ( MONSTERS_X < PLAYERS_X ) MONSTERS_X += MONSTERS_SPEED
 			// else MONSTERS_X -= MONSTERS_SPEED
-			GLfloat Mx=monsters[i]->getX();
-			GLfloat Mz=monsters[i]->getZ();
-			GLfloat Ms=monsters[i]->getSpeed(); 
+//			GLfloat Mx=monsters[i]->getX();
+//			GLfloat Mz=monsters[i]->getZ();
+//			GLfloat Ms=monsters[i]->getSpeed();
+            
 			GLfloat Px=player->getX();
 			GLfloat Pz=player->getZ();
+            GLfloat Py=player->getY();
 
-			if(Mx<Px)		monsters[i]->setX(Mx+Ms);
-			else if(Mx>Px)	monsters[i]->setX(Mx-Ms); 
-			//else monsters[i]->setX(Px);
-	
-			if(Mz<Pz)		monsters[i]->setZ(Mz+Ms);
-			else if(Mz>Pz)	monsters[i]->setZ(Mz-Ms);
+//			if(Mx<Px)		monsters[i]->setX(Mx+=Ms);
+//			else if(Mx>Px)	monsters[i]->setX(Mx-=Ms);
+//			//else monsters[i]->setX(Px);
+//	
+//			if(Mz<Pz)		monsters[i]->setZ(Mz+=Ms);
+//			else if(Mz>Pz)	monsters[i]->setZ(Mz-=Ms);
 			//else monsters[i]->setX(Pz);
+            
 			monsters[i]->setY(player->getY());
-			monsters[i]->draw();
+			monsters[i]->draw(Px, Pz, Py);
 		}
 	}
 }
