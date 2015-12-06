@@ -11,7 +11,7 @@ private:
 
 	int index;
 
-	GLfloat xpos, zpos, yrot;
+	GLfloat xpos, zpos, ypos, yrot;
 	GLfloat height;
 
 	SDL_Surface**TI;
