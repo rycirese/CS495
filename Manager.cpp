@@ -93,14 +93,13 @@ void monsterAI(){
             
 			GLfloat Px=player->getX();
 			GLfloat Pz=player->getZ();
+            GLfloat Py=player->getY();
 
 			if(Mx<Px)		monsters[i]->setX(Mx+Ms);
 			else if(Mx>Px)	monsters[i]->setX(Mx-Ms);
-			//else monsters[i]->setX(Px);
-	
 			if(Mz<Pz)		monsters[i]->setZ(Mz+Ms);
 			else if(Mz>Pz)	monsters[i]->setZ(Mz-Ms);
-			//else monsters[i]->setX(Pz);
+            monsters[i]->setY(Py);
 			monsters[i]->draw();
 		}
 	}

@@ -3,18 +3,22 @@
 Monster::Monster(){
 	TI = new SDL_Surface*[2];
     monsterTex = new GLuint[2];
+    
+    ypos = (height/2)-.1;
 }
 
 void Monster::draw(){
 	//movement
 	glPushMatrix();
-	glTranslatef(0,(height/2)-.1,0);
-	glBindTexture (GL_TEXTURE_2D,monsterTex[0]);
+    glTranslatef(xpos, ypos, zpos); //Translate to Monster Position
+    glRotatef(yrot, 0, 1, 0); //Rotate Monster
+    glTranslatef(-xpos, -ypos, -zpos); //Translate back to Origin
+    glBindTexture (GL_TEXTURE_2D,monsterTex[0]);
 	glBegin (GL_QUADS);
-		glTexCoord2f(0,0);glVertex3f (xpos-0.25,-.1,zpos);
-		glTexCoord2f(0,1);glVertex3f (xpos-0.25,height,zpos);
-		glTexCoord2f(1,1);glVertex3f (xpos+0.25,height,zpos);
-		glTexCoord2f(1,0);glVertex3f (xpos+0.25,-.1,zpos);
+		glTexCoord2f(1,1);glVertex3f (xpos-0.25,-.1,zpos);
+		glTexCoord2f(1,0);glVertex3f (xpos-0.25,height,zpos);
+		glTexCoord2f(0,0);glVertex3f (xpos+0.25,height,zpos);
+		glTexCoord2f(0,1);glVertex3f (xpos+0.25,-.1,zpos);
 	glEnd ();
 	glRotatef(20,0,1,0);
 	glPopMatrix();
