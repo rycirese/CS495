@@ -8,7 +8,10 @@ SDL_Surface **TI;                                        //
 GLuint texture[3]; //Storage for 3 Textures              //
 GLuint filter; //Which Filter To Use                     //
                                                          //
-sector sector1; //Our Sector                             //
+sector sector1; //Our Sector     
+Mix_Chunk*worldMusic;
+
+//
 ///////////////////////////////////////////////////////////
 
 
@@ -23,6 +26,9 @@ void initWorld(){
     GLfloat LightDiffuse[]  = { 1.0f, 1.0f, 1.0f, 1.0f }; //Diffuse Light Values
     GLfloat LightPosition[] = { 0.0f, 0.0f, 2.0f, 1.0f }; //Light Position, positive z is between the screen and me
     
+	Mix_OpenAudio (44100,MIX_DEFAULT_FORMAT,2,2048);
+	worldMusic =  Mix_LoadWAV ("data/sounds/music/doom.wav");
+	Mix_PlayChannel (-1,worldMusic,0);
     //Load in the texture
     LoadGLTextures();
     glEnable(GL_TEXTURE_2D); //Enable Texture Mapping
@@ -38,6 +44,7 @@ void initWorld(){
     glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse); //Setup The Diffuse Light
     glLightfv(GL_LIGHT1, GL_POSITION, LightPosition); //Position The Light
     glEnable(GL_LIGHT1); //Enable Light One
+
     
     //glColor4f( 1.0f, 1.0f, 1.0f, 0.5f); //Full Brightness, 50% Alpha
     //glBlendFunc(GL_SRC_ALPHA, GL_ONE); //Blending Function For Translucency Based On Source Alpha Value
@@ -50,7 +57,7 @@ void LoadGLTextures(){
     TI[0] = IMG_Load("data/textures/Floor2.jpg"); //Floor Texture
     TI[1] = IMG_Load("data/textures/Roof1.jpg"); //Roof Texture
     TI[2] = IMG_Load("data/textures/Wall1.jpg"); //Wall Texture
-
+	
     //TEXTURE 1 (Floor Texture)
     glGenTextures(3, &texture[0]); //Create The Texture
     glBindTexture(GL_TEXTURE_2D, texture[0]); //Load in texture 1
@@ -78,6 +85,7 @@ void LoadGLTextures(){
 
 //Setup World
 void setupWorld(string worldFile){
+	
     FILE *filein = fopen(worldFile.c_str(), "rt"); //File To Work With
 
     int numTriangles; //Number of Triangles

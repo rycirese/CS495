@@ -69,7 +69,6 @@ GLfloat Monster::getY(){return yrot;}
 GLfloat Monster::getZ(){return zpos;}
 int Monster::getIndex(){return index;}
 
-
 void Monster::setIndex(int i){index=i;}
 void Monster::setX(GLfloat x){xpos=x;}
 void Monster::setZ(GLfloat z){zpos=z;}
