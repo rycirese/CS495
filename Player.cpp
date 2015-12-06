@@ -111,6 +111,10 @@ void Player::check(){
     if(zpos < -9.74) zpos = -9.74;
 }
 
+void Player::shoot(){
+
+}
+
 GLfloat Player::getX(){return xpos;}
 GLfloat Player::getZ(){return zpos;}
 GLfloat Player::getY(){return yrot;}

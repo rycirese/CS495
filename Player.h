@@ -14,6 +14,7 @@ public:
     GLfloat walkbias, walkbiasangle; //Head-bobbing variables
     GLfloat lookupdown;
     bool fired;
+
     
     int score;
     int health;
@@ -24,6 +25,8 @@ public:
     void draw();
     void drawHUD();
     void check();
+	void shoot();
+
 	GLfloat getX();
 	GLfloat getZ();
 	GLfloat getY();

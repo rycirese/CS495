@@ -16,6 +16,7 @@ void Monster::draw(){
 		glTexCoord2f(1,1);glVertex3f (xpos+0.25,height,zpos);
 		glTexCoord2f(1,0);glVertex3f (xpos+0.25,-.1,zpos);
 	glEnd ();
+	glRotatef(20,0,1,0);
 	glPopMatrix();
 }
 
@@ -26,7 +27,6 @@ Monster * Monster::getLightMonster(){
 	health=1;
 	damage=10;
 	height=0.5;
-
 
 	//texture belongs to monster
 	TI[0] = IMG_Load ("data/textures/monsters/light.png");
@@ -40,23 +40,51 @@ Monster * Monster::getLightMonster(){
 }
 Monster * Monster::getMediumMonster(){
 	name="medium";
-	speed=2;
+	speed=0.015;
 	health=2;
 	damage=15;
+	height=0.5;
+	//texture belongs to monster
+	TI[0] = IMG_Load ("data/textures/monsters/med.png");
+	glGenTextures (3,&monsterTex[0]);
+	glBindTexture (GL_TEXTURE_2D,monsterTex[0]);
+	glTexImage2D(GL_TEXTURE_2D,0,3,TI[0]->w,TI[0]->h,0,FORMAT_GUN,GL_UNSIGNED_BYTE,TI[0]->pixels);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+	SDL_FreeSurface(TI[0]);
+
 	return this;
 }
 Monster * Monster::getHeavyMonster(){
 	name="heavy";
-	speed=4;
+	speed=0.02;
 	health=4;
 	damage=25;
+	height=0.5;
+
+	TI[0] = IMG_Load ("data/textures/monsters/heavy.png");
+	glGenTextures (3,&monsterTex[0]);
+	glBindTexture (GL_TEXTURE_2D,monsterTex[0]);
+	glTexImage2D(GL_TEXTURE_2D,0,3,TI[0]->w,TI[0]->h,0,FORMAT_GUN,GL_UNSIGNED_BYTE,TI[0]->pixels);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+	SDL_FreeSurface(TI[0]);
 	return this;
 }
 Monster * Monster::getPatriarchMonster(){
 	name="patriarch";
-	speed=8;
+	speed=0.008;
 	health=8;
 	damage=75;
+	height=0.5;
+
+	TI[0] = IMG_Load ("data/textures/monsters/patriarch.png");
+	glGenTextures (3,&monsterTex[0]);
+	glBindTexture (GL_TEXTURE_2D,monsterTex[0]);
+	glTexImage2D(GL_TEXTURE_2D,0,3,TI[0]->w,TI[0]->h,0,FORMAT_GUN,GL_UNSIGNED_BYTE,TI[0]->pixels);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+	SDL_FreeSurface(TI[0]);
 	return this;
 }
 

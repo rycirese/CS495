@@ -48,8 +48,10 @@ void ALLSYSTEMSGO(){
     genWorld();
     genMenu();
     player = new Player();
-	createMonster(0,-5,1);
-	//createMonster(0,5,1);
+	createMonster(2,-5,1);
+	createMonster(1,-5,2);
+	createMonster(0,-5,3);
+	createMonster(2,-5,4);
 }
 
 void createMonster(GLfloat x, GLfloat z, int type){
