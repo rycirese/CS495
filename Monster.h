@@ -20,7 +20,7 @@ public:
 	Monster();
 	~Monster();
 
-	void draw(GLfloat playerX, GLfloat playerZ, GLfloat playerY);
+	void draw();
 
 	Monster *getLightMonster();
 	Monster *getMediumMonster();

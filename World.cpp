@@ -27,7 +27,7 @@ void initWorld(){
     GLfloat LightPosition[] = { 0.0f, 0.0f, 2.0f, 1.0f }; //Light Position, positive z is between the screen and me
     
 	Mix_OpenAudio (44100,MIX_DEFAULT_FORMAT,2,2048);
-	worldMusic =  Mix_LoadWAV ("data/sounds/music/doom.wav");
+	worldMusic = Mix_LoadWAV("data/sounds/music/doom.wav");
 	Mix_PlayChannel (-1,worldMusic,0);
     //Load in the texture
     LoadGLTextures();
