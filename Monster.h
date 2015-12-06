@@ -34,7 +34,7 @@ public:
 	int getIndex();
 	GLfloat getX();
 	GLfloat getY();
-	GLfloat getZ();
+	GLfloat getZ(); 
 	
 	void setY(GLfloat y);
 	void setIndex(int i);
