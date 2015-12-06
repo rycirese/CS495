@@ -5,12 +5,7 @@ Monster::Monster(){
     monsterTex = new GLuint[2];
 }
 
-void Monster::draw(GLfloat playerX, GLfloat playerZ, GLfloat playerY){
-    if(playerX > xpos) xpos += speed;
-    if(playerX < xpos) xpos -= speed;
-    if(playerZ > zpos) zpos += speed;
-    if(playerZ < zpos) zpos -= speed;
-    
+void Monster::draw(){
 	//movement
 	glPushMatrix();
 	glTranslatef(0,(height/2)-.1,0);
@@ -27,7 +22,7 @@ void Monster::draw(GLfloat playerX, GLfloat playerZ, GLfloat playerY){
 Monster * Monster::getLightMonster(){
 	//set class variables
 	name="light";
-	speed=.005;
+	speed=0.01;
 	health=1;
 	damage=10;
 	height=0.5;
@@ -73,7 +68,6 @@ GLfloat Monster::getX(){return xpos;}
 GLfloat Monster::getY(){return yrot;}
 GLfloat Monster::getZ(){return zpos;}
 int Monster::getIndex(){return index;}
-
 
 void Monster::setIndex(int i){index=i;}
 void Monster::setX(GLfloat x){xpos=x;}

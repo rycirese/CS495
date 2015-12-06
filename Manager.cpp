@@ -79,7 +79,6 @@ void monsterDeath(Monster*m){
 	}
 }
 
-
 void monsterAI(){
 	for(int i=0;i<10;i++){
 		if(monsters[i]!=NULL){
@@ -94,16 +93,16 @@ void monsterAI(){
 			GLfloat Pz=player->getZ();
             GLfloat Py=player->getY();
 
-//			if(Mx<Px)		monsters[i]->setX(Mx+=Ms);
-//			else if(Mx>Px)	monsters[i]->setX(Mx-=Ms);
-//			//else monsters[i]->setX(Px);
-//	
-//			if(Mz<Pz)		monsters[i]->setZ(Mz+=Ms);
-//			else if(Mz>Pz)	monsters[i]->setZ(Mz-=Ms);
+
+			if(Mx<Px)		monsters[i]->setX(Mx+Ms);
+			else if(Mx>Px)	monsters[i]->setX(Mx-Ms);
+			//else monsters[i]->setX(Px);
+	
+			if(Mz<Pz)		monsters[i]->setZ(Mz+Ms);
+			else if(Mz>Pz)	monsters[i]->setZ(Mz-Ms);
 			//else monsters[i]->setX(Pz);
-            
-			monsters[i]->setY(player->getY());
-			monsters[i]->draw(Px, Pz, Py);
+			//monsters[i]->setY(player->getY());
+			monsters[i]->draw();
 		}
 	}
 }

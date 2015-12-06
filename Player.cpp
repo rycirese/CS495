@@ -34,7 +34,6 @@ Player::Player(){
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     SDL_FreeSurface(TI[0]);
 }
-
 //Function to handle key press events
 void Player::control(const Uint8* keyState){
     const float DEG_TO_RAD = 0.0174532925f;
