@@ -64,7 +64,7 @@ void ALLSYSTEMSGO(){
 //	createMonster(2,-5,1);
 //	createMonster(1,-5,2);
 //	createMonster(0,-5,3);
-//	createMonster(2,-5,4);
+	createMonster(-1,-1,4);
 }
 
 void createMonster(GLfloat x, GLfloat z, int type){
@@ -125,11 +125,15 @@ void monsterAI(){
 }
 
 void shoot(){
-	const float DEG_TO_RAD = 0.0174532925f;
+ 	const float DEG_TO_RAD = 0.0174532925f;
 	int angle=player->yrot; //temp of players/cameras rotation variable
-	GLfloat opposite=0;
-	GLfloat adjacent=0;
-	GLfloat acc=0.1; //accuracy. smaller is more accurate
+	GLfloat originX=player->xpos;
+	GLfloat originZ=player->zpos;
+
+	GLfloat adjz=0;
+	GLfloat oppx=0;
+
+	GLfloat acc=0.2; //accuracy. smaller is more accurate
 	bool hit=false;
 
 	angle=angle%360;
@@ -138,50 +142,52 @@ void shoot(){
 	//	-X , -Z
 	if(angle>0&&angle<90){
 		while(!hit){
-			adjacent-=acc; //z
-			opposite = -(-adjacent*(tan(angle*DEG_TO_RAD))); //x
-			hit = checkBulletCollision(opposite,adjacent);
+			adjz -= acc; //z
+			oppx = -(-adjz*(tan(angle*DEG_TO_RAD))); //x
+			hit = checkBulletCollision(oppx+originX,adjz+originZ);
 		}
 	}
 	//	-X , +Z
-	if(angle>90&&angle<180){
+	else if(angle>90&&angle<180){
 		angle-=90;
 		while(!hit){
-			adjacent-=acc; //z
-			opposite = (-adjacent)*(tan(angle*DEG_TO_RAD)); //x
-			hit = checkBulletCollision(opposite,adjacent);
+			adjz+=acc; //z
+			oppx = -((adjz)*(tan((90-angle)*DEG_TO_RAD))); //x
+			hit = checkBulletCollision(oppx+originX,adjz+originZ);
 		}
 	}
 	//	+X , +Z
-	if(angle>180&&angle<270){
+	else if(angle>180&&angle<270){
 		angle-=180;
 		while(!hit){
-			adjacent+=acc; //z
-			opposite = (adjacent)*(tan(angle*DEG_TO_RAD)); //x
-			hit = checkBulletCollision(opposite,adjacent);
+			adjz+=acc; //z
+			oppx = (adjz)*(tan(angle*DEG_TO_RAD)); //x
+			hit = checkBulletCollision(oppx+originX,adjz+originZ);
 		}
 	}
 	//	+X , -Z
-	if(angle>90&&angle<180){
+	else if(angle>270&&angle<360){
 		angle-=270;
 		while(!hit){
-			adjacent+=acc; //z
-			opposite = -((adjacent)*(tan(angle*DEG_TO_RAD))); //x
-			hit = checkBulletCollision(opposite,adjacent);
+			adjz-=acc; //z
+			oppx = (-adjz)*(tan((90-angle)*DEG_TO_RAD)); //x
+			hit = checkBulletCollision(oppx+originX,adjz+originZ);
 		}
 	}
 }
 
 bool checkBulletCollision(GLfloat x,GLfloat z){
-	for(int i=0;i++;i<10){
-		if(x>10||x<-10||z>10||z<-10) break; //bullet is out of bounds
+	for(int i=0;i<10;i++){
+		if(x>10||x<-10||z>10||z<-10) 
+			return true; //bullet is out of bounds
 		if(monsters[i]!=NULL){
-			GLfloat xCol = (monsters[i]->getX()-x);
-			GLfloat yCol = (monsters[i]->getZ()-z);
+			GLfloat xCol = abs(monsters[i]->getX()-x);
+			GLfloat yCol = abs(monsters[i]->getZ()-z);
 			//if bullet within 0.25 and 0.25
-			if(xCol<0.25&&yCol<0.25){
-				monsters[i]->setHealth(monsters[i]->getHealth()-1);
+			if(xCol<0.2&&yCol<0.2){
+   				monsters[i]->setHealth(monsters[i]->getHealth()-1);
 				if(monsters[i]->getHealth()<1) monsterDeath(monsters[i]); //kill monster if health 0 or below
+
 				return true; //hit!!
 			}
 		}
@@ -202,6 +208,10 @@ void draw(const Uint8* keyState){
                 monsters[i]->draw();
             }
         }
+		if(player->getFired()){
+			shoot();
+			player->swapFired();
+		}
 		drawWorld(window);
 	}
 	SDL_GL_SwapWindow(window);

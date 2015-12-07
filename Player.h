@@ -35,6 +35,7 @@ public:
     
     void setScore(int diff);
     void setHealth(int diff);
+	void swapFired();
 private:
 };
 
