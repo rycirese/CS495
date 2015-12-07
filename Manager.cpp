@@ -81,6 +81,7 @@ int main(int argc, char **argv){
                         }
                     }
                 }
+                
                 if(!gettingName && event.key.keysym.sym == SDLK_SPACE){
                     if(canShoot) shoot();
                     canShoot = false;
@@ -97,7 +98,7 @@ int main(int argc, char **argv){
                 break;
             }
         }
-        if(!gettingName) //spawnMonsters();
+        //if(!gettingName) spawnMonsters();
         draw(keyState); //Draws Everything
     }
     return 0;
@@ -196,6 +197,7 @@ void monsterDeath(Monster*m){
 }
 
 void shoot(){
+    cout << "SHOOTING" << endl;
 
 	//this method will fire a bullet from where ever player is in the players rotation.
 	//it will create a right triangle with players position as 0,0 and angle equivalent to players rotation.

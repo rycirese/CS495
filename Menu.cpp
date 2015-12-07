@@ -60,9 +60,9 @@ void drawMenu(bool gettingName, string inputText, const Uint8* keyState){
 }
 
 void name(string inputText){
-    //cout << inputText << endl;
-    glRenderText(font, 0, 0, 0, 365, 450, "Enter 3 Initials and Hit Enter");
-    if(inputText.length() > 0) glRenderText(font2, 0, 0, 0, 400, 410, inputText);
+    glRenderText(font, 0, 0, 0, 315, 450, "Enter 3 Initials and Hit Enter");
+    glRenderText(font2, 0, 0, 0, 365, 410, "Initials:");
+    if(inputText.length() > 0) glRenderText(font2, 0, 0, 0, 600, 410, inputText);
 }
 
 //Draw Default Menu
