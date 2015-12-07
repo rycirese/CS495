@@ -12,6 +12,7 @@ SDL_Window *window;
 Player *player;
 bool m;
 int currentTime;
+int shotTime;
 int hitTime;
 
 

@@ -15,6 +15,7 @@ int main(int argc, char **argv){
     SDL_Event event;
     
     while(!done){
+        currentTime = SDL_GetTicks();
         if(player->getHealth() <= 0){
             reset();
             ALLSYSTEMSGO(); //Reset if Player DIES
@@ -32,6 +33,13 @@ int main(int argc, char **argv){
                 break;
             }
         }
+        
+        if(currentTime > shotTime + 50){
+            if(player->getFired()) shoot();
+            player->setFired(false);
+        }
+        
+        
         monsterAI();
         draw(keyState); //Draws Everything
     }
@@ -53,6 +61,7 @@ void ALLSYSTEMSGO(){
     
     m = true; //Menu Mode is on (Loads Menu Not Game
     currentTime = 0;
+    shotTime = 0;
     hitTime = 0;
     for(int i=0;i<10;i++) monsters[i] = NULL;
     
@@ -114,7 +123,6 @@ void monsterAI(){
             
             //Player Take Damage Range and Invincable Time
             if(Mx < Px+0.2 && Mx > Px-0.2 && Mz < Pz+0.2 && Mz > Pz-0.2){
-                currentTime = SDL_GetTicks();
                 if (currentTime > hitTime + 2000) {
                     player->setHealth(monsters[i]->getDamage());
                     hitTime = currentTime;
@@ -125,6 +133,7 @@ void monsterAI(){
 }
 
 void shoot(){
+    cout << "SHOOT" << endl;
 	const float DEG_TO_RAD = 0.0174532925f;
 	int angle=player->yrot; //temp of players/cameras rotation variable
 	GLfloat opposite=0;
@@ -183,6 +192,7 @@ bool checkBulletCollision(GLfloat x,GLfloat z){
 				monsters[i]->setHealth(monsters[i]->getHealth()-1);
 				if(monsters[i]->getHealth()<1) monsterDeath(monsters[i]); //kill monster if health 0 or below
 				return true; //hit!!
+                cout << "HIT" << endl;
 			}
 		}
 	}

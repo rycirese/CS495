@@ -67,13 +67,9 @@ void Player::control(const Uint8* keyState){
         xpos += (float)sin((yrot+90)*DEG_TO_RAD)*0.05f;
         zpos += (float)cos((yrot+90)*DEG_TO_RAD)*0.05f;
 	}
-    if(keyState[SDL_SCANCODE_SPACE])
-		if(!fired){
-			fired=true;
-			//shoot();
-			//wait some amount of time
-			fired=false;
-		}
+    if(keyState[SDL_SCANCODE_SPACE]){
+		if(!fired) fired=true;
+    }
 }
 
 void Player::draw(){
@@ -118,11 +114,13 @@ void Player::check(){
     if(zpos < -9.74) zpos = -9.74;
 }
 
+bool Player::getFired(){ return fired; }
 int Player::getScore(){ return score; }
 int Player::getHealth(){ return health; }
 GLfloat Player::getX(){return xpos;}
 GLfloat Player::getZ(){return zpos;}
 GLfloat Player::getY(){return yrot;}
 
+void Player::setFired(bool diff){ fired = diff; }
 void Player::setScore(int diff){ score = score+diff; }
 void Player::setHealth(int diff){ health = health-diff; }

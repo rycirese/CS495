@@ -16,9 +16,10 @@ public:
     GLfloat lookupdown;
     bool fired;
 
-    
     int score;
     int health;
+    
+    int shotTime;
     
     Player();
     
@@ -26,13 +27,15 @@ public:
     void draw();
     void drawHUD();
     void check();
-
+    
+    bool getFired();
     int getScore();
     int getHealth();
 	GLfloat getX();
 	GLfloat getZ();
 	GLfloat getY();
     
+    void setFired(bool diff);
     void setScore(int diff);
     void setHealth(int diff);
 private:
