@@ -99,7 +99,7 @@ int main(int argc, char **argv){
             }
         }
 
-        //if(!gettingName) spawnMonsters();
+        if(!gettingName) spawnMonsters();
         draw(keyState); //Draws Everything
     }
     return 0;
@@ -129,7 +129,7 @@ void draw(const Uint8* keyState){
 //Spawns Another Monster at Random Location After 5 Seconds
 void spawnMonsters(){
     currentTime = SDL_GetTicks();
-    if (currentTime > spawnTime + 8000) {
+    if (currentTime > spawnTime + 2000) {
         double sX = -9.7 + (rand() % 19); //Random Xpos between -9.7 and 9.3
         double sZ = -9.7 + (rand() % 19); //Random Zpos between -9.7 and 9.3
         int mT = 1 + (rand() % 4); //Random Monster Type between 1 and 4
@@ -182,7 +182,7 @@ void monsterAI(){
             //Player Take Damage Range and Invinciblity Time
             if(Mx < Px+0.2 && Mx > Px-0.2 && Mz < Pz+0.2 && Mz > Pz-0.2){
                 if (currentTime > hitTime + 2000) {
-                    player->setHealth(monsters[i]->getDamage());
+                    player->takeHealth(monsters[i]->getDamage());
                     hitTime = currentTime;
                 }
             }
@@ -262,7 +262,6 @@ bool checkBulletCollision(GLfloat x,GLfloat z){
 	//x and z are cord to bullet
 	//return true if hit, including wall, and false if nothing hit yet
 	for(int i=0;i<10;i++){
-        cout << "" << x << " and " << z << endl;
         if(x>10||x<-10||z>10||z<-10) {
             //cout << "OUT OF BOUNDS" << endl;
 			return true; //bullet is out of bounds
@@ -274,6 +273,8 @@ bool checkBulletCollision(GLfloat x,GLfloat z){
 			if( xCol < 0.2 && zCol < 0.2){
    				monsters[i]->setHealth(monsters[i]->getHealth()-1);
 				if(monsters[i]->getHealth()<1){
+                    cout << monsters[i]->getPoints() << endl;
+                    player->addScore(monsters[i]->getPoints());
 					monsters[i]=NULL; //kill monster if health 0 or below
 					mDeath = Mix_LoadWAV("data/sounds/monster/death.wav");
 					Mix_PlayChannel (-1,mDeath,0);

@@ -32,8 +32,8 @@ public:
 	GLfloat getY();
     
     //Setters
-    void setScore(int diff);
-    void setHealth(int diff);
+    void addScore(int diff);
+    void takeHealth(int diff);
 private:
 };
 

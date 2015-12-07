@@ -30,6 +30,7 @@ Monster * Monster::getLightMonster(){
 	damage=1;
 	height=0.5;
 	bounceBack=0.5;
+    points = 1;
 
 	//texture belongs to monster
 	TI[0] = IMG_Load ("data/textures/monsters/light.png");
@@ -48,6 +49,8 @@ Monster * Monster::getMediumMonster(){
 	damage=5;
 	height=0.4;
 	bounceBack=0.3;
+    points = 5;
+    
 	//texture belongs to monster
 	TI[0] = IMG_Load ("data/textures/monsters/med.png");
 	glGenTextures (3,&monsterTex[0]);
@@ -66,6 +69,7 @@ Monster * Monster::getHeavyMonster(){
 	damage=10;
 	height=0.5;
 	bounceBack=0.2;
+    points = 10;
 
 	TI[0] = IMG_Load ("data/textures/monsters/heavy.png");
 	glGenTextures (3,&monsterTex[0]);
@@ -83,6 +87,7 @@ Monster * Monster::getPatriarchMonster(){
 	damage=25;
 	height=0.5;
 	bounceBack=0.05;
+    points = 25;
 
 	TI[0] = IMG_Load ("data/textures/monsters/patriarch.png");
 	glGenTextures (3,&monsterTex[0]);
@@ -99,6 +104,7 @@ string Monster::getName(){return name;}
 GLfloat Monster::getSpeed(){return speed;}
 int Monster::getHealth(){return health;}
 int Monster::getDamage(){return damage;}
+int Monster::getPoints(){return points;}
 GLfloat Monster::getX(){return xpos;}
 GLfloat Monster::getY(){return yrot;}
 GLfloat Monster::getZ(){return zpos;}
