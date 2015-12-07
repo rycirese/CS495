@@ -11,8 +11,35 @@
 #include "Manager.h"
 
 int main(int argc, char **argv){
-    bool done = false;
+    ALLSYSTEMSGO(); //Sets Everything Up
     SDL_Event event;
+    
+    while(!done){
+        if(player->getHealth() <= 0){
+            reset();
+            ALLSYSTEMSGO(); //Reset if Player DIES
+        }
+        const Uint8* keyState = SDL_GetKeyboardState(NULL); //Record Keystate
+        if(!m) player->control(keyState); //Manage Player Controls
+        if(keyState[SDL_SCANCODE_S]) m = false; //Turn Menu Mode Off (Start Game)
+        if(keyState[SDL_SCANCODE_Q]){ done = true; reset(); SDL_Quit(); exit(0); break; }
+        while(SDL_PollEvent(&event)){
+            if(event.type == SDL_QUIT){ //Closes Everything Appropriately
+                done = true;
+                reset();
+                SDL_Quit();
+                exit(0);
+                break;
+            }
+        }
+        monsterAI();
+        draw(keyState); //Draws Everything
+    }
+    return 0;
+}
+
+void ALLSYSTEMSGO(){
+    done = false;
     SDL_Init(SDL_INIT_VIDEO);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
@@ -24,34 +51,20 @@ int main(int argc, char **argv){
     glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_ALPHA);
     TTF_Init();
     
-    ALLSYSTEMSGO(); //Sets Everything Up
-
     m = true; //Menu Mode is on (Loads Menu Not Game
-    while(!done){
-        const Uint8* keyState = SDL_GetKeyboardState(NULL); //Record Keystate
-        if(!m) player->control(keyState); //Manage Player Controls
-        if(keyState[SDL_SCANCODE_S]) m = false; //Turn Menu Mode Off (Start Game)
-        if(keyState[SDL_SCANCODE_Q]){ done = true; quit(); break; }
-        while(SDL_PollEvent(&event)){
-            if(event.type == SDL_QUIT){ //Closes Everything Appropriately
-                done = true;
-                quit();
-                break;
-            }
-        }
-        draw(keyState); //Draws Everything
-    }
-    return 0;
-}
-
-void ALLSYSTEMSGO(){
+    currentTime = 0;
+    hitTime = 0;
+    for(int i=0;i<10;i++) monsters[i] = NULL;
+    
     genWorld();
     genMenu();
     player = new Player();
-	//createMonster(2,-5,1);
-	//createMonster(1,-5,2);
-	//createMonster(0,-5,3);
-	//createMonster(2,-5,4);
+
+    
+//	createMonster(2,-5,1);
+//	createMonster(1,-5,2);
+//	createMonster(0,-5,3);
+	createMonster(2,-5,4);
 }
 
 void createMonster(GLfloat x, GLfloat z, int type){
@@ -77,30 +90,36 @@ void createMonster(GLfloat x, GLfloat z, int type){
 void monsterDeath(Monster*m){
 	if(m!=NULL){
 		monsters[m->getIndex()]=NULL;
-		//Mix_PlayChannel (-1,mDeath,0);
+		//Mix_PlayChannel (-1, mDeath, 0);
 	}
 }
 
 void monsterAI(){
-	for(int i=0;i<10;i++){
-		if(monsters[i]!=NULL){
-			//all this gibberish just says moves monster towards player and draws
-			// if ( MONSTERS_X < PLAYERS_X ) MONSTERS_X += MONSTERS_SPEED
-			// else MONSTERS_X -= MONSTERS_SPEED
+	for(int i = 0; i < 10; i++){
+		if(monsters[i] != NULL){
+			//Get Monster and Player Position Values
 			GLfloat Mx=monsters[i]->getX();
 			GLfloat Mz=monsters[i]->getZ();
 			GLfloat Ms=monsters[i]->getSpeed();
-            
 			GLfloat Px=player->getX();
 			GLfloat Pz=player->getZ();
             GLfloat Py=player->getY();
-
+            
+            //Move Monster Towards Player
 			if(Mx<Px)		monsters[i]->setX(Mx+Ms);
 			else if(Mx>Px)	monsters[i]->setX(Mx-Ms);
 			if(Mz<Pz)		monsters[i]->setZ(Mz+Ms);
 			else if(Mz>Pz)	monsters[i]->setZ(Mz-Ms);
             monsters[i]->setY(Py);
-			monsters[i]->draw();
+            
+            //Player Take Damage Range and Invincable Time
+            if(Mx < Px+0.2 && Mx > Px-0.2 && Mz < Pz+0.2 && Mz > Pz-0.2){
+                currentTime = SDL_GetTicks();
+                if (currentTime > hitTime + 2000) {
+                    player->setHealth(monsters[i]->getDamage());
+                    hitTime = currentTime;
+                }
+            }
 		}
 	}
 }
@@ -178,12 +197,16 @@ void draw(const Uint8* keyState){
 	if(m) drawMenu(keyState);
     if(!m){
 		player->draw();
-		monsterAI();
+        for(int i = 0; i < 10; i++){
+            if(monsters[i] != NULL){
+                monsters[i]->draw();
+            }
+        }
 		drawWorld(window);
 	}
 	SDL_GL_SwapWindow(window);
 }
 
-void quit(){
-    quitWorld();
+void reset(){
+    resetWorld();
 }

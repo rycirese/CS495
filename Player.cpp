@@ -118,6 +118,11 @@ void Player::check(){
     if(zpos < -9.74) zpos = -9.74;
 }
 
+int Player::getScore(){ return score; }
+int Player::getHealth(){ return health; }
 GLfloat Player::getX(){return xpos;}
 GLfloat Player::getZ(){return zpos;}
 GLfloat Player::getY(){return yrot;}
+
+void Player::setScore(int diff){ score = score+diff; }
+void Player::setHealth(int diff){ health = health-diff; }

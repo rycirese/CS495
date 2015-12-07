@@ -27,6 +27,6 @@ void LoadGLTextures();
 void readstr(FILE *f, char *string);
 void setupWorld(string worldFile);
 void drawWorld(SDL_Window *window);
-void quitWorld();
+void resetWorld();
 
 #endif

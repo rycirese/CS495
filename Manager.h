@@ -7,9 +7,13 @@
 #include "Monster.h"
 #include "Gun.h"
 
+bool done;
 SDL_Window *window;
 Player *player;
 bool m;
+int currentTime;
+int hitTime;
+
 
 //monster stuff
 Monster *monsters[10];
@@ -25,7 +29,7 @@ void shoot();
 bool checkBulletCollision(GLfloat x,GLfloat z);
 void ALLSYSTEMSGO();
 void draw(const Uint8* keyState);
-void quit();
+void reset();
 
 
 

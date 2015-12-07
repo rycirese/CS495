@@ -3,16 +3,14 @@
 Monster::Monster(){
 	TI = new SDL_Surface*[2];
     monsterTex = new GLuint[2];
-    
-    ypos = (height/2)-.1;
 }
 
 void Monster::draw(){
 	//movement
 	glPushMatrix();
-    glTranslatef(xpos, ypos, zpos); //Translate to Monster Position
+    glTranslatef(xpos, 0, zpos); //Translate to Monster Position
     glRotatef(yrot, 0, 1, 0); //Rotate Monster
-    glTranslatef(-xpos, -ypos, -zpos); //Translate back to Origin
+    glTranslatef(-xpos, (height/2)-.1, -zpos); //Translate back to Origin
     glBindTexture (GL_TEXTURE_2D,monsterTex[0]);
 	glBegin (GL_QUADS);
 		glTexCoord2f(1,1);glVertex3f (xpos-0.25,-.1,zpos);
@@ -29,7 +27,7 @@ Monster * Monster::getLightMonster(){
 	name="light";
 	speed=0.01;
 	health=1;
-	damage=10;
+	damage=1;
 	height=0.5;
 
 	//texture belongs to monster
@@ -46,7 +44,7 @@ Monster * Monster::getMediumMonster(){
 	name="medium";
 	speed=0.015;
 	health=2;
-	damage=15;
+	damage=5;
 	height=0.5;
 	//texture belongs to monster
 	TI[0] = IMG_Load ("data/textures/monsters/med.png");
@@ -63,7 +61,7 @@ Monster * Monster::getHeavyMonster(){
 	name="heavy";
 	speed=0.02;
 	health=4;
-	damage=25;
+	damage=10;
 	height=0.5;
 
 	TI[0] = IMG_Load ("data/textures/monsters/heavy.png");
@@ -79,7 +77,7 @@ Monster * Monster::getPatriarchMonster(){
 	name="patriarch";
 	speed=0.008;
 	health=8;
-	damage=75;
+	damage=25;
 	height=0.5;
 
 	TI[0] = IMG_Load ("data/textures/monsters/patriarch.png");

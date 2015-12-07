@@ -27,9 +27,14 @@ public:
     void drawHUD();
     void check();
 
+    int getScore();
+    int getHealth();
 	GLfloat getX();
 	GLfloat getZ();
 	GLfloat getY();
+    
+    void setScore(int diff);
+    void setHealth(int diff);
 private:
 };
 
