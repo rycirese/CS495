@@ -129,6 +129,11 @@ void monsterAI(){
 }
 
 void shoot(){
+
+	//this method will fire a bullet from where ever player is in the players rotation.
+	//it will create a right triangle with players position as 0,0 and angle equivalent to players rotation.
+	//bullet will follow right angles hypotenuse
+
  	const float DEG_TO_RAD = 0.0174532925f;
 	int angle=player->yrot; //temp of players/cameras rotation variable
 	GLfloat originX=player->xpos;
@@ -181,14 +186,15 @@ void shoot(){
 }
 
 bool checkBulletCollision(GLfloat x,GLfloat z){
-
+	//x and z are cord to bullet
+	//return true if hit, including wall, and false if nothing hit yet
 	for(int i=0;i<10;i++){
 		if(x>10||x<-10||z>10||z<-10) 
 			return true; //bullet is out of bounds
 		if(monsters[i]!=NULL){
 			GLfloat xCol = abs(monsters[i]->getX()-x);
 			GLfloat yCol = abs(monsters[i]->getZ()-z);
-			//if bullet within 0.25 and 0.25
+			//if bullet within 0.2 and 0.2 away from monster
 			if(xCol < 0.2 && yCol < 0.2){
    				monsters[i]->setHealth(monsters[i]->getHealth()-1);
 				if(monsters[i]->getHealth()<1) monsterDeath(monsters[i]); //kill monster if health 0 or below
