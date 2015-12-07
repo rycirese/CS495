@@ -12,6 +12,7 @@ SDL_Window *window;
 Player *player;
 bool m;
 int currentTime;
+int shotTime;
 int hitTime;
 
 
@@ -29,6 +30,7 @@ void shoot();
 bool checkBulletCollision(GLfloat x,GLfloat z);
 void ALLSYSTEMSGO();
 void draw(const Uint8* keyState);
+void outputScore();
 void reset();
 
 

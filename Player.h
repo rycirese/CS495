@@ -19,20 +19,23 @@ public:
     int score;
     int health;
     
+    int shotTime;
+    
     Player();
     
     void control(const Uint8* keyState);
     void draw();
     void drawHUD();
     void check();
-
+    
+    bool getFired();
     int getScore();
     int getHealth();
-	bool getFired();
 	GLfloat getX();
 	GLfloat getZ();
 	GLfloat getY();
     
+    void setFired(bool diff);
     void setScore(int diff);
     void setHealth(int diff);
 	void swapFired();
