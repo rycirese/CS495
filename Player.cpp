@@ -67,9 +67,6 @@ void Player::control(const Uint8* keyState){
         xpos += (float)sin((yrot+90)*DEG_TO_RAD)*0.05f;
         zpos += (float)cos((yrot+90)*DEG_TO_RAD)*0.05f;
 	}
-    if(keyState[SDL_SCANCODE_SPACE]){
-		fired=true;
-    }
 }
 
 void Player::draw(){

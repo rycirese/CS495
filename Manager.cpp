@@ -26,6 +26,9 @@ int main(int argc, char **argv){
         if(keyState[SDL_SCANCODE_S]) m = false; //Turn Menu Mode Off (Start Game)
         if(keyState[SDL_SCANCODE_Q]){ done = true; reset(); SDL_Quit(); exit(0); break; }
         while(SDL_PollEvent(&event)){
+            if(event.type == SDL_KEYDOWN) {
+                if(event.key.keysym.sym == SDLK_SPACE){ shoot(); }
+            }
             if(event.type == SDL_QUIT){ //Closes Everything Appropriately
                 done = true;
                 reset();
@@ -33,6 +36,7 @@ int main(int argc, char **argv){
                 exit(0);
                 break;
             }
+            if(event.type == SDL_SCANCODE_SPACE) shoot();
         }
         draw(keyState); //Draws Everything
     }
@@ -185,10 +189,10 @@ bool checkBulletCollision(GLfloat x,GLfloat z){
 			GLfloat xCol = abs(monsters[i]->getX()-x);
 			GLfloat yCol = abs(monsters[i]->getZ()-z);
 			//if bullet within 0.25 and 0.25
-			if(xCol<0.2&&yCol<0.2){
+			if(xCol < 0.2 && yCol < 0.2){
    				monsters[i]->setHealth(monsters[i]->getHealth()-1);
 				if(monsters[i]->getHealth()<1) monsterDeath(monsters[i]); //kill monster if health 0 or below
-
+                cout << "monster " << i << " hit" << endl;
 				return true; //hit!!
 			}
 		}
@@ -210,10 +214,6 @@ void draw(const Uint8* keyState){
                 monsters[i]->draw();
             }
         }
-		if(player->getFired()){
-			shoot();
-			player->swapFired();
-		}
 		drawWorld(window);
 	}
 	SDL_GL_SwapWindow(window);
@@ -223,8 +223,8 @@ void outputScore(){
     string name = "GOD";
     int score =  player->getScore();
     
-    char* x;
-    sprintf(x, "%s scored: %d\n", name.c_str(), score);
+    char x[50];
+    sprintf(x, "%s: %d\n", name.c_str(), score);
     string out = x;
     
     ofstream f;
