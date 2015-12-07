@@ -9,6 +9,7 @@
 //  get the highest score.                     //
 /////////////////////////////////////////////////
 #include "Manager.h"
+#include <time.h>
 
 //Set Up Everything Before Game Runs
 void ALLSYSTEMSGO(){
@@ -174,7 +175,6 @@ void monsterAI(){
 	}
 }
 
-
 void monsterDeath(Monster*m){
     if(m != NULL){
         monsters[m->getIndex()]=NULL;
@@ -202,8 +202,34 @@ void shoot(){
 	angle=angle%360;
 	if(angle<0) angle+=360; //define angle as always positive and 0 < angle < 360
 	
+
+	//if(angle==0){
+	//	while(!hit){
+	//		adjz -= acc; //z
+	//		hit = checkBulletCollision(oppx+originX,adjz+originZ);
+	//	}
+	//}
+	//if(angle==90){
+	//	while(!hit){
+	//		adjz -= acc; //z
+	//		hit = checkBulletCollision(oppx+originX,adjz+originZ);
+	//	}
+	//}
+	//if(angle==180){
+	//	while(!hit){
+	//		adjz -= acc; //z
+	//		hit = checkBulletCollision(oppx+originX,adjz+originZ);
+	//	}
+	//}
+	//if(angle==270){
+	//	while(!hit){
+	//		adjz -= acc; //z
+	//		hit = checkBulletCollision(oppx+originX,adjz+originZ);
+	//	}
+	//}
+
 	//	-X , -Z
-	else if(angle>=0&&angle<90){
+	if(angle>=0&&angle<90){
 		while(!hit){
 			adjz -= acc; //z
 			oppx = -(-adjz*(tan(angle*DEG_TO_RAD))); //x
