@@ -224,7 +224,7 @@ void outputScore(){
     int score =  player->getScore();
     
     char* x;
-    sprintf(x, "%s scored: %d\r\n", name.c_str(), score);
+    sprintf(x, "%s scored: %d\n", name.c_str(), score);
     string out = x;
     
     ofstream f;
