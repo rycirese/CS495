@@ -6,7 +6,8 @@
 
 //Methods
 void genMenu();
-void drawMenu(const Uint8* keyState);
+void drawMenu(bool gettingName, string inputText, const Uint8* keyState);
+void name(string inputText);
 void menu();
 void highscores();
 void controls();

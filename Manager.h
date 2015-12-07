@@ -13,8 +13,10 @@
 bool done;
 SDL_Window *window;
 Player *player;
+string inputText;
 bool canShoot;
 bool m;
+bool gettingName;
 int currentTime;
 int hitTime;
 int spawnTime;
