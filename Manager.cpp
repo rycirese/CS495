@@ -40,10 +40,10 @@ void ALLSYSTEMSGO(){
     player = new Player();
     
     //Create 4 Initial Monsters
-    createMonster( 5, -5, 1);
-    createMonster(-5, -5, 2);
-    createMonster( 5,  5, 3);
-    createMonster(-5,  5, 4);
+    //createMonster( 5, -5, 1);
+    //createMonster(-5, -5, 2);
+    //createMonster( 5,  5, 3);
+    createMonster(-1,  0, 4);
 }
 
 int main(int argc, char **argv){
@@ -84,7 +84,7 @@ int main(int argc, char **argv){
                 break;
             }
         }
-        spawnMonsters();
+        //spawnMonsters();
         draw(keyState); //Draws Everything
     }
     return 0;
@@ -192,7 +192,7 @@ void shoot(){
 	int angle=player->yrot; //temp of players/cameras rotation variable
 	GLfloat originX=player->xpos;
 	GLfloat originZ=player->zpos;
-
+	angle=270;
 	GLfloat adjz=0; //adjacent side of right triangle/ refers to z on game
 	GLfloat oppx=0; //opposite side of right triangle. refers to x on game
 
@@ -202,19 +202,6 @@ void shoot(){
 	angle=angle%360;
 	if(angle<0) angle+=360; //define angle as always positive and 0 < angle < 360
 	
-
-	//if(angle==0){
-	//	while(!hit){
-	//		adjz -= acc; //z
-	//		hit = checkBulletCollision(oppx+originX,adjz+originZ);
-	//	}
-	//}
-	//if(angle==90){
-	//	while(!hit){
-	//		adjz -= acc; //z
-	//		hit = checkBulletCollision(oppx+originX,adjz+originZ);
-	//	}
-	//}
 	//if(angle==180){
 	//	while(!hit){
 	//		adjz -= acc; //z
@@ -237,6 +224,12 @@ void shoot(){
 		}
 	}
 	//	-X , +Z
+	else if(angle==90){
+		while(!hit){
+			oppx-=acc; //x
+			hit = checkBulletCollision(oppx+originX,adjz+originZ);
+		}
+	}
 	else if(angle>90&&angle<180){
 		angle-=90;
 		while(!hit){
@@ -246,7 +239,7 @@ void shoot(){
 		}
 	}
 	//	+X , +Z
-	else if(angle>180&&angle<270){
+	else if(angle>=180&&angle<270){
 		angle-=180;
 		while(!hit){
 			adjz+=acc; //z
@@ -255,6 +248,12 @@ void shoot(){
 		}
 	}
 	//	+X , -Z
+	else if(angle==270){
+		while(!hit){
+			oppx+=acc; //x
+			hit = checkBulletCollision(oppx+originX,adjz+originZ);
+		}
+	}
 	else if(angle>270&&angle<360){
 		angle-=270;
 		while(!hit){
