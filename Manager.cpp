@@ -192,7 +192,6 @@ void shoot(){
 	int angle=player->yrot; //temp of players/cameras rotation variable
 	GLfloat originX=player->xpos;
 	GLfloat originZ=player->zpos;
-	angle=270;
 	GLfloat adjz=0; //adjacent side of right triangle/ refers to z on game
 	GLfloat oppx=0; //opposite side of right triangle. refers to x on game
 
@@ -201,19 +200,6 @@ void shoot(){
 
 	angle=angle%360;
 	if(angle<0) angle+=360; //define angle as always positive and 0 < angle < 360
-	
-	//if(angle==180){
-	//	while(!hit){
-	//		adjz -= acc; //z
-	//		hit = checkBulletCollision(oppx+originX,adjz+originZ);
-	//	}
-	//}
-	//if(angle==270){
-	//	while(!hit){
-	//		adjz -= acc; //z
-	//		hit = checkBulletCollision(oppx+originX,adjz+originZ);
-	//	}
-	//}
 
 	//	-X , -Z
 	if(angle>=0&&angle<90){
