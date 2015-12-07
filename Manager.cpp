@@ -265,7 +265,7 @@ void outputScore(){
     string name = "Batman";
     int score =  player->getScore();
     
-    string out = name + ": " + to_string(score);
+    string out = name + ": " + to_string(score) + "\n";
     
     ofstream f;
     f.open ("highscore.txt", std::ios_base::app);
