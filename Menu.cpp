@@ -1,16 +1,24 @@
+//JOE BONINO & RYAN CIRESE
+//Menu - Creates Menu that has
+//  Start, Control, and Highscore Options
 #include "Menu.h"
 
+//Fonts
 TTF_Font* title;
 TTF_Font* font;
 TTF_Font* font2;
+
+//Other
 string menuCode;
 GLuint mTexture[1];
 
+//Sets Up Menu For Use
 void genMenu(){
+    //Create Fonts
     title =TTF_OpenFont("data/fonts/mrsmonsteracad.ttf", 100);
     font = TTF_OpenFont("data/fonts/Arial.ttf", 50);
     font2 = TTF_OpenFont("data/fonts/Arial.ttf", 35);
-    menuCode = "menu";
+    menuCode = "menu"; //Default Menu is Menu
     
     SDL_Surface **TI;
     TI = new SDL_Surface *[1];
@@ -24,6 +32,7 @@ void genMenu(){
     SDL_FreeSurface(TI[0]);
 }
 
+//Draws Screen based On Menu Code
 void drawMenu(const Uint8* keyState){
     glEnable2D();
     glColor3f(1, 1, 1);
@@ -47,13 +56,16 @@ void drawMenu(const Uint8* keyState){
     glDisable2D();
 }
 
+//Draw Default Menu
 void menu(){
     glRenderText(font, 0, 0, 0, 560, 450, "Menu");
     glRenderText(font2, 0, 0, 0, 365, 410, "'S' - Start");
     glRenderText(font2, 0, 0, 0, 365, 365, "'C' - Controls");
     glRenderText(font2, 0, 0, 0, 365, 320, "'H' - Highscores");
+    glRenderText(font2, 0, 0, 0, 365, 275, "'Q' - Quit");
 }
 
+//Draw Controls Menu
 void controls(){
     glRenderText(font, 0, 0, 0, 540, 450, "Controls");
     glRenderText(font2, 0, 0, 0, 365, 410, "'^' - Move Forward");
@@ -66,8 +78,10 @@ void controls(){
     glRenderText(font2, 0, 0, 0, 50, 50, "'M' - Menu");
     glRenderText(font2, 0, 0, 0, 250, 50, "'S' - Start");
     glRenderText(font2, 0, 0, 0, 430, 50, "'H' - Highscores");
+    glRenderText(font2, 0, 0, 0, 715, 50, "'Q' - Quit");
 }
 
+//Draw Highscores Menu
 void highscores(){
     glRenderText(font, 0, 0, 0, 410, 450, "Highscores (Last 5)");
     
@@ -88,4 +102,5 @@ void highscores(){
     glRenderText(font2, 0, 0, 0, 50, 50, "'M' - Menu");
     glRenderText(font2, 0, 0, 0, 250, 50, "'S' - Start");
     glRenderText(font2, 0, 0, 0, 430, 50, "'H' - Highscores");
+    glRenderText(font2, 0, 0, 0, 715, 50, "'Q' - Quit");
 }

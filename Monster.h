@@ -1,3 +1,5 @@
+//JOE BONINO & RYAN CIRESE
+//Monster Header File
 #ifndef _MONSTER_
 #define _MONSTER_
 #include "Common.h"

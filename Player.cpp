@@ -11,7 +11,6 @@ Player::Player(){
     font = TTF_OpenFont("data/fonts/Arial.ttf", 50);
     score = 0;
     health = 100;
-	fired=false;
 
 	xpos = zpos = yrot = 0;
     
@@ -70,6 +69,7 @@ void Player::control(const Uint8* keyState){
 }
 
 void Player::draw(){
+    glColor4f( 1.0f, 1.0f, 1.0f, 0.0f);
     GLfloat xtrans = -xpos; //Used For Player Translation On The X Axis
     GLfloat ztrans = -zpos; //Used For Player Translation On The Z Axis
     GLfloat ytrans = -walkbias-0.25f; //Used For Bouncing Motion Up And Down
@@ -83,6 +83,8 @@ void Player::draw(){
     drawHUD();
 }
 
+//Draws HUD
+//  Gun, Health, and Score are displayed
 void Player::drawHUD(){
     string s = "SCORE: " + to_string(score);
     string h = "HEALTH: " + to_string(health);
@@ -97,13 +99,14 @@ void Player::drawHUD(){
     glEnd();
     glDisable(GL_BLEND);
     
-    //glRenderText(font, r, g, b, x, y, text)
     glRenderText(font, 255, 0, 0, 0, 665, s);
     glRenderText(font, 255, 0, 0, 0, 0, h);
     
     glDisable2D();
 }
 
+//Keep Player Inside the Room
+//Wall Check
 void Player::check(){
     if(xpos >  9.74) xpos =  9.74;
     if(xpos < -9.74) xpos = -9.74;
@@ -111,17 +114,14 @@ void Player::check(){
     if(zpos < -9.74) zpos = -9.74;
 }
 
-//getters
+//Getters
 int Player::getScore(){ return score; }
 int Player::getHealth(){ return health; }
 GLfloat Player::getX(){return xpos;}
 GLfloat Player::getZ(){return zpos;}
 GLfloat Player::getY(){return yrot;}
-bool Player::getFired(){return fired;}
 
-//setters
-void Player::setFired(bool diff){ fired = diff; }
+//Setters
 void Player::setScore(int diff){ score = score+diff; }
 void Player::setHealth(int diff){ health = health-diff; }
-void Player::swapFired(){fired=!fired;}
 

@@ -10,17 +10,57 @@
 /////////////////////////////////////////////////
 #include "Manager.h"
 
+//Set Up Everything Before Game Runs
+void ALLSYSTEMSGO(){
+    //Set Up Environment
+    SDL_Quit();
+    done = false;
+    SDL_Init(SDL_INIT_VIDEO);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+    window = SDL_CreateWindow ("GAME", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN);
+    SDL_GL_CreateContext(window); //Associates the OpenGL commands to window 'window'.
+    SDL_GL_SetSwapInterval(1);
+    glEnable(GL_TEXTURE_2D);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_ALPHA);
+    TTF_Init();
+    
+    m = true; //Menu Mode is on (Loads Menu Not Game)
+    canShoot = true; //Flag Lock For Player Shooting
+    currentTime = SDL_GetTicks(); //System Current Time, Used for Carious Timers
+    hitTime = SDL_GetTicks(); //Time Used to Give Player Invinciblity Period
+    spawnTime = SDL_GetTicks(); //Time Used for Spawning Monsters
+    for(int i = 0; i < 10; i++) monsters[i] = NULL; //NULL All Monster Indexes
+    
+    //Create New World, Menu, and Player
+    genWorld();
+    genMenu();
+    player = new Player();
+    
+    //Create 4 Initial Monsters
+    createMonster( 5, -5, 1);
+    createMonster(-5, -5, 2);
+    createMonster( 5,  5, 3);
+    createMonster(-5,  5, 4);
+}
+
 int main(int argc, char **argv){
+    srand (time(NULL));
     ALLSYSTEMSGO(); //Sets Everything Up
     SDL_Event event;
     
     while(!done){
         currentTime = SDL_GetTicks();
+        
+        //Handle Player Death
         if(player->getHealth() <= 0){
-            outputScore();
-            reset();
-            ALLSYSTEMSGO(); //Reset if Player DIES
+            outputScore(); //Save Score to File
+            reset(); //Reset World
+            ALLSYSTEMSGO(); //Reset Game
         }
+        
+        //Handle Input
         const Uint8* keyState = SDL_GetKeyboardState(NULL); //Record Keystate
         if(!m) player->control(keyState); //Manage Player Controls
         if(keyState[SDL_SCANCODE_S]) m = false; //Turn Menu Mode Off (Start Game)
@@ -42,48 +82,52 @@ int main(int argc, char **argv){
                 exit(0);
                 break;
             }
-            if(event.type == SDL_SCANCODE_SPACE) shoot();
         }
+        spawnMonsters();
         draw(keyState); //Draws Everything
     }
     return 0;
 }
 
-void ALLSYSTEMSGO(){
-    SDL_Quit();
-    done = false;
-    SDL_Init(SDL_INIT_VIDEO);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-    window = SDL_CreateWindow ("GAME", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN);
-    SDL_GL_CreateContext(window); //Associates the OpenGL commands to window 'window'.
-    SDL_GL_SetSwapInterval(1);
-    glEnable(GL_TEXTURE_2D);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_ALPHA);
-    TTF_Init();
+//Draw Routine
+//Draws Player, World, Monsters, and Menu
+void draw(const Uint8* keyState){
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Clear The Screen And The Depth Buffer
+    glColor4f( 1.0f, 1.0f, 1.0f, 0.0f);
+    glLoadIdentity();
     
-    m = true; //Menu Mode is on (Loads Menu Not Game)
-    canShoot = true;
-    currentTime = 0;
-    hitTime = 0;
-    for(int i=0;i<10;i++) monsters[i] = NULL;
-    
-    genWorld();
-    genMenu();
-    player = new Player();
-    
-	createMonster(2,-5,1);
-	createMonster(1,-5,2);
-	createMonster(0,-5,3);
-	createMonster(2,-5,4);
+    if(m) drawMenu(keyState);
+    if(!m){
+        monsterAI();
+        player->draw();
+        for(int i = 0; i < 10; i++){
+            if(monsters[i] != NULL){
+                monsters[i]->draw();
+            }
+        }
+        drawWorld(window);
+    }
+    SDL_GL_SwapWindow(window);
 }
 
+//Spawns Another Monster at Random Location After 5 Seconds
+void spawnMonsters(){
+    currentTime = SDL_GetTicks();
+    if (currentTime > spawnTime + 8000) {
+        double sX = -9.7 + (rand() % 19); //Random Xpos between -9.7 and 9.3
+        double sZ = -9.7 + (rand() % 19); //Random Zpos between -9.7 and 9.3
+        int mT = 1 + (rand() % 4); //Random Monster Type between 1 and 4
+        createMonster(sX, sZ, mT); //Create Random Monster
+        spawnTime = SDL_GetTicks(); //Reset Spawn Time
+    }
+}
+
+//Creates Monsters
 void createMonster(GLfloat x, GLfloat z, int type){
-	//only allow 10 monsters
+	//Only Allow 10 monsters
 	if(totalMonsters<10){
-		//find next NULL spot in monster array and create monster
-		for(int i=0;i<10;i++)
+		//Find next NULL spot in monster array and create monster
+        for(int i = 0; i < 10; i++){
 			if(monsters[i]==NULL){
 				monsters[i]=new Monster();
 				if(type==1) monsters[i]=monsters[i]->getLightMonster();
@@ -96,16 +140,11 @@ void createMonster(GLfloat x, GLfloat z, int type){
 				monsters[i]->setIndex(i);		//have monster keep track of his own index in monsters array
 				break;
 			}
+        }
 	}
 }
 
-void monsterDeath(Monster*m){
-	if(m!=NULL){
-		monsters[m->getIndex()]=NULL;
-		//Mix_PlayChannel (-1, mDeath, 0);
-	}
-}
-
+//Moves Monster Towards Player Based on player position
 void monsterAI(){
 	for(int i = 0; i < 10; i++){
 		if(monsters[i] != NULL){
@@ -124,7 +163,7 @@ void monsterAI(){
 			else if(Mz>Pz)	monsters[i]->setZ(Mz-Ms);
             monsters[i]->setY(Py);
             
-            //Player Take Damage Range and Invincable Time
+            //Player Take Damage Range and Invinciblity Time
             if(Mx < Px+0.2 && Mx > Px-0.2 && Mz < Pz+0.2 && Mz > Pz-0.2){
                 if (currentTime > hitTime + 2000) {
                     player->setHealth(monsters[i]->getDamage());
@@ -133,6 +172,14 @@ void monsterAI(){
             }
 		}
 	}
+}
+
+
+void monsterDeath(Monster*m){
+    if(m != NULL){
+        monsters[m->getIndex()]=NULL;
+        //Mix_PlayChannel (-1, mDeath, 0);
+    }
 }
 
 void shoot(){
@@ -213,32 +260,12 @@ bool checkBulletCollision(GLfloat x,GLfloat z){
 	return false; //nothing hit
 }
 
-void draw(const Uint8* keyState){
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Clear The Screen And The Depth Buffer
-    glColor4f( 1.0f, 1.0f, 1.0f, 0.0f);
-    glLoadIdentity();
-    
-	if(m) drawMenu(keyState);
-    if(!m){
-        monsterAI();
-		player->draw();
-        for(int i = 0; i < 10; i++){
-            if(monsters[i] != NULL){
-                monsters[i]->draw();
-            }
-        }
-		drawWorld(window);
-	}
-	SDL_GL_SwapWindow(window);
-}
-
+//Sends Score to a .txt File
 void outputScore(){
-    string name = "GOD";
+    string name = "Batman";
     int score =  player->getScore();
     
-    char x[50];
-    sprintf(x, "%s: %d\n", name.c_str(), score);
-    string out = x;
+    string out = name + ": " + to_string(score);
     
     ofstream f;
     f.open ("highscore.txt", std::ios_base::app);

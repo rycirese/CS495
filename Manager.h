@@ -1,3 +1,5 @@
+//JOE BONINO & RYAN CIRESE
+//Manager Header File
 #ifndef _Manager_
 #define _Manager_
 #include "Common.h"
@@ -7,34 +9,33 @@
 #include "Monster.h"
 #include "Gun.h"
 
+//Global
 bool done;
-bool canShoot;
 SDL_Window *window;
 Player *player;
+bool canShoot;
 bool m;
 int currentTime;
-int shotTime;
 int hitTime;
-
+int spawnTime;
 
 //monster stuff
 Monster *monsters[10];
 int totalMonsters=0;
 Mix_Chunk *mDeath;
 
+//Methods
+void ALLSYSTEMSGO();
 int main (int argc, char **argv);
-
+void draw(const Uint8* keyState);
+void spawnMonsters();
 void createMonster(GLfloat x, GLfloat z, int type);
-void monsterDeath(Monster*m);
 void monsterAI();
+void monsterDeath(Monster*m);
 void shoot();
 bool checkBulletCollision(GLfloat x,GLfloat z);
-void ALLSYSTEMSGO();
-void draw(const Uint8* keyState);
 void outputScore();
 void reset();
-
-
 
 #endif
 
