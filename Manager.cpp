@@ -49,7 +49,7 @@ void ALLSYSTEMSGO(){
 }
 
 int main(int argc, char **argv){
-    srand (time(NULL));
+    srand(time(NULL));
     ALLSYSTEMSGO(); //Sets Everything Up
     SDL_Event event;
     
@@ -197,7 +197,6 @@ void monsterDeath(Monster*m){
 }
 
 void shoot(){
-    cout << "SHOOTING" << endl;
 
 	//this method will fire a bullet from where ever player is in the players rotation.
 	//it will create a right triangle with players position as 0,0 and angle equivalent to players rotation.
@@ -283,13 +282,16 @@ bool checkBulletCollision(GLfloat x,GLfloat z){
 	//x and z are cord to bullet
 	//return true if hit, including wall, and false if nothing hit yet
 	for(int i=0;i<10;i++){
-		if(x>10||x<-10||z>10||z<-10) 
+        cout << "" << x << " and " << z << endl;
+        if(x>10||x<-10||z>10||z<-10) {
+            //cout << "OUT OF BOUNDS" << endl;
 			return true; //bullet is out of bounds
+        }
 		if(monsters[i]!=NULL){
 			GLfloat xCol = abs(monsters[i]->getX()-x);
-			GLfloat yCol = abs(monsters[i]->getZ()-z);
+			GLfloat zCol = abs(monsters[i]->getZ()-z);
 			//if bullet within 0.2 and 0.2 away from monster
-			if(xCol < 0.2 && yCol < 0.2){
+			if( xCol < 0.2 && zCol < 0.2){
    				monsters[i]->setHealth(monsters[i]->getHealth()-1);
 				if(monsters[i]->getHealth()<1) monsterDeath(monsters[i]); //kill monster if health 0 or below
                 cout << "monster " << i << " hit" << endl;

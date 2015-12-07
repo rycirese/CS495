@@ -28,7 +28,7 @@ void initWorld(){
     
 	Mix_OpenAudio (44100,MIX_DEFAULT_FORMAT,2,2048);
 	worldMusic = Mix_LoadWAV("data/sounds/music/doom.wav");
-	//Mix_PlayChannel (-1,worldMusic,0);
+	Mix_PlayChannel (-1,worldMusic,0);
     //Load in the texture
     LoadGLTextures();
     glEnable(GL_TEXTURE_2D); //Enable Texture Mapping
