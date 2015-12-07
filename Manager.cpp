@@ -130,8 +130,8 @@ void shoot(){
 	GLfloat originX=player->xpos;
 	GLfloat originZ=player->zpos;
 
-	GLfloat adjz=0;
-	GLfloat oppx=0;
+	GLfloat adjz=0; //adjacent side of right triangle/ refers to z on game
+	GLfloat oppx=0; //opposite side of right triangle. refers to x on game
 
 	GLfloat acc=0.2; //accuracy. smaller is more accurate
 	bool hit=false;
@@ -140,7 +140,7 @@ void shoot(){
 	if(angle<0) angle+=360; //define angle as always positive and 0 < angle < 360
 	
 	//	-X , -Z
-	else if(angle>0&&angle<90){
+	else if(angle>=0&&angle<90){
 		while(!hit){
 			adjz -= acc; //z
 			oppx = -(-adjz*(tan(angle*DEG_TO_RAD))); //x
