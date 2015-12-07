@@ -26,9 +26,10 @@ Monster * Monster::getLightMonster(){
 	//set class variables
 	name="light";
 	speed=0.01;
-	health=1;
+	health=2;
 	damage=1;
 	height=0.5;
+	bounceBack=0.5;
 
 	//texture belongs to monster
 	TI[0] = IMG_Load ("data/textures/monsters/light.png");
@@ -43,9 +44,10 @@ Monster * Monster::getLightMonster(){
 Monster * Monster::getMediumMonster(){
 	name="medium";
 	speed=0.015;
-	health=2;
+	health=3;
 	damage=5;
-	height=0.5;
+	height=0.4;
+	bounceBack=0.3;
 	//texture belongs to monster
 	TI[0] = IMG_Load ("data/textures/monsters/med.png");
 	glGenTextures (3,&monsterTex[0]);
@@ -63,6 +65,7 @@ Monster * Monster::getHeavyMonster(){
 	health=4;
 	damage=10;
 	height=0.5;
+	bounceBack=0.2;
 
 	TI[0] = IMG_Load ("data/textures/monsters/heavy.png");
 	glGenTextures (3,&monsterTex[0]);
@@ -75,10 +78,11 @@ Monster * Monster::getHeavyMonster(){
 }
 Monster * Monster::getPatriarchMonster(){
 	name="patriarch";
-	speed=0.00;
+	speed=0.008;
 	health=8;
 	damage=25;
 	height=0.5;
+	bounceBack=0.05;
 
 	TI[0] = IMG_Load ("data/textures/monsters/patriarch.png");
 	glGenTextures (3,&monsterTex[0]);

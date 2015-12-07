@@ -42,10 +42,10 @@ void ALLSYSTEMSGO(){
     player = new Player();
     
     //Create 4 Initial Monsters
-    //createMonster( 5, -5, 1);
-    //createMonster(-5, -5, 2);
-    //createMonster( 5,  5, 3);
-    createMonster(-1,  0, 4);
+    createMonster( 5, -5, 1);
+    createMonster(-5, -5, 2);
+    createMonster( 5,  5, 3);
+    createMonster(-5,  5, 4);
 }
 
 int main(int argc, char **argv){
@@ -98,6 +98,7 @@ int main(int argc, char **argv){
                 break;
             }
         }
+
         //if(!gettingName) spawnMonsters();
         draw(keyState); //Draws Everything
     }
@@ -189,13 +190,6 @@ void monsterAI(){
 	}
 }
 
-void monsterDeath(Monster*m){
-    if(m != NULL){
-        monsters[m->getIndex()]=NULL;
-        //Mix_PlayChannel (-1, mDeath, 0);
-    }
-}
-
 void shoot(){
 
 	//this method will fire a bullet from where ever player is in the players rotation.
@@ -206,7 +200,6 @@ void shoot(){
 	int angle=player->yrot; //temp of players/cameras rotation variable
 	GLfloat originX=player->xpos;
 	GLfloat originZ=player->zpos;
-	angle=270;
 	GLfloat adjz=0; //adjacent side of right triangle/ refers to z on game
 	GLfloat oppx=0; //opposite side of right triangle. refers to x on game
 
@@ -215,19 +208,6 @@ void shoot(){
 
 	angle=angle%360;
 	if(angle<0) angle+=360; //define angle as always positive and 0 < angle < 360
-	
-	//if(angle==180){
-	//	while(!hit){
-	//		adjz -= acc; //z
-	//		hit = checkBulletCollision(oppx+originX,adjz+originZ);
-	//	}
-	//}
-	//if(angle==270){
-	//	while(!hit){
-	//		adjz -= acc; //z
-	//		hit = checkBulletCollision(oppx+originX,adjz+originZ);
-	//	}
-	//}
 
 	//	-X , -Z
 	if(angle>=0&&angle<90){
@@ -293,8 +273,15 @@ bool checkBulletCollision(GLfloat x,GLfloat z){
 			//if bullet within 0.2 and 0.2 away from monster
 			if( xCol < 0.2 && zCol < 0.2){
    				monsters[i]->setHealth(monsters[i]->getHealth()-1);
-				if(monsters[i]->getHealth()<1) monsterDeath(monsters[i]); //kill monster if health 0 or below
-                cout << "monster " << i << " hit" << endl;
+				if(monsters[i]->getHealth()<1){
+					monsters[i]=NULL; //kill monster if health 0 or below
+					mDeath = Mix_LoadWAV("data/sounds/monster/death.wav");
+					Mix_PlayChannel (-1,mDeath,0);
+				}else{
+					//mDeath = Mix_LoadWAV("data/sounds/monster/death.wav"); hurt noise
+					//Mix_PlayChannel (-1,mDeath,0);
+				}
+				
 				return true; //hit!!
 			}
 		}

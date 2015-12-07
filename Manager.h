@@ -33,7 +33,6 @@ void draw(const Uint8* keyState);
 void spawnMonsters();
 void createMonster(GLfloat x, GLfloat z, int type);
 void monsterAI();
-void monsterDeath(Monster*m);
 void shoot();
 bool checkBulletCollision(GLfloat x,GLfloat z);
 void outputScore();
