@@ -81,6 +81,7 @@ int main(int argc, char **argv){
                         }
                     }
                 }
+                
                 if(!gettingName && event.key.keysym.sym == SDLK_SPACE){
                     if(canShoot) shoot();
                     canShoot = false;
@@ -98,7 +99,7 @@ int main(int argc, char **argv){
             }
         }
 
-        if(!gettingName) spawnMonsters();
+        //if(!gettingName) spawnMonsters();
         draw(keyState); //Draws Everything
     }
     return 0;
@@ -190,6 +191,7 @@ void monsterAI(){
 }
 
 void shoot(){
+    cout << "SHOOTING" << endl;
 
 	//this method will fire a bullet from where ever player is in the players rotation.
 	//it will create a right triangle with players position as 0,0 and angle equivalent to players rotation.
@@ -275,7 +277,7 @@ bool checkBulletCollision(GLfloat x,GLfloat z){
 					Mix_PlayChannel (-1,mDeath,0);
 				}else{
 					//mDeath = Mix_LoadWAV("data/sounds/monster/death.wav"); hurt noise
-					Mix_PlayChannel (-1,mDeath,0);
+					//Mix_PlayChannel (-1,mDeath,0);
 				}
 				
 				return true; //hit!!
