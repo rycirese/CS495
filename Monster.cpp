@@ -75,7 +75,7 @@ Monster * Monster::getHeavyMonster(){
 }
 Monster * Monster::getPatriarchMonster(){
 	name="patriarch";
-	speed=0.008;
+	speed=0.00;
 	health=8;
 	damage=25;
 	height=0.5;
