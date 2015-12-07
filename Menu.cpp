@@ -77,10 +77,10 @@ void highscores(){
     f.open("highscore.txt");
     if(f.is_open()){
         for(int i = 0; i < 5; i++){
-            getline (f, line);
-            y = y - 40;
-            cout << y << endl;
-            glRenderText(font2, 0, 0, 0, 365, y, line);
+            if(getline (f, line)){
+                y = y - 40;
+                glRenderText(font2, 0, 0, 0, 365, y, line);
+            }
         }
         f.close();
     }
