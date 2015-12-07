@@ -31,7 +31,6 @@ public:
     bool getFired();
     int getScore();
     int getHealth();
-	bool getFired();
 	GLfloat getX();
 	GLfloat getZ();
 	GLfloat getY();

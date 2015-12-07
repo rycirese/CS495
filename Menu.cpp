@@ -69,7 +69,22 @@ void controls(){
 }
 
 void highscores(){
-    glRenderText(font, 0, 0, 0, 500, 450, "Highscores");
+    glRenderText(font, 0, 0, 0, 410, 450, "Highscores (Last 5)");
+    
+    int y = 450;
+    string line;
+    ifstream f;
+    f.open("highscore.txt");
+    if(f.is_open()){
+        for(int i = 0; i < 5; i++){
+            getline (f, line);
+            y = y - 40;
+            cout << y << endl;
+            glRenderText(font2, 0, 0, 0, 365, y, line);
+        }
+        f.close();
+    }
+    
     glRenderText(font2, 0, 0, 0, 50, 50, "'M' - Menu");
     glRenderText(font2, 0, 0, 0, 250, 50, "'S' - Start");
     glRenderText(font2, 0, 0, 0, 430, 50, "'H' - Highscores");

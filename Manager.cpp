@@ -17,6 +17,7 @@ int main(int argc, char **argv){
     while(!done){
         currentTime = SDL_GetTicks();
         if(player->getHealth() <= 0){
+            outputScore();
             reset();
             ALLSYSTEMSGO(); //Reset if Player DIES
         }
@@ -33,20 +34,13 @@ int main(int argc, char **argv){
                 break;
             }
         }
-        
-        if(currentTime > shotTime + 50){
-            if(player->getFired()) shoot();
-            player->setFired(false);
-        }
-        
-        
-        monsterAI();
         draw(keyState); //Draws Everything
     }
     return 0;
 }
 
 void ALLSYSTEMSGO(){
+    SDL_Quit();
     done = false;
     SDL_Init(SDL_INIT_VIDEO);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
@@ -61,19 +55,17 @@ void ALLSYSTEMSGO(){
     
     m = true; //Menu Mode is on (Loads Menu Not Game
     currentTime = 0;
-    shotTime = 0;
     hitTime = 0;
     for(int i=0;i<10;i++) monsters[i] = NULL;
     
     genWorld();
     genMenu();
     player = new Player();
-
     
 //	createMonster(2,-5,1);
 //	createMonster(1,-5,2);
 //	createMonster(0,-5,3);
-//	createMonster(2,-5,4);
+	createMonster(2,-5,4);
 }
 
 void createMonster(GLfloat x, GLfloat z, int type){
@@ -182,7 +174,7 @@ void shoot(){
 }
 
 bool checkBulletCollision(GLfloat x,GLfloat z){
-	for(int i=0;i++;i<10){
+    for(int i=0; i<10; i++){
 		if(x>10||x<-10||z>10||z<-10) break; //bullet is out of bounds
 		if(monsters[i]!=NULL){
 			GLfloat xCol = (monsters[i]->getX()-x);
@@ -192,7 +184,6 @@ bool checkBulletCollision(GLfloat x,GLfloat z){
 				monsters[i]->setHealth(monsters[i]->getHealth()-1);
 				if(monsters[i]->getHealth()<1) monsterDeath(monsters[i]); //kill monster if health 0 or below
 				return true; //hit!!
-                cout << "HIT" << endl;
 			}
 		}
 	}
@@ -206,6 +197,7 @@ void draw(const Uint8* keyState){
     
 	if(m) drawMenu(keyState);
     if(!m){
+        monsterAI();
 		player->draw();
         for(int i = 0; i < 10; i++){
             if(monsters[i] != NULL){
@@ -215,6 +207,20 @@ void draw(const Uint8* keyState){
 		drawWorld(window);
 	}
 	SDL_GL_SwapWindow(window);
+}
+
+void outputScore(){
+    string name = "GOD";
+    int score =  player->getScore();
+    
+    char* x;
+    sprintf(x, "%s scored: %d\r\n", name.c_str(), score);
+    string out = x;
+    
+    ofstream f;
+    f.open ("highscore.txt", std::ios_base::app);
+    f << out;
+    f.close();
 }
 
 void reset(){
