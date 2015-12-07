@@ -180,8 +180,7 @@ void drawWorld(SDL_Window *window){
 }
 
 //Function to release/destroy our resources and restoring the old desktop
-void quitWorld(){
-    SDL_Quit(); //Clean Up the wWndow
+void resetWorld(){
+    Mix_CloseAudio();
     if(sector1.triangle) free(sector1.triangle); //Deallocates allocated space
-    exit(0); //Exit
 }

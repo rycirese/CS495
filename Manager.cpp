@@ -11,8 +11,35 @@
 #include "Manager.h"
 
 int main(int argc, char **argv){
-    bool done = false;
+    ALLSYSTEMSGO(); //Sets Everything Up
     SDL_Event event;
+    
+    while(!done){
+        if(player->getHealth() <= 0){
+            reset();
+            ALLSYSTEMSGO(); //Reset if Player DIES
+        }
+        const Uint8* keyState = SDL_GetKeyboardState(NULL); //Record Keystate
+        if(!m) player->control(keyState); //Manage Player Controls
+        if(keyState[SDL_SCANCODE_S]) m = false; //Turn Menu Mode Off (Start Game)
+        if(keyState[SDL_SCANCODE_Q]){ done = true; reset(); SDL_Quit(); exit(0); break; }
+        while(SDL_PollEvent(&event)){
+            if(event.type == SDL_QUIT){ //Closes Everything Appropriately
+                done = true;
+                reset();
+                SDL_Quit();
+                exit(0);
+                break;
+            }
+        }
+        monsterAI();
+        draw(keyState); //Draws Everything
+    }
+    return 0;
+}
+
+void ALLSYSTEMSGO(){
+    done = false;
     SDL_Init(SDL_INIT_VIDEO);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
@@ -24,36 +51,18 @@ int main(int argc, char **argv){
     glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_ALPHA);
     TTF_Init();
     
-    ALLSYSTEMSGO(); //Sets Everything Up
-
     m = true; //Menu Mode is on (Loads Menu Not Game
     currentTime = 0;
     hitTime = 0;
-    while(!done){
-        const Uint8* keyState = SDL_GetKeyboardState(NULL); //Record Keystate
-        if(!m) player->control(keyState); //Manage Player Controls
-        if(keyState[SDL_SCANCODE_S]) m = false; //Turn Menu Mode Off (Start Game)
-        if(keyState[SDL_SCANCODE_Q]){ done = true; quit(); break; }
-        while(SDL_PollEvent(&event)){
-            if(event.type == SDL_QUIT){ //Closes Everything Appropriately
-                done = true;
-                quit();
-                break;
-            }
-        }
-        monsterAI();
-        draw(keyState); //Draws Everything
-    }
-    return 0;
-}
-
-void ALLSYSTEMSGO(){
+    for(int i=0;i<10;i++) monsters[i] = NULL;
+    
     genWorld();
     genMenu();
     player = new Player();
-	createMonster(2,-5,1);
-	createMonster(1,-5,2);
-	createMonster(0,-5,3);
+    
+//	createMonster(2,-5,1);
+//	createMonster(1,-5,2);
+//	createMonster(0,-5,3);
 	createMonster(2,-5,4);
 }
 
@@ -103,7 +112,7 @@ void monsterAI(){
             monsters[i]->setY(Py);
             
             //Player Take Damage Range and Invincable Time
-            if(Mx < Px+0.05 && Mx > Px-0.05 && Mz < Pz+0.05 && Mz > Pz-0.05){
+            if(Mx < Px+0.2 && Mx > Px-0.2 && Mz < Pz+0.2 && Mz > Pz-0.2){
                 currentTime = SDL_GetTicks();
                 if (currentTime > hitTime + 2000) {
                     player->setHealth(monsters[i]->getDamage());
@@ -132,6 +141,6 @@ void draw(const Uint8* keyState){
 	SDL_GL_SwapWindow(window);
 }
 
-void quit(){
-    quitWorld();
+void reset(){
+    resetWorld();
 }

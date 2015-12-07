@@ -28,11 +28,13 @@ public:
 	void shoot();
 
     int getScore();
-    void setHealth(int diff);
-    
+    int getHealth();
 	GLfloat getX();
 	GLfloat getZ();
 	GLfloat getY();
+    
+    void setScore(int diff);
+    void setHealth(int diff);
 private:
 };
 

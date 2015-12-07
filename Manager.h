@@ -7,6 +7,7 @@
 #include "Monster.h"
 #include "Gun.h"
 
+bool done;
 SDL_Window *window;
 Player *player;
 bool m;
@@ -26,7 +27,7 @@ void monsterDeath(Monster*m);
 void monsterAI();
 void ALLSYSTEMSGO();
 void draw(const Uint8* keyState);
-void quit();
+void reset();
 
 
 
