@@ -10,6 +10,7 @@ private:
 	GLfloat speed;
 	int health;
 	int damage;
+	GLfloat bounceBack;
 
 	int index;
 

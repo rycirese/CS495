@@ -40,10 +40,10 @@ void ALLSYSTEMSGO(){
     player = new Player();
     
     //Create 4 Initial Monsters
-    //createMonster( 5, -5, 1);
-    //createMonster(-5, -5, 2);
-    //createMonster( 5,  5, 3);
-    createMonster(-1,  0, 4);
+    createMonster( 5, -5, 1);
+    createMonster(-5, -5, 2);
+    createMonster( 5,  5, 3);
+    createMonster(-5,  5, 4);
 }
 
 int main(int argc, char **argv){
@@ -84,7 +84,7 @@ int main(int argc, char **argv){
                 break;
             }
         }
-        //spawnMonsters();
+        spawnMonsters();
         draw(keyState); //Draws Everything
     }
     return 0;
@@ -175,13 +175,6 @@ void monsterAI(){
 	}
 }
 
-void monsterDeath(Monster*m){
-    if(m != NULL){
-        monsters[m->getIndex()]=NULL;
-        //Mix_PlayChannel (-1, mDeath, 0);
-    }
-}
-
 void shoot(){
 
 	//this method will fire a bullet from where ever player is in the players rotation.
@@ -262,8 +255,15 @@ bool checkBulletCollision(GLfloat x,GLfloat z){
 			//if bullet within 0.2 and 0.2 away from monster
 			if(xCol < 0.2 && yCol < 0.2){
    				monsters[i]->setHealth(monsters[i]->getHealth()-1);
-				if(monsters[i]->getHealth()<1) monsterDeath(monsters[i]); //kill monster if health 0 or below
-                cout << "monster " << i << " hit" << endl;
+				if(monsters[i]->getHealth()<1){
+					monsters[i]=NULL; //kill monster if health 0 or below
+					mDeath = Mix_LoadWAV("data/sounds/monster/death.wav");
+					Mix_PlayChannel (-1,mDeath,0);
+				}else{
+					//mDeath = Mix_LoadWAV("data/sounds/monster/death.wav"); hurt noise
+					Mix_PlayChannel (-1,mDeath,0);
+				}
+				
 				return true; //hit!!
 			}
 		}
