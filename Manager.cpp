@@ -27,6 +27,8 @@ int main(int argc, char **argv){
     ALLSYSTEMSGO(); //Sets Everything Up
 
     m = true; //Menu Mode is on (Loads Menu Not Game
+    currentTime = 0;
+    hitTime = 0;
     while(!done){
         const Uint8* keyState = SDL_GetKeyboardState(NULL); //Record Keystate
         if(!m) player->control(keyState); //Manage Player Controls
@@ -39,6 +41,7 @@ int main(int argc, char **argv){
                 break;
             }
         }
+        monsterAI();
         draw(keyState); //Draws Everything
     }
     return 0;
@@ -77,30 +80,36 @@ void createMonster(GLfloat x, GLfloat z, int type){
 void monsterDeath(Monster*m){
 	if(m!=NULL){
 		monsters[m->getIndex()]=NULL;
-		//Mix_PlayChannel (-1,mDeath,0);
+		//Mix_PlayChannel (-1, mDeath, 0);
 	}
 }
 
 void monsterAI(){
-	for(int i=0;i<10;i++){
-		if(monsters[i]!=NULL){
-			//all this gibberish just says moves monster towards player and draws
-			// if ( MONSTERS_X < PLAYERS_X ) MONSTERS_X += MONSTERS_SPEED
-			// else MONSTERS_X -= MONSTERS_SPEED
+	for(int i = 0; i < 10; i++){
+		if(monsters[i] != NULL){
+			//Get Monster and Player Position Values
 			GLfloat Mx=monsters[i]->getX();
 			GLfloat Mz=monsters[i]->getZ();
 			GLfloat Ms=monsters[i]->getSpeed();
-            
 			GLfloat Px=player->getX();
 			GLfloat Pz=player->getZ();
             GLfloat Py=player->getY();
-
+            
+            //Move Monster Towards Player
 			if(Mx<Px)		monsters[i]->setX(Mx+Ms);
 			else if(Mx>Px)	monsters[i]->setX(Mx-Ms);
 			if(Mz<Pz)		monsters[i]->setZ(Mz+Ms);
 			else if(Mz>Pz)	monsters[i]->setZ(Mz-Ms);
             monsters[i]->setY(Py);
-			monsters[i]->draw();
+            
+            //Player Take Damage Range and Invincable Time
+            if(Mx < Px+0.05 && Mx > Px-0.05 && Mz < Pz+0.05 && Mz > Pz-0.05){
+                currentTime = SDL_GetTicks();
+                if (currentTime > hitTime + 2000) {
+                    player->setHealth(monsters[i]->getDamage());
+                    hitTime = currentTime;
+                }
+            }
 		}
 	}
 }
@@ -113,7 +122,11 @@ void draw(const Uint8* keyState){
 	if(m) drawMenu(keyState);
     if(!m){
 		player->draw();
-		monsterAI();
+        for(int i = 0; i < 10; i++){
+            if(monsters[i] != NULL){
+                monsters[i]->draw();
+            }
+        }
 		drawWorld(window);
 	}
 	SDL_GL_SwapWindow(window);

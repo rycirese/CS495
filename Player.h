@@ -27,6 +27,9 @@ public:
     void check();
 	void shoot();
 
+    int getScore();
+    void setHealth(int diff);
+    
 	GLfloat getX();
 	GLfloat getZ();
 	GLfloat getY();

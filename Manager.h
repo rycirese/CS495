@@ -10,6 +10,9 @@
 SDL_Window *window;
 Player *player;
 bool m;
+int currentTime;
+int hitTime;
+
 
 //monster stuff
 Monster *monsters[10];
