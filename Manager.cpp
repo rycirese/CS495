@@ -64,7 +64,7 @@ void ALLSYSTEMSGO(){
 //	createMonster(2,-5,1);
 //	createMonster(1,-5,2);
 //	createMonster(0,-5,3);
-	createMonster(2,-5,4);
+//	createMonster(2,-5,4);
 }
 
 void createMonster(GLfloat x, GLfloat z, int type){
@@ -135,26 +135,17 @@ void shoot(){
 	angle=angle%360;
 	if(angle<0) angle+=360; //define angle as always positive and 0 < angle < 360
 	
-	//	-X , +Z
+	//	-X , -Z
 	if(angle>0&&angle<90){
 		while(!hit){
-			adjacent+=acc; //z
-			opposite = -(adjacent*(tan(angle*DEG_TO_RAD))); //x
+			adjacent-=acc; //z
+			opposite = -(-adjacent*(tan(angle*DEG_TO_RAD))); //x
 			hit = checkBulletCollision(opposite,adjacent);
 		}
 	}
-	//	-X , -Z
+	//	-X , +Z
 	if(angle>90&&angle<180){
 		angle-=90;
-		while(!hit){
-			adjacent-=acc; //z
-			opposite = -((-adjacent)*(tan(angle*DEG_TO_RAD))); //x
-			hit = checkBulletCollision(opposite,adjacent);
-		}
-	}
-	//	+X , -Z
-	if(angle>180&&angle<270){
-		angle-=180;
 		while(!hit){
 			adjacent-=acc; //z
 			opposite = (-adjacent)*(tan(angle*DEG_TO_RAD)); //x
@@ -162,11 +153,20 @@ void shoot(){
 		}
 	}
 	//	+X , +Z
+	if(angle>180&&angle<270){
+		angle-=180;
+		while(!hit){
+			adjacent+=acc; //z
+			opposite = (adjacent)*(tan(angle*DEG_TO_RAD)); //x
+			hit = checkBulletCollision(opposite,adjacent);
+		}
+	}
+	//	+X , -Z
 	if(angle>90&&angle<180){
 		angle-=270;
 		while(!hit){
 			adjacent+=acc; //z
-			opposite = (-adjacent)*(tan(angle*DEG_TO_RAD)); //x
+			opposite = -((adjacent)*(tan(angle*DEG_TO_RAD))); //x
 			hit = checkBulletCollision(opposite,adjacent);
 		}
 	}

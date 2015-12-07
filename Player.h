@@ -16,7 +16,6 @@ public:
     GLfloat lookupdown;
     bool fired;
 
-    
     int score;
     int health;
     
@@ -29,6 +28,7 @@ public:
 
     int getScore();
     int getHealth();
+	bool getFired();
 	GLfloat getX();
 	GLfloat getZ();
 	GLfloat getY();

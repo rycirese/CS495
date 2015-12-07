@@ -90,6 +90,7 @@ Monster * Monster::getPatriarchMonster(){
 	return this;
 }
 
+//getters
 string Monster::getName(){return name;}
 GLfloat Monster::getSpeed(){return speed;}
 int Monster::getHealth(){return health;}
@@ -98,7 +99,7 @@ GLfloat Monster::getX(){return xpos;}
 GLfloat Monster::getY(){return yrot;}
 GLfloat Monster::getZ(){return zpos;}
 int Monster::getIndex(){return index;}
-
+//setters
 void Monster::setIndex(int i){index=i;}
 void Monster::setX(GLfloat x){xpos=x;}
 void Monster::setZ(GLfloat z){zpos=z;}
