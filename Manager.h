@@ -21,6 +21,8 @@ int main (int argc, char **argv);
 void createMonster(GLfloat x, GLfloat z, int type);
 void monsterDeath(Monster*m);
 void monsterAI();
+void shoot();
+bool checkBulletCollision(GLfloat x,GLfloat z);
 void ALLSYSTEMSGO();
 void draw(const Uint8* keyState);
 void quit();

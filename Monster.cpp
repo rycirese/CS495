@@ -105,3 +105,4 @@ void Monster::setIndex(int i){index=i;}
 void Monster::setX(GLfloat x){xpos=x;}
 void Monster::setZ(GLfloat z){zpos=z;}
 void Monster::setY(GLfloat y){yrot=y;}
+void Monster::setHealth(int h){health=h;}

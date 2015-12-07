@@ -11,6 +11,7 @@ Player::Player(){
     font = TTF_OpenFont("data/fonts/Arial.ttf", 50);
     score = 0;
     health = 100;
+	fired=false;
 
 	xpos = zpos = yrot = 0;
     
@@ -66,7 +67,13 @@ void Player::control(const Uint8* keyState){
         xpos += (float)sin((yrot+90)*DEG_TO_RAD)*0.05f;
         zpos += (float)cos((yrot+90)*DEG_TO_RAD)*0.05f;
 	}
-    if(keyState[SDL_SCANCODE_SPACE]) fired = true;
+    if(keyState[SDL_SCANCODE_SPACE])
+		if(!fired){
+			fired=true;
+			//shoot();
+			//wait some amount of time
+			fired=false;
+		}
 }
 
 void Player::draw(){
@@ -109,10 +116,6 @@ void Player::check(){
     if(xpos < -9.74) xpos = -9.74;
     if(zpos >  9.74) zpos =  9.74;
     if(zpos < -9.74) zpos = -9.74;
-}
-
-void Player::shoot(){
-
 }
 
 GLfloat Player::getX(){return xpos;}

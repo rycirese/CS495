@@ -40,6 +40,7 @@ public:
 	void setIndex(int i);
 	void setX(GLfloat x);
 	void setZ(GLfloat z);
+	void setHealth(int h);
 };
 
 #endif

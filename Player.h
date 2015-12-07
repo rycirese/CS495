@@ -1,6 +1,7 @@
 #ifndef _Player_
 #define _Player_
 #include "Common.h"
+//#include "Manager.h"
 
 class Player{
 public:
@@ -25,7 +26,6 @@ public:
     void draw();
     void drawHUD();
     void check();
-	void shoot();
 
 	GLfloat getX();
 	GLfloat getZ();

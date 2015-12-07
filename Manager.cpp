@@ -48,10 +48,10 @@ void ALLSYSTEMSGO(){
     genWorld();
     genMenu();
     player = new Player();
-	createMonster(2,-5,1);
-	createMonster(1,-5,2);
-	createMonster(0,-5,3);
-	createMonster(2,-5,4);
+	//createMonster(2,-5,1);
+	//createMonster(1,-5,2);
+	//createMonster(0,-5,3);
+	//createMonster(2,-5,4);
 }
 
 void createMonster(GLfloat x, GLfloat z, int type){
@@ -103,6 +103,71 @@ void monsterAI(){
 			monsters[i]->draw();
 		}
 	}
+}
+
+void shoot(){
+	const float DEG_TO_RAD = 0.0174532925f;
+	int angle=player->yrot; //temp of players/cameras rotation variable
+	GLfloat opposite=0;
+	GLfloat adjacent=0;
+	GLfloat acc=0.1; //accuracy. smaller is more accurate
+	bool hit=false;
+
+	angle=angle%360;
+	if(angle<0) angle+=360; //define angle as always positive and 0 < angle < 360
+	
+	//	-X , +Z
+	if(angle>0&&angle<90){
+		while(!hit){
+			adjacent+=acc; //z
+			opposite = -(adjacent*(tan(angle*DEG_TO_RAD))); //x
+			hit = checkBulletCollision(opposite,adjacent);
+		}
+	}
+	//	-X , -Z
+	if(angle>90&&angle<180){
+		angle-=90;
+		while(!hit){
+			adjacent-=acc; //z
+			opposite = -((-adjacent)*(tan(angle*DEG_TO_RAD))); //x
+			hit = checkBulletCollision(opposite,adjacent);
+		}
+	}
+	//	+X , -Z
+	if(angle>180&&angle<270){
+		angle-=180;
+		while(!hit){
+			adjacent-=acc; //z
+			opposite = (-adjacent)*(tan(angle*DEG_TO_RAD)); //x
+			hit = checkBulletCollision(opposite,adjacent);
+		}
+	}
+	//	+X , +Z
+	if(angle>90&&angle<180){
+		angle-=270;
+		while(!hit){
+			adjacent+=acc; //z
+			opposite = (-adjacent)*(tan(angle*DEG_TO_RAD)); //x
+			hit = checkBulletCollision(opposite,adjacent);
+		}
+	}
+}
+
+bool checkBulletCollision(GLfloat x,GLfloat z){
+	for(int i=0;i++;i<10){
+		if(x>10||x<-10||z>10||z<-10) break; //bullet is out of bounds
+		if(monsters[i]!=NULL){
+			GLfloat xCol = (monsters[i]->getX()-x);
+			GLfloat yCol = (monsters[i]->getZ()-z);
+			//if bullet within 0.25 and 0.25
+			if(xCol<0.25&&yCol<0.25){
+				monsters[i]->setHealth(monsters[i]->getHealth()-1);
+				if(monsters[i]->getHealth()<1) monsterDeath(monsters[i]); //kill monster if health 0 or below
+				return true; //hit!!
+			}
+		}
+	}
+	return false; //nothing hit
 }
 
 void draw(const Uint8* keyState){
