@@ -8,6 +8,7 @@
 #include "Gun.h"
 
 bool done;
+bool canShoot;
 SDL_Window *window;
 Player *player;
 bool m;

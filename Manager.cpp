@@ -27,7 +27,13 @@ int main(int argc, char **argv){
         if(keyState[SDL_SCANCODE_Q]){ done = true; reset(); SDL_Quit(); exit(0); break; }
         while(SDL_PollEvent(&event)){
             if(event.type == SDL_KEYDOWN) {
-                if(event.key.keysym.sym == SDLK_SPACE){ shoot(); }
+                if(event.key.keysym.sym == SDLK_SPACE){
+                    if(canShoot) shoot();
+                    canShoot = false;
+                }
+            }
+            if(event.type == SDL_KEYUP) {
+                if(event.key.keysym.sym == SDLK_SPACE){ canShoot = true; }
             }
             if(event.type == SDL_QUIT){ //Closes Everything Appropriately
                 done = true;
@@ -57,7 +63,8 @@ void ALLSYSTEMSGO(){
     glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_ALPHA);
     TTF_Init();
     
-    m = true; //Menu Mode is on (Loads Menu Not Game
+    m = true; //Menu Mode is on (Loads Menu Not Game)
+    canShoot = true;
     currentTime = 0;
     hitTime = 0;
     for(int i=0;i<10;i++) monsters[i] = NULL;
