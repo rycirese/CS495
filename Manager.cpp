@@ -27,6 +27,8 @@ void ALLSYSTEMSGO(){
     glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_ALPHA);
     TTF_Init();
     
+    inputText = "";
+    gettingName = true; //Get Name Mode (Loads Get Name Menu)
     m = true; //Menu Mode is on (Loads Menu Not Game)
     canShoot = true; //Flag Lock For Player Shooting
     currentTime = SDL_GetTicks(); //System Current Time, Used for Carious Timers
@@ -62,13 +64,24 @@ int main(int argc, char **argv){
         }
         
         //Handle Input
-        const Uint8* keyState = SDL_GetKeyboardState(NULL); //Record Keystate
+        const Uint8* keyState = SDL_GetKeyboardState(NULL); //Record Keystate;
         if(!m) player->control(keyState); //Manage Player Controls
-        if(keyState[SDL_SCANCODE_S]) m = false; //Turn Menu Mode Off (Start Game)
-        if(keyState[SDL_SCANCODE_Q]){ done = true; reset(); SDL_Quit(); exit(0); break; }
+        if(!gettingName && keyState[SDL_SCANCODE_S]) m = false; //Turn Menu Mode Off (Start Game)
+        if(!gettingName && keyState[SDL_SCANCODE_Q]){ done = true; reset(); SDL_Quit(); exit(0); break; }
         while(SDL_PollEvent(&event)){
-            if(event.type == SDL_KEYDOWN) {
-                if(event.key.keysym.sym == SDLK_SPACE){
+            if(event.type == SDL_KEYDOWN){
+                if(gettingName){
+                    if(event.key.keysym.sym == SDLK_RETURN) gettingName = false;
+                    if((event.key.keysym.sym == SDLK_BACKSPACE && inputText.length() > 0)){
+                        inputText.pop_back(); //Handle Backspace
+                    }
+                    if(gettingName && inputText.length() < 3){
+                        if(event.key.keysym.sym >= 97 && event.key.keysym.sym <= 122){
+                            inputText += (char)event.key.keysym.sym; //Append character
+                        }
+                    }
+                }
+                if(!gettingName && event.key.keysym.sym == SDLK_SPACE){
                     if(canShoot) shoot();
                     canShoot = false;
                 }
@@ -84,7 +97,8 @@ int main(int argc, char **argv){
                 break;
             }
         }
-        spawnMonsters();
+
+        if(!gettingName) spawnMonsters();
         draw(keyState); //Draws Everything
     }
     return 0;
@@ -97,8 +111,8 @@ void draw(const Uint8* keyState){
     glColor4f( 1.0f, 1.0f, 1.0f, 0.0f);
     glLoadIdentity();
     
-    if(m) drawMenu(keyState);
-    if(!m){
+    if(m) drawMenu(gettingName, inputText, keyState);
+    if(!gettingName && !m){
         monsterAI();
         player->draw();
         for(int i = 0; i < 10; i++){
@@ -273,10 +287,11 @@ bool checkBulletCollision(GLfloat x,GLfloat z){
 
 //Sends Score to a .txt File
 void outputScore(){
-    string name = "Batman";
+    //string name = "Batman";
     int score =  player->getScore();
+    if(inputText.length() == 0) inputText = "___";
     
-    string out = name + ": " + to_string(score) + "\n";
+    string out = inputText + ": " + to_string(score) + "\n";
     
     ofstream f;
     f.open ("highscore.txt", std::ios_base::app);

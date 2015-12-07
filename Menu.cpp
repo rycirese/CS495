@@ -33,7 +33,7 @@ void genMenu(){
 }
 
 //Draws Screen based On Menu Code
-void drawMenu(const Uint8* keyState){
+void drawMenu(bool gettingName, string inputText, const Uint8* keyState){
     glEnable2D();
     glColor3f(1, 1, 1);
     glBindTexture(GL_TEXTURE_2D, mTexture[0]);
@@ -46,14 +46,23 @@ void drawMenu(const Uint8* keyState){
     
     glColor3f(0, 0, 0);
     glRenderText(title, 0, 0, 0, 365, 560, "Monster Game");
-    if(keyState[SDL_SCANCODE_M]) menuCode = "menu";
-    if(menuCode == "menu") menu();
-    if(keyState[SDL_SCANCODE_H]) menuCode = "highscores";
-    if(menuCode == "highscores") highscores();
-    if(keyState[SDL_SCANCODE_C]) menuCode = "controls";
-    if(menuCode == "controls") controls();
+    if(gettingName) name(inputText);
+    if(!gettingName){
+        if(keyState[SDL_SCANCODE_M]) menuCode = "menu";
+        if(menuCode == "menu") menu();
+        if(keyState[SDL_SCANCODE_H]) menuCode = "highscores";
+        if(menuCode == "highscores") highscores();
+        if(keyState[SDL_SCANCODE_C]) menuCode = "controls";
+        if(menuCode == "controls") controls();
+    }
     
     glDisable2D();
+}
+
+void name(string inputText){
+    //cout << inputText << endl;
+    glRenderText(font, 0, 0, 0, 365, 450, "Enter 3 Initials and Hit Enter");
+    if(inputText.length() > 0) glRenderText(font2, 0, 0, 0, 400, 410, inputText);
 }
 
 //Draw Default Menu
@@ -93,7 +102,7 @@ void highscores(){
         for(int i = 0; i < 5; i++){
             if(getline (f, line)){
                 y = y - 40;
-                glRenderText(font2, 0, 0, 0, 365, y, line);
+                glRenderText(font2, 0, 0, 0, 410, y, line);
             }
         }
         f.close();
