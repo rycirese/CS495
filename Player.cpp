@@ -127,7 +127,7 @@ GLfloat Player::getX(){return xpos;}
 GLfloat Player::getZ(){return zpos;}
 GLfloat Player::getY(){return yrot;}
 
-//Setters
-void Player::setScore(int diff){ score = score+diff; }
-void Player::setHealth(int diff){ health = health-diff; }
+
 void Player::setGunTexIndex(int i){gunTexIndex=i;}//so manager can change gun texture
+void Player::addScore(int diff){ score = score+diff; }
+void Player::takeHealth(int diff){ health = health-diff; }

@@ -11,6 +11,7 @@ private:
 	int health;
 	int damage;
 	GLfloat bounceBack;
+    int points;
 
 	int index;
 
@@ -35,6 +36,7 @@ public:
 	int getHealth();
 	int getDamage();
 	int getIndex();
+    int getPoints();
 	GLfloat getX();
 	GLfloat getY();
 	GLfloat getZ(); 
