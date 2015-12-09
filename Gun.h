@@ -26,6 +26,7 @@ public:
 	int getFireRate();
 	int getClipSize();
 	int getRange();
+	string getSound();
 };
 
 #endif

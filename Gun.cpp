@@ -38,3 +38,4 @@ string Gun::getGunImage_fired(){return gunImage_fired;}
 int Gun::getDamage(){return damage;}
 int Gun::getFireRate(){return fireRate;}
 int Gun::getClipSize(){return clipSize;}
+string Gun::getSound(){return gun_sound;}

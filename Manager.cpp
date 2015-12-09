@@ -45,6 +45,23 @@ void ALLSYSTEMSGO(){
 		monsters[i] = new Monster();
 		monsters[i] = monsters[i]->getDead();
 	}
+	mHurtIndex=0;
+	impactWallIndex=0;
+	impactPlayerIndex=0;
+	
+	mHurt[0]="data/sounds/monster/growl.wav";
+	mHurt[1]="data/sounds/monster/kill_you.wav";
+	mHurt[2]="data/sounds/monster/moan.wav";
+	mHurt[3]="data/sounds/monster/mummy.wav";
+	mHurt[4]="data/sounds/monster/zombie_attacked.wav";
+	mHurt[5]="data/sounds/monster/patriarch_spawn.wav";
+
+	impactWall[0]="data/sounds/impact/metal_bang.wav";
+	impactWall[1]="data/sounds/impact/metal_bang2.wav";
+	impactPlayer[0]="data/sounds/impact/bite.wav";
+	impactPlayer[1]="data/sounds/impact/flesh.wav";
+	impactPlayer[2]="data/sounds/impact/flesh_bone.wav";
+	
     
     //Create 4 Initial Monsters
     //createMonster( 0, -5, 4);
@@ -171,7 +188,11 @@ void createMonster(GLfloat x, GLfloat z, int type){
 				if(type==1) monsters[i]=monsters[i]->getLightMonster();
 				if(type==2) monsters[i]=monsters[i]->getMediumMonster();
 				if(type==3) monsters[i]=monsters[i]->getHeavyMonster();
-				if(type==4) monsters[i]=monsters[i]->getPatriarchMonster();
+				if(type==4){ 
+					monsters[i]=monsters[i]->getPatriarchMonster();
+					mDeath = Mix_LoadWAV(mHurt[5].c_str());
+					Mix_PlayChannel (-1,mDeath,0);
+				}
 
 				monsters[i]->setX(x);
 				monsters[i]->setZ(z);
@@ -213,7 +234,10 @@ void monsterAI(){
 }
 
 void shoot(){
-
+	//play gun shot noise
+	mDeath = Mix_LoadWAV(player->gun->getSound().c_str());
+	Mix_VolumeChunk(mDeath, 20);
+	Mix_PlayChannel (-1,mDeath,0);
 	//this method will fire a bullet from where ever player is in the players rotation.
 	//it will create a right triangle with players position as 0,0 and angle equivalent to players rotation.
 	//bullet will follow right angles hypotenuse
@@ -285,7 +309,12 @@ bool checkBulletCollision(GLfloat x,GLfloat z){
 	//return true if hit, including wall, and false if nothing hit yet
 	for(int i=0;i<10;i++){
         if(x>10||x<-10||z>10||z<-10) {
-            //cout << "OUT OF BOUNDS" << endl;
+			
+			if(impactWallIndex>1){ impactWallIndex=0;}
+            impact = Mix_LoadWAV(impactWall[impactWallIndex].c_str());
+			Mix_VolumeChunk(impact, 120);
+			Mix_PlayChannel (-1,impact,0);
+			impactWallIndex++;
 			return true; //bullet is out of bounds
         }
 		if(monsters[i]->getName()!="dead"){
@@ -300,10 +329,12 @@ bool checkBulletCollision(GLfloat x,GLfloat z){
 					mDeath = Mix_LoadWAV("data/sounds/monster/death.wav");
 					Mix_PlayChannel (-1,mDeath,0);
 				}else{
-					//mDeath = Mix_LoadWAV("data/sounds/monster/death.wav"); hurt noise
-					//Mix_PlayChannel (-1,mDeath,0);
+					//if only hit
+					if(mHurtIndex>4) mHurtIndex=-1;
+					mHurtIndex++;
+					mhurt = Mix_LoadWAV(mHurt[mHurtIndex].c_str());
+					Mix_PlayChannel (-1,mhurt,0);
 				}
-				
 				return true; //hit!!
 			}
 		}
