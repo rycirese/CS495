@@ -41,6 +41,10 @@ void ALLSYSTEMSGO(){
     genWorld();
     genMenu();
     player = new Player();
+	for(int i=0;i<10;i++){
+		monsters[i] = new Monster();
+		monsters[i] = monsters[i]->getDead();
+	}
     
     //Create 4 Initial Monsters
     //createMonster( 0, -5, 4);
@@ -91,9 +95,9 @@ int main(int argc, char **argv){
                 }
 				if(!gettingName && event.key.keysym.sym == SDLK_p){
                     for(int i=0;i<10;i++)
-						if(monsters[i]!=NULL){
+						if(monsters[i]->getName()!="dead"){
 							//pause
-							//monsters[i]->setSpeed(0);
+							monsters[i]->setSpeed(0);
 						}
 					
                 }
@@ -119,7 +123,7 @@ void animateGun(){
 	if(player->gun->getName()=="shotgun"){
 
 	}
-	if(player->gun->getName()=="shotgun"){
+	if(player->gun->getName()=="rifle"){
 
 	}
 }
@@ -136,7 +140,7 @@ void draw(const Uint8* keyState){
         monsterAI();
         player->draw();
         for(int i = 0; i < 10; i++){
-            if(monsters[i] != NULL){
+            if(monsters[i]->getName() != "dead"){
                 monsters[i]->draw();
             }
         }
@@ -163,9 +167,7 @@ void createMonster(GLfloat x, GLfloat z, int type){
 	if(totalMonsters<10){
 		//Find next NULL spot in monster array and create monster
         for(int i = 0; i < 10; i++){
-			if(monsters[i] == NULL){
-                cout << i << " is the NULL spot" << endl;
-				monsters[i] = new Monster();
+			if(monsters[i]->getName() == "dead"){
 				if(type==1) monsters[i]=monsters[i]->getLightMonster();
 				if(type==2) monsters[i]=monsters[i]->getMediumMonster();
 				if(type==3) monsters[i]=monsters[i]->getHeavyMonster();
@@ -183,7 +185,7 @@ void createMonster(GLfloat x, GLfloat z, int type){
 //Moves Monster Towards Player Based on player position
 void monsterAI(){
 	for(int i = 0; i < 10; i++){
-		if(monsters[i] != NULL){
+		if(monsters[i]->getName() != "dead"){
 			//Get Monster and Player Position Values
 			GLfloat Mx=monsters[i]->getX();
 			GLfloat Mz=monsters[i]->getZ();
@@ -286,7 +288,7 @@ bool checkBulletCollision(GLfloat x,GLfloat z){
             //cout << "OUT OF BOUNDS" << endl;
 			return true; //bullet is out of bounds
         }
-		if(monsters[i]!=NULL){
+		if(monsters[i]->getName()!="dead"){
 			GLfloat xCol = abs(monsters[i]->getX()-x);
 			GLfloat zCol = abs(monsters[i]->getZ()-z);
 			//if bullet within 0.2 and 0.2 away from monster
@@ -294,7 +296,7 @@ bool checkBulletCollision(GLfloat x,GLfloat z){
    				monsters[i]->setHealth(monsters[i]->getHealth()-1);
 				if(monsters[i]->getHealth()<1){
                     player->addScore(monsters[i]->getPoints());
-                    monsters[i] = NULL; //kill monster if health 0 or below
+                    monsters[i] = monsters[i]->getDead(); //kill monster if health 0 or below
 					mDeath = Mix_LoadWAV("data/sounds/monster/death.wav");
 					Mix_PlayChannel (-1,mDeath,0);
 				}else{

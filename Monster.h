@@ -40,12 +40,14 @@ public:
 	GLfloat getX();
 	GLfloat getY();
 	GLfloat getZ(); 
+	Monster*getDead();
 	
 	void setY(GLfloat y);
 	void setIndex(int i);
 	void setX(GLfloat x);
 	void setZ(GLfloat z);
 	void setHealth(int h);
+	void setSpeed(GLfloat s);
 };
 
 #endif

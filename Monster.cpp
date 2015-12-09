@@ -42,7 +42,6 @@ Monster * Monster::getLightMonster(){
 	SDL_FreeSurface(TI[0]);
 	return this;
 }
-
 Monster * Monster::getMediumMonster(){
 	name="medium";
 	speed=0.015;
@@ -99,6 +98,18 @@ Monster * Monster::getPatriarchMonster(){
 	SDL_FreeSurface(TI[0]);
 	return this;
 }
+Monster * Monster::getDead(){
+	name="dead";
+	speed=0;
+	health=0;
+	damage=0;
+	height=0;
+	bounceBack=0;
+    points = 0;
+	TI[0] = NULL;
+	monsterTex[0] = NULL;
+	return this;
+}
 
 //getters
 string Monster::getName(){return name;}
@@ -116,3 +127,4 @@ void Monster::setX(GLfloat x){xpos=x;}
 void Monster::setZ(GLfloat z){zpos=z;}
 void Monster::setY(GLfloat y){yrot=y;}
 void Monster::setHealth(int h){health=h;}
+void Monster::setSpeed(GLfloat s){speed=s;}
