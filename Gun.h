@@ -1,30 +1,29 @@
 #ifndef _GUN_
 #define _GUN_
-
 #include <string>
 using namespace std;
 
 class Gun{
 private:
 	string name;
-	string image; 
+	string gunImage;
+	string gunImage_fired;
+	string gun_sound;
 	int damage; //how many hits to kill monster
-	double fireRate; //when gun can fire again in seconds. If fireRate is 0.5 then gun can shoot every 0.5 second
+	int fireRate; //when gun can fire again in seconds. If fireRate is 0.5 then gun can shoot every 0.5 second
 	int clipSize; //bullets in one clip
-	int range; //how far bullets go until they miss monster
 public:
 	Gun();
 	~Gun();
 	Gun *getPistol();
 	Gun *getShotgun();
-	Gun *getSubMachineGun();
-	Gun *getAssaultRifle();
-	Gun *getSniper();
+	Gun *getRifle();
 
 	string getName();
-	string getImage();
+	string getGunImage();
+	string getGunImage_fired();
 	int getDamage();
-	double getFireRate();
+	int getFireRate();
 	int getClipSize();
 	int getRange();
 };

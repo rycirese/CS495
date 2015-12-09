@@ -21,6 +21,7 @@ bool gettingName;
 int currentTime;
 int hitTime;
 int spawnTime;
+int shootTime;
 
 //monster stuff
 Monster *monsters[10];
@@ -38,6 +39,7 @@ void shoot();
 bool checkBulletCollision(GLfloat x,GLfloat z);
 void outputScore();
 void reset();
+void animateGun();
 
 #endif
 

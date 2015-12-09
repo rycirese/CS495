@@ -23,8 +23,9 @@ void ALLSYSTEMSGO(){
     SDL_GL_CreateContext(window); //Associates the OpenGL commands to window 'window'.
     SDL_GL_SetSwapInterval(1);
     glEnable(GL_TEXTURE_2D);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_ALPHA);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     TTF_Init();
     
     inputText = "";
@@ -42,10 +43,7 @@ void ALLSYSTEMSGO(){
     player = new Player();
     
     //Create 4 Initial Monsters
-    createMonster( 5, -5, 1);
-    createMonster(-5, -5, 2);
-    createMonster( 5,  5, 3);
-    createMonster(-5,  5, 4);
+    //createMonster( 0, -5, 4);
 }
 
 int main(int argc, char **argv){
@@ -83,12 +81,22 @@ int main(int argc, char **argv){
                 }
                 
                 if(!gettingName && event.key.keysym.sym == SDLK_SPACE){
-                    if(canShoot) shoot();
-                    canShoot = false;
+					if( shootTime+player->gun->getFireRate() < SDL_GetTicks() ) canShoot=true;
+					if(canShoot){ 
+						canShoot=false;
+						shootTime = SDL_GetTicks();
+						shoot();
+						player->setGunTexIndex(1); //set texture to firing
+					}
                 }
-            }
-            if(event.type == SDL_KEYUP) {
-                if(event.key.keysym.sym == SDLK_SPACE){ canShoot = true; }
+				if(!gettingName && event.key.keysym.sym == SDLK_p){
+                    for(int i=0;i<10;i++)
+						if(monsters[i]!=NULL){
+							//pause
+							//monsters[i]->setSpeed(0);
+						}
+					
+                }
             }
             if(event.type == SDL_QUIT){ //Closes Everything Appropriately
                 done = true;
@@ -100,9 +108,20 @@ int main(int argc, char **argv){
         }
 
         if(!m) spawnMonsters();
+		animateGun();
         draw(keyState); //Draws Everything
     }
     return 0;
+}
+
+void animateGun(){
+	if( shootTime+150 < SDL_GetTicks() ) player->setGunTexIndex(0);
+	if(player->gun->getName()=="shotgun"){
+
+	}
+	if(player->gun->getName()=="shotgun"){
+
+	}
 }
 
 //Draw Routine
@@ -211,7 +230,7 @@ void shoot(){
 	if(angle<0) angle+=360; //define angle as always positive and 0 < angle < 360
 
 	//	-X , -Z
-	if(angle>=0&&angle<90){
+ 	if(angle>=0&&angle<90){
 		while(!hit){
 			adjz -= acc; //z
 			oppx = -(-adjz*(tan(angle*DEG_TO_RAD))); //x

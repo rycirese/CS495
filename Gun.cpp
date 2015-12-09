@@ -1,58 +1,40 @@
 #include "gun.h"
 
 Gun::Gun(){
-	//default to pistol
-	name="pistol";
-	image="//res//pistol.jpg";
-	damage=1;
-	fireRate=0.5;
-	range=70;
+	
 }
 
 Gun * Gun::getPistol(){
 	name="pistol";
-	image="//res//pistol.jpg";
+	gunImage="data/textures/guns/pistol/pistol.png";
+	gunImage_fired="data/textures/guns/pistol/pistol_fired.png";
+	gun_sound="data/sounds/weapons/pistol/shoot.wav";
 	damage=1;
-	fireRate=0.5;
-	range=70;
+	fireRate=500;
 	return this;
 }
 Gun * Gun::getShotgun(){
-	name="pistol";
-	image="//res//pistol.jpg";
-	damage=3;
-	fireRate=1.5;
-	range=50;
-	return this;
-}
-Gun * Gun::getSubMachineGun(){
-	name="submachinegun";
-	image="//res//submachinegun.jpg";
+	name="shotgun";
+	gunImage="data/textures/guns/shotgun/shotgun.png";
+	gunImage_fired="data/textures/guns/shotgun/shotgun_fired.png";
+	gun_sound="data/sounds/weapons/shotgun/shoot.wav";
 	damage=2;
-	fireRate=0.2;
-	range=70;
+	fireRate=1000;
 	return this;
 }
-Gun * Gun::getAssaultRifle(){
-	name="submachinegun";
-	image="//res//submachinegun.jpg";
+Gun * Gun::getRifle(){
+	name="rifle";
+	gunImage="data/textures/guns/rifle/rifle.png";
+	gunImage_fired="data/textures/guns/rifle/rifle_fired.png";
+	gun_sound="data/sounds/weapons/rifle/shoot.wav";
 	damage=3;
-	fireRate=0.4;
-	range=85;
-	return this;
-}
-Gun * Gun::getSniper(){
-	name="submachinegun";
-	image="//res//submachinegun.jpg";
-	damage=50;
-	fireRate=2;
-	range=100;
+	fireRate=500;
 	return this;
 }
 
 string Gun::getName(){return name;}
-string Gun::getImage(){return image;}
+string Gun::getGunImage(){return gunImage;}
+string Gun::getGunImage_fired(){return gunImage_fired;}
 int Gun::getDamage(){return damage;}
-double Gun::getFireRate(){return fireRate;}
+int Gun::getFireRate(){return fireRate;}
 int Gun::getClipSize(){return clipSize;}
-int Gun::getRange(){return range;}

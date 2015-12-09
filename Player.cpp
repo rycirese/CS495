@@ -7,6 +7,9 @@ Player::Player(){
     lookupdown = walkbias = walkbiasangle = 0.0f;
     GLfloat ratio = (GLfloat)1280/(GLfloat)720;
     GLfloat PI = 3.1415926535897932384626433832795;
+
+	gun = new Gun();
+	gun = gun->getPistol();
     
     font = TTF_OpenFont("data/fonts/Arial.ttf", 50);
     score = 0;
@@ -23,16 +26,20 @@ Player::Player(){
     
     TI = new SDL_Surface *[2];
     gunTex = new GLuint[2];
-    
-    TI[0] = IMG_Load("data/textures/guns/pistol.png"); //Gun Texture
-    
-    //TEXTURE 1 (Gun Idle)
-    glGenTextures(1, &gunTex[0]); //Create The Texture
-    glBindTexture(GL_TEXTURE_2D, gunTex[0]); //Load in texture 1
-    glTexImage2D(GL_TEXTURE_2D, 0, 3, TI[0]->w, TI[0]->h, 0, FORMAT_GUN, GL_UNSIGNED_BYTE, TI[0]->pixels); //Generate The Texture
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    SDL_FreeSurface(TI[0]);
+
+	TI[0] = IMG_Load(gun->getGunImage().c_str());
+	TI[1] = IMG_Load(gun->getGunImage_fired().c_str());
+	for(int i=0;i<2;i++){
+		//TEXTURE 1 (Gun Idle)
+		glGenTextures(1, &gunTex[i]); //Create The Textur
+		glBindTexture(GL_TEXTURE_2D, gunTex[i]); //Load in texture 1
+		glTexImage2D(GL_TEXTURE_2D, 0, 3, TI[i]->w, TI[i]->h, 0, FORMAT_GUN, GL_UNSIGNED_BYTE, TI[i]->pixels); //Generate The Texture
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glBindTexture( GL_TEXTURE_2D, NULL );
+		SDL_FreeSurface(TI[i]);
+	}
+	gunTexIndex=0;//setup first texture to be idle
 }
 //Function to handle key press events
 void Player::control(const Uint8* keyState){
@@ -90,7 +97,7 @@ void Player::drawHUD(){
     h = "HEALTH: " + to_string(health);
     
     glEnable2D();
-    glBindTexture(GL_TEXTURE_2D, gunTex[0]);
+    glBindTexture(GL_TEXTURE_2D, gunTex[gunTexIndex]);
     glBegin(GL_QUADS);
         glTexCoord2d(0, 1); glVertex3d(515, 0, 0);
         glTexCoord2d(1, 1); glVertex3d(765, 0, 0);
@@ -121,7 +128,7 @@ GLfloat Player::getX(){return xpos;}
 GLfloat Player::getZ(){return zpos;}
 GLfloat Player::getY(){return yrot;}
 
-//Setters
+
+void Player::setGunTexIndex(int i){gunTexIndex=i;}//so manager can change gun texture
 void Player::addScore(int diff){ score = score+diff; }
 void Player::takeHealth(int diff){ health = health-diff; }
-
