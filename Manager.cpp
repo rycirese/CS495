@@ -58,6 +58,7 @@ void ALLSYSTEMSGO(){
 
 	impactWall[0]="data/sounds/impact/metal_bang.wav";
 	impactWall[1]="data/sounds/impact/metal_bang2.wav";
+
 	impactPlayer[0]="data/sounds/impact/bite.wav";
 	impactPlayer[1]="data/sounds/impact/flesh.wav";
 	impactPlayer[2]="data/sounds/impact/flesh_bone.wav";
@@ -227,6 +228,11 @@ void monsterAI(){
                 if (currentTime > hitTime + 2000) {
                     player->takeHealth(monsters[i]->getDamage());
                     hitTime = currentTime;
+					if(impactPlayerIndex>2)impactPlayerIndex=0;
+					impactPlay = Mix_LoadWAV(impactPlayer[impactPlayerIndex].c_str());
+					Mix_VolumeChunk(impactPlay, 180);
+					Mix_PlayChannel (-1,impactPlay,0);
+					impactPlayerIndex++;
                 }
             }
 		}
@@ -309,7 +315,6 @@ bool checkBulletCollision(GLfloat x,GLfloat z){
 	//return true if hit, including wall, and false if nothing hit yet
 	for(int i=0;i<10;i++){
         if(x>10||x<-10||z>10||z<-10) {
-			
 			if(impactWallIndex>1){ impactWallIndex=0;}
             impact = Mix_LoadWAV(impactWall[impactWallIndex].c_str());
 			Mix_VolumeChunk(impact, 120);

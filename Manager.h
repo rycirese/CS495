@@ -31,6 +31,7 @@ int totalMonsters=0;
 Mix_Chunk *mDeath;
 Mix_Chunk *impact;
 Mix_Chunk *mhurt;
+Mix_Chunk *impactPlay;
 string mHurt[6];
 string impactPlayer[3];
 string impactWall[2];
