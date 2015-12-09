@@ -3,10 +3,12 @@
 #ifndef _Player_
 #define _Player_
 #include "Common.h"
+#include "Gun.h"
 
 class Player{
 public:
     //Global
+	Gun * gun;
     SDL_Surface **TI;
     GLuint *gunTex;
     TTF_Font* font;
@@ -16,6 +18,7 @@ public:
     GLfloat lookupdown;
     int score;
     int health;
+	int gunTexIndex;
     
     //Methods
     Player();
@@ -23,6 +26,7 @@ public:
     void draw();
     void drawHUD();
     void check();
+	void setGunTexIndex(int i);
     
     //Getters
     int getScore();
