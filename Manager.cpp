@@ -314,7 +314,9 @@ void outputScore(){
     //string name = "Batman";
     int score =  player->getScore();
     if(inputText.length() == 0) inputText = "___";
-    string out = inputText + ": " + to_string(score) + "\n";
+
+    sprintf(buffer, "%d", score);
+    string out = inputText + ": " + buffer + "\n";
     
     ofstream f;
     f.open ("highscore.txt", std::ios_base::app);

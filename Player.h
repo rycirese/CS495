@@ -16,6 +16,8 @@ public:
     GLfloat xpos, zpos; //Camera pos variable
     GLfloat walkbias, walkbiasangle; //Head-bobbing variables
     GLfloat lookupdown;
+    char buffer[1024];
+    string tmp;
     string s;
     string h;
     int score;

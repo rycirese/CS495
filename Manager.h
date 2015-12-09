@@ -22,6 +22,7 @@ int currentTime;
 int hitTime;
 int spawnTime;
 int shootTime;
+char buffer[1024];
 
 //monster stuff
 Monster *monsters[10];

@@ -93,8 +93,15 @@ void Player::draw(){
 //Draws HUD
 //  Gun, Health, and Score are displayed
 void Player::drawHUD(){
-    s = "SCORE: " + to_string(score);
-    h = "HEALTH: " + to_string(health);
+    //s = "SCORE: " + to_string(score);
+    //h = "HEALTH: " + to_string(health);
+    sprintf(buffer, "%d", score);
+    tmp = buffer;
+    s = "SCORE: " + tmp;
+    
+    sprintf(buffer, "%d", health);
+    tmp = buffer;
+    h = "HEALTH: " + tmp;
     
     glEnable2D();
     glBindTexture(GL_TEXTURE_2D, gunTex[gunTexIndex]);

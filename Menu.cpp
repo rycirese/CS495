@@ -99,13 +99,15 @@ void controls(){
 //Draw Highscores Menu
 void highscores(){
     glRenderText(font, 0, 0, 0, 410, 450, "Highscores (Last 5)");
-    
+    y = 450;
     f.open("highscore.txt");
     if(f.is_open()){
         for(int i = 0; i < 5; i++){
             if(getline (f, line)){
-                y = y - 40;
-                if(line != "") glRenderText(font2, 0, 0, 0, 410, y, line);
+                if(line != ""){
+                    y = y - 40;
+                    glRenderText(font2, 0, 0, 0, 410, y, line);
+                }
             }
         }
         f.close();
