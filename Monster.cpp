@@ -1,7 +1,7 @@
 #include "Monster.h"
 
 Monster::Monster(){
-	TI = new SDL_Surface*[2];
+    TI = new SDL_Surface*[2];
     monsterTex = new GLuint[2];
 }
 
@@ -42,6 +42,7 @@ Monster * Monster::getLightMonster(){
 	SDL_FreeSurface(TI[0]);
 	return this;
 }
+
 Monster * Monster::getMediumMonster(){
 	name="medium";
 	speed=0.015;

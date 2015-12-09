@@ -13,6 +13,7 @@
 bool done;
 SDL_Window *window;
 Player *player;
+const Uint8* keyState;
 string inputText;
 bool canShoot;
 bool m;

@@ -34,7 +34,7 @@ void ALLSYSTEMSGO(){
     currentTime = SDL_GetTicks(); //System Current Time, Used for Carious Timers
     hitTime = SDL_GetTicks(); //Time Used to Give Player Invinciblity Period
     spawnTime = SDL_GetTicks(); //Time Used for Spawning Monsters
-    for(int i = 0; i < 10; i++) monsters[i] = NULL; //NULL All Monster Indexes
+    //for(int i = 0; i < 10; i++) monsters[i] = NULL; //NULL All Monster Indexes
     
     //Create New World, Menu, and Player
     genWorld();
@@ -64,7 +64,7 @@ int main(int argc, char **argv){
         }
         
         //Handle Input
-        const Uint8* keyState = SDL_GetKeyboardState(NULL); //Record Keystate;
+        keyState = SDL_GetKeyboardState(NULL); //Record Keystate;
         if(!m) player->control(keyState); //Manage Player Controls
         if(!gettingName && keyState[SDL_SCANCODE_S]) m = false; //Turn Menu Mode Off (Start Game)
         if(!gettingName && keyState[SDL_SCANCODE_Q]){ done = true; reset(); SDL_Quit(); exit(0); break; }
@@ -99,7 +99,7 @@ int main(int argc, char **argv){
             }
         }
 
-        if(!gettingName) spawnMonsters();
+        if(!m) spawnMonsters();
         draw(keyState); //Draws Everything
     }
     return 0;
@@ -144,8 +144,9 @@ void createMonster(GLfloat x, GLfloat z, int type){
 	if(totalMonsters<10){
 		//Find next NULL spot in monster array and create monster
         for(int i = 0; i < 10; i++){
-			if(monsters[i]==NULL){
-				monsters[i]=new Monster();
+			if(monsters[i] == NULL){
+                cout << i << " is the NULL spot" << endl;
+				monsters[i] = new Monster();
 				if(type==1) monsters[i]=monsters[i]->getLightMonster();
 				if(type==2) monsters[i]=monsters[i]->getMediumMonster();
 				if(type==3) monsters[i]=monsters[i]->getHeavyMonster();
@@ -273,9 +274,8 @@ bool checkBulletCollision(GLfloat x,GLfloat z){
 			if( xCol < 0.2 && zCol < 0.2){
    				monsters[i]->setHealth(monsters[i]->getHealth()-1);
 				if(monsters[i]->getHealth()<1){
-                    cout << monsters[i]->getPoints() << endl;
                     player->addScore(monsters[i]->getPoints());
-					monsters[i]=NULL; //kill monster if health 0 or below
+                    monsters[i] = NULL; //kill monster if health 0 or below
 					mDeath = Mix_LoadWAV("data/sounds/monster/death.wav");
 					Mix_PlayChannel (-1,mDeath,0);
 				}else{
@@ -295,7 +295,6 @@ void outputScore(){
     //string name = "Batman";
     int score =  player->getScore();
     if(inputText.length() == 0) inputText = "___";
-    
     string out = inputText + ": " + to_string(score) + "\n";
     
     ofstream f;

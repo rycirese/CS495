@@ -12,6 +12,10 @@ TTF_Font* font2;
 string menuCode;
 GLuint mTexture[1];
 
+int y;
+string line;
+ifstream f;
+
 //Sets Up Menu For Use
 void genMenu(){
     //Create Fonts
@@ -23,6 +27,8 @@ void genMenu(){
     SDL_Surface **TI;
     TI = new SDL_Surface *[1];
     TI[0] = IMG_Load("data/textures/Menu.jpg");
+    
+    y = 450;
     
     glGenTextures(0, &mTexture[0]); //Create The Texture
     glBindTexture(GL_TEXTURE_2D, mTexture[0]); //Load in texture 1
@@ -94,15 +100,12 @@ void controls(){
 void highscores(){
     glRenderText(font, 0, 0, 0, 410, 450, "Highscores (Last 5)");
     
-    int y = 450;
-    string line;
-    ifstream f;
     f.open("highscore.txt");
     if(f.is_open()){
         for(int i = 0; i < 5; i++){
             if(getline (f, line)){
                 y = y - 40;
-                glRenderText(font2, 0, 0, 0, 410, y, line);
+                if(line != "") glRenderText(font2, 0, 0, 0, 410, y, line);
             }
         }
         f.close();
