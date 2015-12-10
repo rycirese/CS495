@@ -115,6 +115,6 @@ void highscores(){
     
     glRenderText(font2, 0, 0, 0, 50, 50, "'M' - Menu");
     glRenderText(font2, 0, 0, 0, 250, 50, "'S' - Start");
-    glRenderText(font2, 0, 0, 0, 430, 50, "'H' - Highscores");
-    glRenderText(font2, 0, 0, 0, 715, 50, "'Q' - Quit");
+    glRenderText(font2, 0, 0, 0, 430, 50, "'C' - Controls");
+    glRenderText(font2, 0, 0, 0, 665, 50, "'Q' - Quit");
 }
