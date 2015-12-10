@@ -235,9 +235,11 @@ void monsterAI(){
 
 void shoot(){
 	//play gun shot noise
+    
 	mDeath = Mix_LoadWAV(player->gun->getSound().c_str());
 	Mix_VolumeChunk(mDeath, 20);
 	Mix_PlayChannel (-1,mDeath,0);
+    
 	//this method will fire a bullet from where ever player is in the players rotation.
 	//it will create a right triangle with players position as 0,0 and angle equivalent to players rotation.
 	//bullet will follow right angles hypotenuse
