@@ -48,19 +48,35 @@ void ALLSYSTEMSGO(){
 	mHurtIndex=0;
 	impactWallIndex=0;
 	impactPlayerIndex=0;
-	
-	mHurt[0]="data/sounds/monster/growl.wav";
-	mHurt[1]="data/sounds/monster/kill_you.wav";
-	mHurt[2]="data/sounds/monster/moan.wav";
-	mHurt[3]="data/sounds/monster/mummy.wav";
-	mHurt[4]="data/sounds/monster/zombie_attacked.wav";
-	mHurt[5]="data/sounds/monster/patriarch_spawn.wav";
 
-	impactWall[0]="data/sounds/impact/metal_bang.wav";
-	impactWall[1]="data/sounds/impact/metal_bang2.wav";
-	impactPlayer[0]="data/sounds/impact/bite.wav";
-	impactPlayer[1]="data/sounds/impact/flesh.wav";
-	impactPlayer[2]="data/sounds/impact/flesh_bone.wav";
+	//0-4 are monster noises
+	//5 patriarch spawn
+	//6-7 metal impact
+	//8-10 player impact
+	//11 pistol shoot
+	//12 shotgun shoot
+	//13 rifle shoot
+	//14 zombie death
+
+	gameSound[0] = Mix_LoadWAV("data/sounds/monster/growl.wav");
+	gameSound[1] = Mix_LoadWAV("data/sounds/monster/kill_you.wav");
+	gameSound[2] = Mix_LoadWAV("data/sounds/monster/moan.wav");
+	gameSound[3] = Mix_LoadWAV("data/sounds/monster/mummy.wav");
+	gameSound[4] = Mix_LoadWAV("data/sounds/monster/zombie_attacked.wav");
+	gameSound[5] = Mix_LoadWAV("data/sounds/monster/patriarch_spawn.wav");
+
+	gameSound[6] = Mix_LoadWAV("data/sounds/impact/metal_bang.wav");
+	gameSound[7] = Mix_LoadWAV("data/sounds/impact/metal_bang2.wav");
+
+	gameSound[8] = Mix_LoadWAV("data/sounds/impact/bite.wav");
+	gameSound[9] = Mix_LoadWAV("data/sounds/impact/flesh.wav");
+	gameSound[10] = Mix_LoadWAV("data/sounds/impact/flesh_bone.wav");
+
+	gameSound[11] = Mix_LoadWAV("data/sounds/weapons/pistol/shoot.wav");
+	gameSound[12] = Mix_LoadWAV("data/sounds/weapons/shotgun/shoot.wav");
+	gameSound[13] = Mix_LoadWAV("data/sounds/weapons/rifle/shoot.wav");
+
+	gameSound[14] = Mix_LoadWAV("data/sounds/monster/death.wav");
 	
     
     //Create 4 Initial Monsters
@@ -71,10 +87,9 @@ int main(int argc, char **argv){
     srand(time(NULL));
     ALLSYSTEMSGO(); //Sets Everything Up
     SDL_Event event;
-    
+    bool rifle=false,shotgun=false;
     while(!done){
         currentTime = SDL_GetTicks();
-        
         //Handle Player Death
         if(player->getHealth() <= 0){
             outputScore(); //Save Score to File
@@ -128,20 +143,37 @@ int main(int argc, char **argv){
             }
         }
 
-        if(!m) spawnMonsters();
+        if(!m){
+			if(!shotgun)
+				if(currentTime>60000){
+					player->gun = player->gun->getShotgun();
+					if(!shotgun)player->loadText();
+					shotgun=true;
+				}
+			if(!rifle)
+				if(currentTime>120000){
+					player->gun = player->gun->getRifle();
+					if(!rifle)player->loadText();
+					rifle=true;
+				}
+			spawnMonsters();
+		}
 		animateGun();
         draw(keyState); //Draws Everything
     }
     return 0;
 }
 
+//animates shooting and shotgun
 void animateGun(){
 	if( shootTime+150 < SDL_GetTicks() ) player->setGunTexIndex(0);
 	if(player->gun->getName()=="shotgun"){
-
-	}
-	if(player->gun->getName()=="rifle"){
-
+		if( shootTime+225<SDL_GetTicks() ) player->setGunTexIndex(2);
+		if( shootTime+350<SDL_GetTicks() ) player->setGunTexIndex(3);
+		if( shootTime+475<SDL_GetTicks() ) player->setGunTexIndex(4);
+		if( shootTime+600<SDL_GetTicks() ) player->setGunTexIndex(3);
+		if( shootTime+725<SDL_GetTicks() ) player->setGunTexIndex(2);
+		if( shootTime+850<SDL_GetTicks() ) player->setGunTexIndex(0);
 	}
 }
 
@@ -190,8 +222,7 @@ void createMonster(GLfloat x, GLfloat z, int type){
 				if(type==3) monsters[i]=monsters[i]->getHeavyMonster();
 				if(type==4){ 
 					monsters[i]=monsters[i]->getPatriarchMonster();
-					mDeath = Mix_LoadWAV(mHurt[5].c_str());
-					Mix_PlayChannel (-1,mDeath,0);
+					Mix_PlayChannel (-1,gameSound[5],0);
 				}
 
 				monsters[i]->setX(x);
@@ -227,115 +258,111 @@ void monsterAI(){
                 if (currentTime > hitTime + 2000) {
                     player->takeHealth(monsters[i]->getDamage());
                     hitTime = currentTime;
+					Mix_PlayChannel (-1,gameSound[rand()%2+8],0);
                 }
             }
 		}
 	}
 }
 
+//shoots bullet
 void shoot(){
 	//play gun shot noise
-    
-	mDeath = Mix_LoadWAV(player->gun->getSound().c_str());
-	Mix_VolumeChunk(mDeath, 20);
-	Mix_PlayChannel (-1,mDeath,0);
-    
+
+	if(player->gun->getName()=="pistol") Mix_PlayChannel (-1,gameSound[11],0);
+	else if(player->gun->getName()=="shotgun") Mix_PlayChannel (-1,gameSound[12],0);
+	else Mix_PlayChannel (-1,gameSound[13],0);
+
+
 	//this method will fire a bullet from where ever player is in the players rotation.
 	//it will create a right triangle with players position as 0,0 and angle equivalent to players rotation.
 	//bullet will follow right angles hypotenuse
 
- 	const float DEG_TO_RAD = 0.0174532925f;
-	int angle=player->yrot; //temp of players/cameras rotation variable
-	GLfloat originX=player->xpos;
-	GLfloat originZ=player->zpos;
-	GLfloat adjz=0; //adjacent side of right triangle/ refers to z on game
-	GLfloat oppx=0; //opposite side of right triangle. refers to x on game
+	angle=player->yrot; //temp of players/cameras rotation variable
+	adjz=0; //adjacent side of right triangle/ refers to z on game
+	oppx=0; //opposite side of right triangle. refers to x on game
+	hit=false;
 
-	GLfloat acc=0.2; //accuracy. smaller is more accurate
-	bool hit=false;
-
+	//if yrot or player angle is over 360, put it in bounds of 360-0
 	angle=angle%360;
 	if(angle<0) angle+=360; //define angle as always positive and 0 < angle < 360
 
 	//	-X , -Z
  	if(angle>=0&&angle<90){
 		while(!hit){
+			//traject bullet with a velocity traveling -z and -x from players position
 			adjz -= acc; //z
 			oppx = -(-adjz*(tan(angle*DEG_TO_RAD))); //x
-			hit = checkBulletCollision(oppx+originX,adjz+originZ);
+			hit = checkBulletCollision(oppx+player->xpos,adjz+player->zpos);
 		}
 	}
 	//	-X , +Z
 	else if(angle==90){
 		while(!hit){
+			//traject bullet with a velocity traveling -x from players position
 			oppx-=acc; //x
-			hit = checkBulletCollision(oppx+originX,adjz+originZ);
+			hit = checkBulletCollision(oppx+player->xpos,adjz+player->zpos);
 		}
 	}
 	else if(angle>90&&angle<180){
-		angle-=90;
+		angle-=90; //so right triangle can be made
 		while(!hit){
+			//traject bullet with a velocity traveling +z and -x from players position
 			adjz+=acc; //z
 			oppx = -((adjz)*(tan((90-angle)*DEG_TO_RAD))); //x
-			hit = checkBulletCollision(oppx+originX,adjz+originZ);
+			hit = checkBulletCollision(oppx+player->xpos,adjz+player->zpos);
 		}
 	}
 	//	+X , +Z
 	else if(angle>=180&&angle<270){
-		angle-=180;
+		angle-=180; //for right triangle
 		while(!hit){
+			//traject bullet with a velocity traveling +z and +x from players position
 			adjz+=acc; //z
 			oppx = (adjz)*(tan(angle*DEG_TO_RAD)); //x
-			hit = checkBulletCollision(oppx+originX,adjz+originZ);
+			hit = checkBulletCollision(oppx+player->xpos,adjz+player->zpos);
 		}
 	}
 	//	+X , -Z
 	else if(angle==270){
 		while(!hit){
+			//traject bullet with a velocity traveling +x from players position
 			oppx+=acc; //x
-			hit = checkBulletCollision(oppx+originX,adjz+originZ);
+			hit = checkBulletCollision(oppx+player->xpos,adjz+player->zpos);
 		}
 	}
 	else if(angle>270&&angle<360){
-		angle-=270;
+		angle-=270; //for right triangle
 		while(!hit){
+			//traject bullet with a velocity traveling -z and +x from players position
 			adjz-=acc; //z
 			oppx = (-adjz)*(tan((90-angle)*DEG_TO_RAD)); //x
-			hit = checkBulletCollision(oppx+originX,adjz+originZ);
+			hit = checkBulletCollision(oppx+player->xpos,adjz+player->zpos);
 		}
 	}
 }
-
+//checks if bullet is close to every monster
 bool checkBulletCollision(GLfloat x,GLfloat z){
 	//x and z are cord to bullet
 	//return true if hit, including wall, and false if nothing hit yet
 	for(int i=0;i<10;i++){
         if(x>10||x<-10||z>10||z<-10) {
-			
-			if(impactWallIndex>1){ impactWallIndex=0;}
-            impact = Mix_LoadWAV(impactWall[impactWallIndex].c_str());
-			Mix_VolumeChunk(impact, 120);
-			Mix_PlayChannel (-1,impact,0);
-			impactWallIndex++;
+			Mix_PlayChannel (-1,gameSound[rand() % 1 + 6],0);
 			return true; //bullet is out of bounds
         }
 		if(monsters[i]->getName()!="dead"){
-			GLfloat xCol = abs(monsters[i]->getX()-x);
-			GLfloat zCol = abs(monsters[i]->getZ()-z);
+			xCol = abs(monsters[i]->getX()-x);
+			zCol = abs(monsters[i]->getZ()-z);
 			//if bullet within 0.2 and 0.2 away from monster
 			if( xCol < 0.2 && zCol < 0.2){
-   				monsters[i]->setHealth(monsters[i]->getHealth()-1);
+   				monsters[i]->setHealth(monsters[i]->getHealth()-player->gun->getDamage());
 				if(monsters[i]->getHealth()<1){
                     player->addScore(monsters[i]->getPoints());
                     monsters[i] = monsters[i]->getDead(); //kill monster if health 0 or below
-					mDeath = Mix_LoadWAV("data/sounds/monster/death.wav");
-					Mix_PlayChannel (-1,mDeath,0);
+					Mix_PlayChannel (-1,gameSound[14],0);
 				}else{
-					//if only hit
-					if(mHurtIndex>4) mHurtIndex=-1;
-					mHurtIndex++;
-					mhurt = Mix_LoadWAV(mHurt[mHurtIndex].c_str());
-					Mix_PlayChannel (-1,mhurt,0);
+					//if only hit not killed!
+					Mix_PlayChannel (-1,gameSound[rand() % 4],0);
 				}
 				return true; //hit!!
 			}

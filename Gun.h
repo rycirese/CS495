@@ -8,9 +8,9 @@ private:
 	string name;
 	string gunImage;
 	string gunImage_fired;
-	string gun_sound;
+	string shotgun[3];
 	int damage; //how many hits to kill monster
-	int fireRate; //when gun can fire again in seconds. If fireRate is 0.5 then gun can shoot every 0.5 second
+	int fireRate; //when gun can fire again in seconds.
 	int clipSize; //bullets in one clip
 public:
 	Gun();

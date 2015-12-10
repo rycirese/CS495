@@ -24,20 +24,25 @@ int spawnTime;
 int shootTime;
 char buffer[1024];
 int mHurtIndex;
+//shooting stuff
+const float DEG_TO_RAD = 0.0174532925f;
+GLfloat acc=0.15; //accuracy. smaller is more accurate
+int angle; //temp of players/cameras rotation variable
+GLfloat adjz=0; //adjacent side of right triangle/ refers to z on game
+GLfloat oppx=0; //opposite side of right triangle. refers to x on game
+bool hit=false;
+GLfloat xCol;
+GLfloat zCol;
 
 //monster stuff
 Monster *monsters[10];
 int totalMonsters=0;
 
-Mix_Chunk *mDeath;
-Mix_Chunk *impact;
-Mix_Chunk *mhurt;
+Mix_Chunk *gameSound[16];
 
-string mHurt[6];
-string impactPlayer[3];
-string impactWall[2];
 int impactWallIndex;
 int impactPlayerIndex;
+int gunSound;
 
 //Methods
 void ALLSYSTEMSGO();
@@ -53,4 +58,3 @@ void reset();
 void animateGun();
 
 #endif
-

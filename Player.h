@@ -31,6 +31,7 @@ public:
     void drawHUD();
     void check();
 	void setGunTexIndex(int i);
+	void loadText();
     
     //Getters
     int getScore();

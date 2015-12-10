@@ -23,11 +23,11 @@
 #ifdef _WIN32
 #define FORMAT GL_RGB
 #define FORMAT_GUN GL_RGBA
+#include <SDL_mixer.h>
 #include <SDL.h>
 #include <SDL_opengl.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
-#include <SDL_mixer.h>
 #endif
 
 #define SCREEN_WIDTH  1280
