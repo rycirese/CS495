@@ -24,22 +24,9 @@ Player::Player(){
     glMatrixMode(GL_MODELVIEW); //Make sure we're chaning the model view and not the projection
     glLoadIdentity(); //Reset The View
     
-    TI = new SDL_Surface *[2];
-    gunTex = new GLuint[2];
-
-	TI[0] = IMG_Load(gun->getGunImage().c_str());
-	TI[1] = IMG_Load(gun->getGunImage_fired().c_str());
-	for(int i=0;i<2;i++){
-		//TEXTURE 1 (Gun Idle)
-		glGenTextures(1, &gunTex[i]); //Create The Textur
-		glBindTexture(GL_TEXTURE_2D, gunTex[i]); //Load in texture 1
-		glTexImage2D(GL_TEXTURE_2D, 0, 3, TI[i]->w, TI[i]->h, 0, FORMAT_GUN, GL_UNSIGNED_BYTE, TI[i]->pixels); //Generate The Texture
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glBindTexture( GL_TEXTURE_2D, NULL );
-		SDL_FreeSurface(TI[i]);
-	}
-	gunTexIndex=0;//setup first texture to be idle
+    TI = new SDL_Surface *[5];
+    gunTex = new GLuint[5];
+	loadText();
 }
 //Function to handle key press events
 void Player::control(const Uint8* keyState){
@@ -126,6 +113,26 @@ void Player::check(){
     if(xpos < -9.74) xpos = -9.74;
     if(zpos >  9.74) zpos =  9.74;
     if(zpos < -9.74) zpos = -9.74;
+}
+
+void Player::loadText(){
+	TI[0] = IMG_Load(gun->getGunImage().c_str());
+	TI[1] = IMG_Load(gun->getGunImage_fired().c_str());
+	TI[2] = IMG_Load("data/textures/guns/shotgun/pump1.png");
+	TI[3] = IMG_Load("data/textures/guns/shotgun/pump2.png");
+	TI[4] = IMG_Load("data/textures/guns/shotgun/pump3.png");
+		
+	for(int i=0;i<5;i++){
+		//TEXTURE 1 (Gun Idle)
+		glGenTextures(1, &gunTex[i]); //Create The Textur
+		glBindTexture(GL_TEXTURE_2D, gunTex[i]); //Load in texture 1
+		glTexImage2D(GL_TEXTURE_2D, 0, 3, TI[i]->w, TI[i]->h, 0, FORMAT_GUN, GL_UNSIGNED_BYTE, TI[i]->pixels); //Generate The Texture
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glBindTexture( GL_TEXTURE_2D, NULL );
+		SDL_FreeSurface(TI[i]);
+	}
+	gunTexIndex=0;//setup first texture to be idle
 }
 
 //Getters
