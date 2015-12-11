@@ -73,15 +73,13 @@ void Player::draw(){
     glRotatef(sceneroty, 0.0f, 1.0f , 0.0f); //Rotate Depending On Direction Player Is Facing
     glTranslatef(xtrans, ytrans, ztrans); //Translate The Scene Based On Player Position
     
-    check();
     drawHUD();
+    check();
 }
 
 //Draws HUD
 //  Gun, Health, and Score are displayed
 void Player::drawHUD(){
-    //s = "SCORE: " + to_string(score);
-    //h = "HEALTH: " + to_string(health);
     sprintf(buffer, "%d", score);
     tmp = buffer;
     s = "SCORE: " + tmp;
@@ -98,10 +96,10 @@ void Player::drawHUD(){
         glTexCoord2d(1, 0); glVertex3d(765, 250, 0);
         glTexCoord2d(0, 0); glVertex3d(515, 250, 0);
     glEnd();
-    glDisable(GL_BLEND);
     
     glRenderText(font, 255, 0, 0, 0, 665, s);
     glRenderText(font, 255, 0, 0, 0, 0, h);
+    glDisable(GL_BLEND);
     
     glDisable2D();
 }

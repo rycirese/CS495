@@ -39,8 +39,8 @@ void ALLSYSTEMSGO(){
     
     //Create New World, Menu, and Player
     genWorld();
-    genMenu();
     player = new Player();
+    genMenu();
 	for(int i=0;i<10;i++){
 		monsters[i] = new Monster();
 		monsters[i] = monsters[i]->getDead();

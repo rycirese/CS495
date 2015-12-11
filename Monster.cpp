@@ -34,7 +34,7 @@ Monster * Monster::getLightMonster(){
 
 	//texture belongs to monster
 	TI[0] = IMG_Load ("data/textures/monsters/light.png");
-	glGenTextures (3,&monsterTex[0]);
+	glGenTextures (1,&monsterTex[0]);
 	glBindTexture (GL_TEXTURE_2D,monsterTex[0]);
 	glTexImage2D(GL_TEXTURE_2D,0,3,TI[0]->w,TI[0]->h,0,FORMAT_GUN,GL_UNSIGNED_BYTE,TI[0]->pixels);
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
@@ -53,7 +53,7 @@ Monster * Monster::getMediumMonster(){
     
 	//texture belongs to monster
 	TI[0] = IMG_Load ("data/textures/monsters/med.png");
-	glGenTextures (3,&monsterTex[0]);
+	glGenTextures (1,&monsterTex[0]);
 	glBindTexture (GL_TEXTURE_2D,monsterTex[0]);
 	glTexImage2D(GL_TEXTURE_2D,0,3,TI[0]->w,TI[0]->h,0,FORMAT_GUN,GL_UNSIGNED_BYTE,TI[0]->pixels);
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
@@ -72,7 +72,7 @@ Monster * Monster::getHeavyMonster(){
     points = 10;
 
 	TI[0] = IMG_Load ("data/textures/monsters/heavy.png");
-	glGenTextures (3,&monsterTex[0]);
+	glGenTextures (1,&monsterTex[0]);
 	glBindTexture (GL_TEXTURE_2D,monsterTex[0]);
 	glTexImage2D(GL_TEXTURE_2D,0,3,TI[0]->w,TI[0]->h,0,FORMAT_GUN,GL_UNSIGNED_BYTE,TI[0]->pixels);
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
@@ -90,7 +90,7 @@ Monster * Monster::getPatriarchMonster(){
     points = 25;
 
 	TI[0] = IMG_Load ("data/textures/monsters/patriarch.png");
-	glGenTextures (3,&monsterTex[0]);
+	glGenTextures (1,&monsterTex[0]);
 	glBindTexture (GL_TEXTURE_2D,monsterTex[0]);
 	glTexImage2D(GL_TEXTURE_2D,0,3,TI[0]->w,TI[0]->h,0,FORMAT_GUN,GL_UNSIGNED_BYTE,TI[0]->pixels);
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);

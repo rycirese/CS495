@@ -30,7 +30,7 @@ void genMenu(){
     
     y = 450;
     
-    glGenTextures(0, &mTexture[0]); //Create The Texture
+    glGenTextures(1, &mTexture[0]); //Create The Texture
     glBindTexture(GL_TEXTURE_2D, mTexture[0]); //Load in texture 1
     glTexImage2D(GL_TEXTURE_2D, 0, 3, TI[0]->w, TI[0]->h, 0, FORMAT, GL_UNSIGNED_BYTE, TI[0]->pixels); //Generate The Texture
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -51,7 +51,7 @@ void drawMenu(bool gettingName, string inputText, const Uint8* keyState){
     glEnd();
     
     glColor3f(0, 0, 0);
-    glRenderText(title, 0, 0, 0, 365, 560, "Monster Game");
+    glRenderText(title, 0, 0, 0, 310, 560, "DOOM in a Room");
     if(gettingName) name(inputText);
     if(!gettingName){
         if(keyState[SDL_SCANCODE_M]) menuCode = "menu";

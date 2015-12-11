@@ -61,7 +61,7 @@ void LoadGLTextures(){
     TI[2] = IMG_Load("data/textures/Wall1.jpg"); //Wall Texture
 	
     //TEXTURE 1 (Floor Texture)
-    glGenTextures(3, &texture[0]); //Create The Texture
+    glGenTextures(1, &texture[0]); //Create The Texture
     glBindTexture(GL_TEXTURE_2D, texture[0]); //Load in texture 1
     glTexImage2D(GL_TEXTURE_2D, 0, 3, TI[0]->w, TI[0]->h, 0, FORMAT, GL_UNSIGNED_BYTE, TI[0]->pixels); //Generate The Texture
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -69,7 +69,7 @@ void LoadGLTextures(){
     SDL_FreeSurface(TI[0]);
     
     //TEXTURE 2 (Roof Texture)
-    glGenTextures(3, &texture[1]); //Create The Texture
+    glGenTextures(1, &texture[1]); //Create The Texture
     glBindTexture(GL_TEXTURE_2D, texture[1]); //Load in texture 2
     glTexImage2D(GL_TEXTURE_2D, 0, 3, TI[1]->w, TI[1]->h, 0, FORMAT, GL_UNSIGNED_BYTE, TI[1]->pixels); //Generate The Texture
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -77,7 +77,7 @@ void LoadGLTextures(){
     SDL_FreeSurface(TI[1]);
     
     //TEXTURE 3 (Wall Texture)
-    glGenTextures(3, &texture[2]); //Create The Texture
+    glGenTextures(1, &texture[2]); //Create The Texture
     glBindTexture(GL_TEXTURE_2D, texture[2]); //Load in texture 3
     glTexImage2D(GL_TEXTURE_2D, 0, 3, TI[2]->w, TI[2]->h, 0, FORMAT, GL_UNSIGNED_BYTE, TI[2]->pixels); //Generate The Texture
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
